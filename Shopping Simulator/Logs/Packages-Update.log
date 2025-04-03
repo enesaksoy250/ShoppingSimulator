@@ -44,3 +44,14 @@ The following packages were updated:
   com.unity.test-framework from version 1.1.30 to 1.1.33
   com.unity.timeline from version 1.6.3 to 1.7.6
   com.unity.visualscripting from version 1.7.6 to 1.9.4
+
+=== Fri Apr  4 02:07:28 2025
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.ai.navigation@1.1.5
+  com.unity.cinemachine@2.10.3
+The following packages were updated:
+  com.unity.textmeshpro from version 3.0.6 to 3.0.9

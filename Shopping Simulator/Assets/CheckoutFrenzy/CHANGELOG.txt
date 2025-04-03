@@ -1,0 +1,10 @@
+Bug Fixes:
+- Fixed incorrect amount parsing in the payment terminal due to locale differences.
+- Fixed AM/PM time formatting issues caused by locale differences.
+- Fixed errors when creating and renumbering missions.
+
+New Feature:
+Added a setting in GameConfig to easily switch between Mobile and PC controls.
+
+Version 1.0.0
+First release

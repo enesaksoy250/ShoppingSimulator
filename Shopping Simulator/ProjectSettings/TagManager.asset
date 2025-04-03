@@ -13,13 +13,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - Player
+  - HeldObject
+  - Shelf
+  - Ground
+  - CheckoutItem
+  - Payment
   - 
   - 
   - 
