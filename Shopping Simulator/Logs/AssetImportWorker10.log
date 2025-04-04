@@ -9,11 +9,11 @@ C:\Program Files\Unity\Hub\Editor\2022.3.44f1\Editor\Unity.exe
 -batchMode
 -noUpm
 -name
-AssetImportWorker1
+AssetImportWorker10
 -projectPath
 C:/Users/enesa/OneDrive/Belgeler/GitHub/ShoppingSimulator/Shopping Simulator
 -logFile
-Logs/AssetImportWorker1.log
+Logs/AssetImportWorker10.log
 -srvPort
 59178
 Successfully changed project path to: C:/Users/enesa/OneDrive/Belgeler/GitHub/ShoppingSimulator/Shopping Simulator
@@ -49,14 +49,14 @@ C:/Users/enesa/OneDrive/Belgeler/GitHub/ShoppingSimulator/Shopping Simulator
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [12900]  Target information:
+Player connection [18104]  Target information:
 
-Player connection [12900]  * "[IP] 10.63.146.71 [Port] 0 [Flags] 2 [Guid] 1007338468 [EditorId] 1007338468 [Version] 1048832 [Id] WindowsEditor(7,Asus) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [18104]  * "[IP] 10.63.146.71 [Port] 0 [Flags] 2 [Guid] 1868006928 [EditorId] 1868006928 [Version] 1048832 [Id] WindowsEditor(7,Asus) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [12900] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [12900] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [18104] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [18104] Host joined alternative multi-casting on [225.0.0.222:34997]...
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
-Refreshing native plugins compatible for Editor in 10.45 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 12.24 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.44f1 (c3ae09b9f03c)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/Resources/UnitySubsystems
@@ -72,14 +72,14 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56788
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56728
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.44f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.008242 seconds.
-- Loaded All Assemblies, in  0.446 seconds
+Registered in 0.010032 seconds.
+- Loaded All Assemblies, in  0.413 seconds
 Native extension for WindowsStandalone target not found
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
@@ -100,38 +100,38 @@ UnityEditor.Android.TargetExtension:OnUsbDevicesChanged (UnityEditor.Hardware.Us
 UnityEditor.Android.TargetExtension:OnLoad ()
 UnityEditor.Modules.ModuleManager:InitializePlatformSupportModules ()
 
-Android Extension - Scanning For ADB Devices 307 ms
+Android Extension - Scanning For ADB Devices 283 ms
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.682 seconds
-Domain Reload Profiling: 1128ms
-	BeginReloadAssembly (156ms)
+- Finished resetting the current domain, in  0.602 seconds
+Domain Reload Profiling: 1014ms
+	BeginReloadAssembly (134ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (35ms)
+	RebuildCommonClasses (36ms)
 	RebuildNativeTypeToScriptingClass (11ms)
 	initialDomainReloadingComplete (61ms)
-	LoadAllAssembliesAndSetupDomain (180ms)
-		LoadAssemblies (155ms)
+	LoadAllAssembliesAndSetupDomain (169ms)
+		LoadAssemblies (133ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (177ms)
-			TypeCache.Refresh (175ms)
-				TypeCache.ScanAssembly (157ms)
-			ScanForSourceGeneratedMonoScriptInfo (1ms)
-			ResolveRequiredComponents (1ms)
-	FinalizeReload (683ms)
+		AnalyzeDomain (165ms)
+			TypeCache.Refresh (164ms)
+				TypeCache.ScanAssembly (148ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (603ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (616ms)
+		SetupLoadedEditorAssemblies (556ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (421ms)
+			InitializePlatformSupportModulesInManaged (372ms)
 			SetLoadedEditorAssemblies (4ms)
 			RefreshPlugins (0ms)
 			BeforeProcessingInitializeOnLoad (2ms)
-			ProcessInitializeOnLoadAttributes (127ms)
-			ProcessInitializeOnLoadMethodAttributes (61ms)
+			ProcessInitializeOnLoadAttributes (128ms)
+			ProcessInitializeOnLoadMethodAttributes (49ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -140,7 +140,7 @@ Domain Reload Profiling: 1128ms
 Worker process is ready to serve import requests
 Caller must complete domain reload
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.816 seconds
+- Loaded All Assemblies, in  0.693 seconds
 Native extension for WindowsStandalone target not found
 Native extension for iOS target not found
 Native extension for Android target not found
@@ -152,47 +152,47 @@ Package Manager log level set to [2]
 [Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
 [Package Manager] Cannot connect to Unity Package Manager local server
-- Finished resetting the current domain, in  0.645 seconds
-Domain Reload Profiling: 1459ms
-	BeginReloadAssembly (214ms)
+- Finished resetting the current domain, in  0.581 seconds
+Domain Reload Profiling: 1271ms
+	BeginReloadAssembly (162ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (6ms)
+		DisableScriptedObjects (7ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (37ms)
-	RebuildCommonClasses (40ms)
-	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (48ms)
-	LoadAllAssembliesAndSetupDomain (500ms)
-		LoadAssemblies (451ms)
+		CreateAndSetChildDomain (27ms)
+	RebuildCommonClasses (39ms)
+	RebuildNativeTypeToScriptingClass (15ms)
+	initialDomainReloadingComplete (44ms)
+	LoadAllAssembliesAndSetupDomain (430ms)
+		LoadAssemblies (358ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (183ms)
-			TypeCache.Refresh (153ms)
-				TypeCache.ScanAssembly (128ms)
-			ScanForSourceGeneratedMonoScriptInfo (21ms)
+		AnalyzeDomain (163ms)
+			TypeCache.Refresh (139ms)
+				TypeCache.ScanAssembly (121ms)
+			ScanForSourceGeneratedMonoScriptInfo (16ms)
 			ResolveRequiredComponents (7ms)
-	FinalizeReload (646ms)
+	FinalizeReload (581ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (480ms)
+		SetupLoadedEditorAssemblies (434ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (28ms)
-			SetLoadedEditorAssemblies (4ms)
+			SetLoadedEditorAssemblies (3ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (63ms)
-			ProcessInitializeOnLoadAttributes (354ms)
-			ProcessInitializeOnLoadMethodAttributes (25ms)
-			AfterProcessingInitializeOnLoad (5ms)
+			BeforeProcessingInitializeOnLoad (62ms)
+			ProcessInitializeOnLoadAttributes (316ms)
+			ProcessInitializeOnLoadMethodAttributes (19ms)
+			AfterProcessingInitializeOnLoad (6ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (6ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 5.66 ms, found 3 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Refreshing native plugins compatible for Editor in 5.57 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 3583 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 33 unused Assets / (137.5 KB). Loaded Objects now: 4056.
-Memory consumption went from 135.0 MB to 134.8 MB.
-Total: 4.239000 ms (FindLiveObjects: 0.486100 ms CreateObjectMapping: 0.145800 ms MarkObjects: 3.383600 ms  DeleteObjects: 0.221300 ms)
+Unloading 33 unused Assets / (137.2 KB). Loaded Objects now: 4056.
+Memory consumption went from 135.1 MB to 135.0 MB.
+Total: 4.396200 ms (FindLiveObjects: 0.453700 ms CreateObjectMapping: 0.117800 ms MarkObjects: 3.546100 ms  DeleteObjects: 0.276900 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
@@ -209,106 +209,121 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 464896.801242 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Fx/Boss_Warning_Red.Png
-  artifactKey: Guid(d44e36abe95a74e81b08a0dd7d4eae5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Fx/Boss_Warning_Red.Png using Guid(d44e36abe95a74e81b08a0dd7d4eae5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 465751.532862 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Levelup/Icon_Levelup_Bot_04.Png
+  artifactKey: Guid(a0949c56fd73644f0bebdf8bbf8872f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Levelup/Icon_Levelup_Bot_04.Png using Guid(a0949c56fd73644f0bebdf8bbf8872f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: 'f8eca24d358de130ad0054471b0388e4') in 0.152321 seconds
+ -> (artifact id: '066fd83b3fdab6b4a81dd85393d4867b') in 0.133862 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/CheckoutFrenzy/Sprites/Products/BodyWash01.png
-  artifactKey: Guid(4a8613382899945458aab8f69ce57421) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CheckoutFrenzy/Sprites/Products/BodyWash01.png using Guid(4a8613382899945458aab8f69ce57421) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.000043 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGem/Icon_Packed_Gem_2.png
+  artifactKey: Guid(bed301d23fede4edc8a2694e7d4edbe7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGem/Icon_Packed_Gem_2.png using Guid(bed301d23fede4edc8a2694e7d4edbe7) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: 'a01833492cff654effd9c25feb5fa545') in 0.033758 seconds
+ -> (artifact id: '7d7ada273a225b1218b8892c6af30562') in 0.035546 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000076 seconds.
-  path: Assets/CheckoutFrenzy/Sprites/Products/Apple.png
-  artifactKey: Guid(0663a67f345c21348b26fcca89aa348c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CheckoutFrenzy/Sprites/Products/Apple.png using Guid(0663a67f345c21348b26fcca89aa348c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.000079 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_1.Png
+  artifactKey: Guid(a62b03cf9b78d4533943c63cb55fcffd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_1.Png using Guid(a62b03cf9b78d4533943c63cb55fcffd) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '6a555d84149835eef6333d5606f7d4df') in 0.038067 seconds
+ -> (artifact id: '83c62d3e4b7182120a51f5ecbf63802c') in 0.029805 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 38.616022 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_11.Png
-  artifactKey: Guid(638e5491c10bc40009d4a4b6adeabe61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_11.Png using Guid(638e5491c10bc40009d4a4b6adeabe61) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.176426 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_5.Png
+  artifactKey: Guid(35ba5a695a8654d5ea01b2ea828a58e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_5.Png using Guid(35ba5a695a8654d5ea01b2ea828a58e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '252cfe35dd89145ca6ba3d176120f710') in 0.033935 seconds
+ -> (artifact id: '36ad1349805a9ace27cbc8241eaa2327') in 0.035750 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.005549 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_14.Png
-  artifactKey: Guid(d292a3ab624f941d9b8678f5fe9e1012) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_14.Png using Guid(d292a3ab624f941d9b8678f5fe9e1012) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.000035 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_7.Png
+  artifactKey: Guid(f2fdb9b17dc0a4f0682afc764e2aab0d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Package/IconPackedGold/Icon_Packed_Gold_7.Png using Guid(f2fdb9b17dc0a4f0682afc764e2aab0d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '78559da1367da72859cbbc4eeee0c45c') in 0.033196 seconds
+ -> (artifact id: '96f94ab31554d1dafda5f0b032fde57b') in 0.029868 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000064 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_16.Png
-  artifactKey: Guid(6bee3be6f772e44ee99ef0ee1466043e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_16.Png using Guid(6bee3be6f772e44ee99ef0ee1466043e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 3.793434 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Lock_01.Png
+  artifactKey: Guid(5c6d90eed31434ddca7e5f1a26f56503) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Lock_01.Png using Guid(5c6d90eed31434ddca7e5f1a26f56503) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '00a41b52cfc98b8508347a58516bb6bb') in 0.035470 seconds
+ -> (artifact id: '3c936bb0483fd081d8bfc3d1f1207941') in 0.032352 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000037 seconds.
-  path: Assets/CheckoutFrenzy/Sprites/UI/Cleaner.png
-  artifactKey: Guid(d7e53bc2ba6e68e4a947e040cd4031ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CheckoutFrenzy/Sprites/UI/Cleaner.png using Guid(d7e53bc2ba6e68e4a947e040cd4031ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.000030 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Male.Png
+  artifactKey: Guid(a3d33a7b1e0ed4e4eb87106884bfe443) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Male.Png using Guid(a3d33a7b1e0ed4e4eb87106884bfe443) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '2a2f54cb0259dabe5ff3ef3aa04d1db9') in 0.028543 seconds
+ -> (artifact id: '276d891b81c41633c009ae8d9827958c') in 0.028253 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000052 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_13.Png
-  artifactKey: Guid(b560de03a19a741dc9da34d499cf7998) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Character/Character_13.Png using Guid(b560de03a19a741dc9da34d499cf7998) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  Time since last request: 0.000032 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Map_02.Png
+  artifactKey: Guid(4d1237688d3f444be8ad34c83d3fecfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Map_02.Png using Guid(4d1237688d3f444be8ad34c83d3fecfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '33e642da3ebf736cdbda68d430505eae') in 0.028935 seconds
+ -> (artifact id: '4e1b94c9e22b6fb562665b7a0369903a') in 0.027223 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.065990 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Poition_02.Png
+  artifactKey: Guid(ba4aed0b8f05a41f39171c3b86eeb88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Poition_02.Png using Guid(ba4aed0b8f05a41f39171c3b86eeb88f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '922509b5d7f877a6a2d4167b8c1f9d24') in 0.027245 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.128013 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Timer.Png
+  artifactKey: Guid(380895f9b6182432ca34e9a5012bddb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_64/Icon_White_64_Timer.Png using Guid(380895f9b6182432ca34e9a5012bddb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '1a2c13c8719b5b8f634434513dc57803') in 0.029579 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.096108 seconds.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_128/Icon_White_128_Back_02.Png
+  artifactKey: Guid(547fc20addae6418086394e88f0eb231) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_128/Icon_White_128_Back_02.Png using Guid(547fc20addae6418086394e88f0eb231) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+ -> (artifact id: '5066fa1c4b239bac161c127b1c8cd375') in 0.026760 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
   Time since last request: 0.000027 seconds.
-  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Container/Container_Chat_02_Decor1.Png
-  artifactKey: Guid(68fc550ae7e0f4256b8891dc885f43ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Container/Container_Chat_02_Decor1.Png using Guid(68fc550ae7e0f4256b8891dc885f43ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
+  path: Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_128/Icon_White_128_Battery_Charging.Png
+  artifactKey: Guid(9df433f9478b44c2787cdf9b04eb2426) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Game Design Mastery Fantasy Edition/Resources/Sprites/Icon/White/Icon_White_128/Icon_White_128_Battery_Charging.Png using Guid(9df433f9478b44c2787cdf9b04eb2426) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
 [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '78d7ef35bc93c998fa19d8f5c2fbfeb6') in 0.033050 seconds
+ -> (artifact id: '4ef0b3d3ee7bf339a3f8f41eeaa72dcb') in 0.022507 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/CheckoutFrenzy/Sprites/Products/Cheese01.png
-  artifactKey: Guid(fff178ec2768f6543ba80b47f2b4a491) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CheckoutFrenzy/Sprites/Products/Cheese01.png using Guid(fff178ec2768f6543ba80b47f2b4a491) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
-[PhysX] Initialized MultithreadedTaskDispatcher with 16 workers.
- -> (artifact id: '1cb6ebb3fd779523475faa1a2492274b') in 0.031886 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 3
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: Bir iþ parçacýðý çýkýþý veya bir uygulama isteði nedeniyle G/Ç iþlemi iptal edildi.
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
