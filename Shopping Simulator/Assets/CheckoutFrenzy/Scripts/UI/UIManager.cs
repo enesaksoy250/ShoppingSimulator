@@ -97,6 +97,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void Start()
         {
             isMobileControl = GameConfig.Instance.ControlMode == ControlMode.Mobile;
+        
 
             if (isMobileControl)
             {

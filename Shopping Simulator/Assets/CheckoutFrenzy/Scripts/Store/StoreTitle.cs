@@ -23,7 +23,8 @@ namespace CryingSnow.CheckoutFrenzy
         {
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
 
-            textMeshPro.text = DataManager.Instance.Data.StoreName;
+            //textMeshPro.text = DataManager.Instance.Data.StoreName;
+            textMeshPro.text = PlayerPrefs.GetString("StoreName");
             DataManager.Instance.OnSave += () => DataManager.Instance.Data.StoreName = textMeshPro.text;
         }
 
