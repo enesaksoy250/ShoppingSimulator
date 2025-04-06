@@ -76,6 +76,7 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Button to proceed to checkout.")]
         private Button checkoutButton;
 
+        private string totalText;
         private void Start()
         {
             StoreManager.Instance.OnLicensePurchased += UpdateProductListing;
@@ -111,16 +112,18 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Initialize Service Screen
-            cashierPriceText.text = $"Price: ${GameConfig.Instance.CashierCost:N2}";
+            string priceText = LanguageControl.CheckLanguage("Fiyat:","Price:");
+            cashierPriceText.text = $"{priceText} ${GameConfig.Instance.CashierCost:N2}";
             hireCashierButton.onClick.AddListener(StoreManager.Instance.HireCashier);
-            cleanerPriceText.text = $"Price: ${GameConfig.Instance.CleanerCost:N2}";
+            cleanerPriceText.text = $"{priceText} ${GameConfig.Instance.CleanerCost:N2}";
             hireCleanerButton.onClick.AddListener(StoreManager.Instance.HireCleaner);
 
             // Initialize Cart Screen
             clearCartButton.onClick.AddListener(() => PC.Instance.ClearCart());
             checkoutButton.onClick.AddListener(() => PC.Instance.Checkout());
             PC.Instance.OnCartChanged += HandleCartChanged;
-            totalPriceText.text = "Total: $0.00";
+            totalText = LanguageControl.CheckLanguage("Toplam:", "Total:");
+            totalPriceText.text = $"{totalText} $0.00";
 
             // Initialize All Screens
             foreach (var screen in screens)
@@ -209,7 +212,8 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Update the total price and cart label text in the UI.
-            totalPriceText.text = $"Total: ${totalPrice:N2}";
+            totalText = LanguageControl.CheckLanguage("Toplam:", "Total:");
+            totalPriceText.text = $"{totalText} ${totalPrice:N2}";
             cartLabel.text = "Cart";
             if (totalItems > 0) cartLabel.text += $"<color=#FFB414> ({totalItems})"; // Add item count to the cart label.
         }

@@ -68,7 +68,8 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else
             {
-                UIManager.Instance.Message.Log("Invalid amount. Please enter a valid amount.", Color.red);
+                string text = LanguageControl.CheckLanguage("Geçersiz tutar.Lütfen geçerli bir tutar girin.", "Invalid amount.Please enter a valid amount.");
+                UIManager.Instance.Message.Log(text, Color.red);
             }
 
             AudioManager.Instance.PlaySFX(AudioID.Beep);

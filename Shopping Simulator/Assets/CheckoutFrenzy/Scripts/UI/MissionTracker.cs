@@ -72,7 +72,8 @@ namespace CryingSnow.CheckoutFrenzy
 
             string displayText = "";
 
-            displayText = $"<u>Mission #{mission.missionId:D3}</u>"; // Format mission ID.
+            string missionText1 = LanguageControl.CheckLanguage("Görev", "Mission");
+            displayText = $"<u>{missionText1} #{mission.missionId:D3}</u>"; // Format mission ID.
             displayText += $"\n<align=left>{GetFormattedGoal(mission.goalType)}:"; // Add formatted goal type.
 
             // Add target information based on the goal type.
@@ -132,23 +133,23 @@ namespace CryingSnow.CheckoutFrenzy
             switch (goalType)
             {
                 case Mission.Goal.Checkout:
-                    goal = "Perform Checkout";
+                    goal = LanguageControl.CheckLanguage("Ödeme Gerçekleştir","Perform Checkout");
                     break;
 
                 case Mission.Goal.Revenue:
-                    goal = "Collect Revenue";
+                    goal = LanguageControl.CheckLanguage("Gelir Topla","Collect Revenue");
                     break;
 
                 case Mission.Goal.Sell:
-                    goal = "Sell Product";
+                    goal = LanguageControl.CheckLanguage("Ürün Sat","Sell Product");
                     break;
 
                 case Mission.Goal.Restock:
-                    goal = "Restock Product";
+                    goal = LanguageControl.CheckLanguage("Ürünü Yeniden Stokla","Restock Product");
                     break;
 
                 case Mission.Goal.Furnish:
-                    goal = "Furnish The Store";
+                    goal = LanguageControl.CheckLanguage("Mağazayı Döşe","Furnish The Store");
                     break;
 
                 default:

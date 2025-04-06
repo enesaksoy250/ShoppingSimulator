@@ -200,7 +200,8 @@ namespace CryingSnow.CheckoutFrenzy
             ToggleDeliveryTimer(true);
 
             System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(time);
-            deliveryTimerText.text = $"Next Delivery:\n{timeSpan:mm\\:ss}";
+            string deliveryText = LanguageControl.CheckLanguage("Sonraki Teslimat:", "Next Delivery:");
+            deliveryTimerText.text = $"{deliveryText}\n{timeSpan:mm\\:ss}";
 
             if (time <= 0) ToggleDeliveryTimer(false);
         }

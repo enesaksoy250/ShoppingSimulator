@@ -12,11 +12,14 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Text to display information about the box (name, quantity, size).")]
         private TMP_Text infoText;
 
+        [SerializeField] TextMeshProUGUI titleText;
+
         private Sprite emptyIcon;
 
         private void Awake()
         {
-            emptyIcon = iconImage.sprite; // Store the default (empty box) icon.
+            emptyIcon = iconImage.sprite;
+            titleText.text = LanguageControl.CheckLanguage("İsim\nMiktar\nKutu Boyutu", "Name\nQuantity\nBox Size");
         }
 
         /// <summary>

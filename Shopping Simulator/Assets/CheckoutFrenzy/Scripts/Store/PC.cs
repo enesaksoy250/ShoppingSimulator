@@ -66,7 +66,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = "Tap to turn on the PC and start the Order Program";
+            string message = LanguageControl.CheckLanguage("Bilgisayarı açmak ve Sipariş Programını başlatmak için dokunun.","Tap to turn on the PC and start the Order Program");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
@@ -161,7 +161,8 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (cart.Count == 0)
             {
-                UIManager.Instance.Message.Log("Cart is empty. Add products or furnitures first.", Color.red);
+                string text = LanguageControl.CheckLanguage("Sepet boş. Önce ürün veya mobilya ekleyin.", "Cart is empty. Add products or furnitures first.");
+                UIManager.Instance.Message.Log(text, Color.red);
                 return;
             }
 
@@ -208,14 +209,15 @@ namespace CryingSnow.CheckoutFrenzy
                 // Deduct the total price from the player's money.
                 DataManager.Instance.PlayerMoney -= totalPrice;
 
-                // Display a success message to the player.
-                UIManager.Instance.Message.Log("Checkout successful!");
+                string text = LanguageControl.CheckLanguage("Ödeme başarılı!", "Checkout successful!");
+                UIManager.Instance.Message.Log(text);
                 AudioManager.Instance.PlaySFX(AudioID.Kaching);
             }
             else
             {
                 // Display an error message if the player doesn't have enough money.
-                UIManager.Instance.Message.Log("You don't have enough money!", Color.red);
+                string text = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                UIManager.Instance.Message.Log(text, Color.red);
             }
         }
 

@@ -8,10 +8,13 @@ namespace CryingSnow.CheckoutFrenzy
     {
         private TMP_Text displayText;
 
+        private string dayText;
+       
+
         private void Start()
         {
             displayText = GetComponent<TMP_Text>();
-
+            dayText = PlayerPrefs.GetString("Language", "Turkish") == "Turkish" ? "Gün" : "Day";
             TimeManager.Instance.OnMinutePassed += UpdateDisplay; // Subscribe to the OnMinutePassed event.
             UpdateDisplay(); // Initial update of the display.
         }
@@ -29,7 +32,7 @@ namespace CryingSnow.CheckoutFrenzy
             int day = DataManager.Instance.Data.TotalDays; // Get the current day.
             string time = TimeManager.Instance.GetFormattedTime(); // Get the formatted time.
 
-            displayText.text = $"<mspace=0.7em>Day {day}, {time}"; // Set the display text.
+            displayText.text = $"<mspace=0.7em>{dayText } {day}, {time}"; // Set the display text.
         }
     }
 }

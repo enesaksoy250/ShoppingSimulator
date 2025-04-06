@@ -41,7 +41,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = "Tap to rename your store.";
+            string message = LanguageControl.CheckLanguage("Mağazanızı yeniden adlandırmak için dokunun.", "Tap to rename your store.");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
