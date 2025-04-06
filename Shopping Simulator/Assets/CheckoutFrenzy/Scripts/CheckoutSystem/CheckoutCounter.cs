@@ -91,7 +91,8 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (hasCashier)
             {
-                message.Log("A cashier is already working here.");
+                string text = LanguageControl.CheckLanguage("Burada zaten bir kasiyer çalýþýyor.", "A cashier is already working here."); 
+                message.Log(text);
                 return;
             }
 
@@ -110,8 +111,8 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = "Tap to perform checkout as a cashier";
-            UIManager.Instance.InteractMessage.Display(message);
+            string text = LanguageControl.CheckLanguage("Kasiyer olarak ödeme yapmak için dokunun!", "Tap to perform checkout as a cashier");
+            UIManager.Instance.InteractMessage.Display(text);
         }
 
         public void OnDefocused()
@@ -314,7 +315,8 @@ namespace CryingSnow.CheckoutFrenzy
                 }
                 else
                 {
-                    message.Log("Insufficient change. Please provide the correct amount.", Color.red);
+                    string text = LanguageControl.CheckLanguage("Yetersiz bozukluk. Lütfen doðru miktarý giriniz.", "Insufficient change. Please provide the correct amount.");
+                    message.Log(text, Color.red);
                 }
             }
 
@@ -330,7 +332,8 @@ namespace CryingSnow.CheckoutFrenzy
                 }
                 else
                 {
-                    message.Log("Invalid amount. Please enter a valid amount.", Color.red);
+                    string text = LanguageControl.CheckLanguage("Geçersiz tutar. Lütfen geçerli bir tutar girin.", "Invalid amount. Please enter a valid amount.");
+                    message.Log(text, Color.red);
                 }
             }
 

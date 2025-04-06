@@ -133,7 +133,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             UIManager.Instance.DisplayBoxInfo(this);
 
-            string message = "Tap to pick up this box";
+            string message = LanguageControl.CheckLanguage("Bu kutuyu almak için dokunun!", "Tap to pick up this box");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
@@ -154,7 +154,8 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (Physics.OverlapBox(center, extents, orientation, layerMask).Length > 0)
             {
-                message.Log("Can't throw object here!", Color.red);
+                string text = LanguageControl.CheckLanguage("Buraya nesne atamazsınız!", "Can't throw object here!");
+                message.Log(text, Color.red);
                 return;
             }
 
@@ -291,7 +292,8 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (shelf.ShelvingUnit.Section != Product.Section)
             {
-                message.Log("Product doesn't belong in this section.");
+                string text = LanguageControl.CheckLanguage("Ürün bu bölüme ait değildir.", "Product doesn't belong in this section.");
+                message.Log(text);
                 return false;
             }
             else if (shelf.Product == null)
@@ -300,7 +302,8 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else if (shelf.Product != Product)
             {
-                message.Log("Shelf contains a different product.");
+                string text = LanguageControl.CheckLanguage("Rafta farklı bir ürün bulunmaktadır.", "Shelf contains a different product.");
+                message.Log(text);
                 return false;
             }
 
@@ -347,21 +350,24 @@ namespace CryingSnow.CheckoutFrenzy
             // Check if the box is full
             if (Product != null && Quantity >= Capacity)
             {
-                message.Log("Box is full.");
+                string text = LanguageControl.CheckLanguage("Kutu dolu.", "Box is full.");
+                message.Log(text);
                 return false;
             }
 
             // If the box is not empty, check if the product types match
             if (Quantity > 0 && shelf.Product != Product)
             {
-                message.Log("Box contains a different product.");
+                string text = LanguageControl.CheckLanguage("Kutu farklı bir ürün içeriyor.", "Box contains a different product.");
+                message.Log(text);
                 return false;
             }
 
             // If the box is empty, check if the product's box size is compatible
             if (Quantity == 0 && Size != shelf.Product.Box.Size)
             {
-                message.Log("Incompatible box size.");
+                string text = LanguageControl.CheckLanguage("Uyumsuz kutu boyutu.", "Incompatible box size.");
+                message.Log(text);
                 return false;
             }
 

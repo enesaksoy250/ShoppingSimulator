@@ -98,7 +98,8 @@ namespace CryingSnow.CheckoutFrenzy
 
             // Award the player the mission reward
             DataManager.Instance.PlayerMoney += currentMission.reward;
-            UIManager.Instance.Message.Log("Reward Collected!");
+            string text = LanguageControl.CheckLanguage("Ödül Toplandı!", "Reward Collected!");
+            UIManager.Instance.Message.Log(text);
             AudioManager.Instance.PlaySFX(AudioID.Kaching);
 
             int? nextMissionId = missionDict.Keys

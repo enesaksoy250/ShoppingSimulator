@@ -221,8 +221,8 @@ namespace CryingSnow.CheckoutFrenzy
                 Data.CurrentLevel++;
 
                 OnLevelUp?.Invoke(Data.CurrentLevel);
-
-                UIManager.Instance.Message.Log("Level Up!", Color.yellow);
+                string text = LanguageControl.CheckLanguage("Seviye Atlandı!","Level Up!");
+                UIManager.Instance.Message.Log(text, Color.yellow);
                 AudioManager.Instance.PlaySFX(AudioID.LevelUp);
 
                 experienceForNextLevel = CalculateExperienceForNextLevel();

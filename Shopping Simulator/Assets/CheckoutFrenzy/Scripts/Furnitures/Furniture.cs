@@ -123,7 +123,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public virtual void OnFocused()
         {
-            string message = "Hold to move this furniture around the store";
+            string message = LanguageControl.CheckLanguage("Bu mobilyayı mağaza içinde taşımak için tutun!", "Hold to move this furniture around the store");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
@@ -225,7 +225,8 @@ namespace CryingSnow.CheckoutFrenzy
             // If there are any overlapping objects, the furniture cannot be placed.
             if (others.Count > 0)
             {
-                UIManager.Instance.Message.Log("Can't place furnitures here!", Color.red);
+                string text = LanguageControl.CheckLanguage("Buraya mobilya yerleştiremezsiniz!", "Can't place furnitures here!");
+                UIManager.Instance.Message.Log(text, Color.red);
                 return;
             }
 
