@@ -55,3 +55,11 @@ The following packages were added:
   com.unity.cinemachine@2.10.3
 The following packages were updated:
   com.unity.textmeshpro from version 3.0.6 to 3.0.9
+
+=== Sun Apr  6 17:47:56 2025
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 3.0.31 to 3.0.34

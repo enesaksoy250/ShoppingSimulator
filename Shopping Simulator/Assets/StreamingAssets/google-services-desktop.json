@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "476256887766",
+    "firebase_url": "https://shoppingsimulator-303bb-default-rtdb.firebaseio.com",
+    "project_id": "shoppingsimulator-303bb",
+    "storage_bucket": "shoppingsimulator-303bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476256887766:android:8608ae79451c4409fb7a77",
+        "android_client_info": {
+          "package_name": "com.MaveraGame.ShoppingSimulator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClsswITB54TMsc-MLeo8MhqQzrVzfZGko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,27 @@
+Key;English;Turkish
+PlayText;START GAME;OYUNA BASLA
+SettingsText;SETTINGS;AYARLAR
+QuitText;QUIT GAME;OYUNDAN CIK
+ConfirmText;Confirm;Onayla
+PaymentText;Payment Terminal;Ödeme Terminali
+CashRegisterText;Cash Register;Yasar Kasa
+ClearButtonText;Clear;Temizle
+ThrowText;Throw;At
+OpenText;Open;Aç
+CloseText;Close;Kapat
+PlaceText;Place;Yerlestir
+TakeText;Take;Al
+SetPriceText;Set Price;Fiyat Ayarla
+ReturnText;Return;Geri
+RotateText;Rotate;Döndür
+DialogText;No customers arrive during the night;Gece boyunca hic mü?teri gelmez
+SkipButtonText;Skip To The Next Day;Ertesi Güne Gec
+BackText;Back;Geri
+SettingsText;Settings;Ayarlar
+InteractionText;Display interaction message;Etkilesim mesaj?n? görüntüle 
+ProductText;Product;Urun
+FurnitureText;Furniture;Mobilya
+LicenseText;License;Lisans
+ExpansionText;Expansion;Genisleme
+ServiceText;Service;Servis
+CartText;Cart;Sepet
