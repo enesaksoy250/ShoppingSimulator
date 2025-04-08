@@ -1,12 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LanguageManager : MonoBehaviour
 {
     public static LanguageManager instance;
     private Dictionary<string, string> localizedText;
-    private string currentLanguage;
+    public string currentLanguage = "Turkish"; // Varsayýlan dil
 
     void Awake()
     {
@@ -23,6 +26,9 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
+   
+
+  
     public void LoadLocalizedText(string language)
     {
         localizedText = new Dictionary<string, string>();
@@ -31,12 +37,11 @@ public class LanguageManager : MonoBehaviour
 
     private void LoadCSVFromResources(string language)
     {
-
         TextAsset csvFile = Resources.Load<TextAsset>("ShoppingSimulatorLanguage(Sayfa1)");
 
         if (csvFile != null)
         {
-            ProcessCSVData(csvFile.text, language);
+            ProcessCSVData(csvFile.bytes, language); // TextAsset.text yerine bytes kullanýyoruz.
         }
         else
         {
@@ -44,38 +49,43 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    private void ProcessCSVData(string csvData, string language)
+    private void ProcessCSVData(byte[] csvBytes, string language)
     {
-        string[] data = csvData.Split('\n');
-        string[] headers = data[0].Split(';');
-
-        int languageIndex = -1;
-        for (int i = 0; i < headers.Length; i++)
+        using (MemoryStream stream = new MemoryStream(csvBytes))
+        using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
         {
-            if (headers[i].Trim() == language)
+            string csvData = reader.ReadToEnd();
+            string[] data = csvData.Split('\n');
+            string[] headers = data[0].Split(';');
+
+            int languageIndex = -1;
+            for (int i = 0; i < headers.Length; i++)
             {
-                languageIndex = i;
-                break;
-            }
-        }
-
-        if (languageIndex == -1)
-        {
-            Debug.LogError($"Language '{language}' not found in CSV file");
-            return;
-        }
-
-        for (int i = 1; i < data.Length; i++)
-        {
-            string[] row = data[i].Split(';');
-            if (row.Length > languageIndex)
-            {
-                string key = row[0].Trim();
-                string value = row[languageIndex].Trim();
-
-                if (!localizedText.ContainsKey(key))
+                if (headers[i].Trim() == language)
                 {
-                    localizedText.Add(key, value);
+                    languageIndex = i;
+                    break;
+                }
+            }
+
+            if (languageIndex == -1)
+            {
+                Debug.LogError($"Language '{language}' not found in CSV file");
+                return;
+            }
+
+            for (int i = 1; i < data.Length; i++)
+            {
+                string[] row = data[i].Split(';');
+                if (row.Length > languageIndex)
+                {
+                    string key = row[0].Trim();
+                    string value = row[languageIndex].Trim();
+
+                    if (!localizedText.ContainsKey(key))
+                    {
+                        localizedText.Add(key, value);
+                    }
                 }
             }
         }
@@ -94,11 +104,10 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    private void GetLanguage()
+    // Dilin alýnmasý için ek fonksiyon
+    public void GetLanguage()
     {
-       
-        currentLanguage = PlayerPrefs.GetString("Language","Turkish");
+        // Örnek olarak PlayerPrefs'ten dili alabilirsiniz
+        currentLanguage = PlayerPrefs.GetString("Language", "Turkish");
     }
-
-
 }

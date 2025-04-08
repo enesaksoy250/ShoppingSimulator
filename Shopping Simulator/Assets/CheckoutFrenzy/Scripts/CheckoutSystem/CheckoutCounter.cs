@@ -462,38 +462,46 @@ namespace CryingSnow.CheckoutFrenzy
         private void UpdateMonitorText()
         {
             string displayText = "";
+            string text="";
 
             switch (CurrentState)
             {
                 case State.Standby:
-                    displayText = "\n\nStandby...";
+                    text = LanguageControl.CheckLanguage("Beklemede...", "Standby...");
+                    displayText = $"\n\n{text}";
                     break;
 
                 case State.Placing:
-                    displayText = "\n\nWaiting...";
+                    displayText = LanguageControl.CheckLanguage("\n\nBekleniyor...","\n\nWaiting...");
                     break;
 
                 case State.Scanning:
-                    displayText = "Scanning...";
-                    displayText += $"\n<color=#00a4ff>Total: ${totalPrice:N2}</color>";
+                    displayText = LanguageControl.CheckLanguage("Taranýyor...", "Scanning...");
+                    text = LanguageControl.CheckLanguage("Toplam:", "Total:");
+                    displayText += $"\n<color=#00a4ff>{text} ${totalPrice:N2}</color>";
                     break;
 
                 case State.CashPay:
-                    displayText = "Cash Payment";
-                    displayText += $"\n<color=#00a4ff>Total: ${totalPrice:N2}</color>";
-                    displayText += $"\nReceived: ${customerMoney:N2}";
+                    displayText = LanguageControl.CheckLanguage("Nakit Ödeme", "Cash Payment");
+                    text = LanguageControl.CheckLanguage("Toplam:","Total:");
+                    displayText += $"\n<color=#00a4ff>{text} ${totalPrice:N2}</color>";
+                    text = LanguageControl.CheckLanguage("Alýnan:","Received:");
+                    displayText += $"\n{text} ${customerMoney:N2}";
 
                     decimal change = customerMoney - totalPrice;
-                    displayText += $"\n<color=yellow>Change: ${change:N2}";
+                    text = LanguageControl.CheckLanguage("Para Üstü:","Change:");
+                    displayText += $"\n<color=yellow>{text} ${change:N2}";
 
+                    text = LanguageControl.CheckLanguage("Verilen:","Give:");
                     string color = givenChange / 100m >= change ? "green" : "red";
-                    displayText += $"\n<color={color}>Give: ${givenChange / 100m:N2}";
+                    displayText += $"\n<color={color}>{text} ${givenChange / 100m:N2}";
                     break;
 
                 case State.CardPay:
-                    displayText = "Card Payment";
+                    displayText = LanguageControl.CheckLanguage("Kartla Ödeme","Card Payment");
                     displayText += $"\n<color=#00a4ff>Total: ${totalPrice:N2}</color>";
-                    displayText += "\nInput total amount in the payment terminal.";
+                    text = LanguageControl.CheckLanguage("\nÖdeme terminaline toplam tutarý girin", "\nInput total amount in the payment terminal.");
+                    displayText += text;
                     break;
 
                 default:

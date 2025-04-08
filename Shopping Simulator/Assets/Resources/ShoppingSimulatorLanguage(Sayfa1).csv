@@ -1,27 +1,45 @@
 Key;English;Turkish
-PlayText;START GAME;OYUNA BASLA
+PlayText;START GAME;OYUNA BAŞLA
 SettingsText;SETTINGS;AYARLAR
-QuitText;QUIT GAME;OYUNDAN CIK
+QuitText;QUIT GAME;OYUNDAN ÇIK
 ConfirmText;Confirm;Onayla
-PaymentText;Payment Terminal;�deme Terminali
+PaymentText;Payment Terminal;Ödeme Terminali
 CashRegisterText;Cash Register;Yasar Kasa
 ClearButtonText;Clear;Temizle
 ThrowText;Throw;At
-OpenText;Open;A�
+OpenText;Open;Aç
 CloseText;Close;Kapat
-PlaceText;Place;Yerlestir
+PlaceText;Place;Yerleştir
 TakeText;Take;Al
 SetPriceText;Set Price;Fiyat Ayarla
 ReturnText;Return;Geri
-RotateText;Rotate;D�nd�r
-DialogText;No customers arrive during the night;Gece boyunca hic m�?teri gelmez
-SkipButtonText;Skip To The Next Day;Ertesi G�ne Gec
+RotateText;Rotate;Döndür
+DialogText;No customers arrive during the night;Gece boyunca hic müşteri gelmez
+SkipButtonText;Skip To The Next Day;Ertesi Güne Geç
 BackText;Back;Geri
 SettingsText;Settings;Ayarlar
-InteractionText;Display interaction message;Etkilesim mesaj?n? g�r�nt�le 
-ProductText;Product;Urun
+InteractionText;Display interaction message;Etkileşim mesajını görüntüle 
+ProductText;Product;Ürün
 FurnitureText;Furniture;Mobilya
 LicenseText;License;Lisans
-ExpansionText;Expansion;Genisleme
+ExpansionText;Expansion;Genişleme
 ServiceText;Service;Servis
 CartText;Cart;Sepet
+ProductNameText;Product Name;Ürün adı
+SummaryText;TODAY'S SUMMARY;BUGÜNÜN ÖZETİ
+;;
+SkipNextDayText;Skip To Next Day;Ertesi Güne Geç
+ContinueText;Continue;Devam
+TotalCustomerText;Total Customers;Toplam Müşteri
+PreviousBalanceText;Previous Balance;Önceki Denge
+TotalRevenuesText;Total Revenues;Toplam Gelir
+TotalSpendingText;Total Spending;Toplam Harcama
+CurrentBalanceText;Current Balance;Mevcut Bakiye
+HireCashierInfoText;Hire a cashier to assist with customer checkouts for one day!;Müşteri ödemelerine yardımcı olması için bir günlüğüne bir kasiyer kiralayın!
+HireText;Hire;Kirala
+HCNameText;Hire Cashier;Kasiyer işe Al
+HCleanerNameText;Hire Cleaner;Temizlikçi işe Al
+HireCleanerInfoText;Hire a cleaning service to keep your store spotless!;Ma?azan?z? tertemiz tutmak için bir temizlik hizmeti kiralayın! 
+TotalText;Total;Toplam
+QuantityText;Quantity;Miktar
+CheckoutText;Checkout;Ödeme

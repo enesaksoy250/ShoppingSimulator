@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CryingSnow.CheckoutFrenzy
@@ -13,7 +14,9 @@ namespace CryingSnow.CheckoutFrenzy
             public string Text;
         }
 
+
         [SerializeField] private List<Line> lines;
+       
 
         /// <summary>
         /// Returns a random dialogue line from the list.
@@ -30,5 +33,6 @@ namespace CryingSnow.CheckoutFrenzy
             int index = Random.Range(0, lines.Count);
             return lines[index].Text;
         }
+           
     }
 }

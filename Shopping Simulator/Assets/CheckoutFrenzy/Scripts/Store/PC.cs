@@ -33,12 +33,14 @@ namespace CryingSnow.CheckoutFrenzy
 
         private bool isProcessing;
 
+        private string standByText;
+
         private void Awake()
         {
             Instance = this;
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
-
-            monitorText.text = "<size=0.5>Standby...";
+            standByText = LanguageControl.CheckLanguage("Beklemede...","Standby...");
+            monitorText.text = $"<size=0.5>{standByText}";
         }
 
         private void Start()
@@ -78,6 +80,7 @@ namespace CryingSnow.CheckoutFrenzy
         private IEnumerator LoadOrderProgram()
         {
             float elapsedTime = 0f;
+            string monitorTxt = LanguageControl.CheckLanguage("Sipariş Programı Yükleniyor\nLütfen bekleyin... ", "Loading Order Program\nPlease wait...");
 
             while (elapsedTime < loadingDuration)
             {
@@ -91,20 +94,21 @@ namespace CryingSnow.CheckoutFrenzy
                 string loadingBar = new string('|', filledSegments) + new string('.', totalBarSegments - filledSegments);
 
                 // Update the monitor text.
-                monitorText.text = $"Loading Order Program\nPlease wait...\n<mspace=0.1>[{loadingBar}]</mspace>\n{Mathf.RoundToInt(progress * 100)}%";
+                
+                monitorText.text = $"{monitorTxt}\n<mspace=0.1>[{loadingBar}]</mspace>\n{Mathf.RoundToInt(progress * 100)}%";
 
                 yield return null;
             }
-
+            
             // Ensure the text shows 100% and a full bar at the end.
-            monitorText.text = $"Loading Order Program\nPlease wait...\n<mspace=0.1>[{new string('|', totalBarSegments)}]</mspace>\n100%";
+            monitorText.text = $"{monitorTxt}\n<mspace=0.1>[{new string('|', totalBarSegments)}]</mspace>\n100%";
 
             yield return new WaitForSeconds(0.5f);
 
             UIManager.Instance.PCMonitor.Display(onClose: () =>
             {
                 monitorCamera.gameObject.SetActive(false);
-                monitorText.text = "<size=0.5>Standby...";
+                monitorText.text = $"<size=0.5>{standByText}";
 
                 player.CurrentState = PlayerController.State.Free;
                 player = null;

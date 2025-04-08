@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CryingSnow.CheckoutFrenzy
@@ -54,6 +55,7 @@ namespace CryingSnow.CheckoutFrenzy
             IsLoaded = true;
         }
 
+       
         private void OnApplicationQuit()
         {
             SaveGameData();

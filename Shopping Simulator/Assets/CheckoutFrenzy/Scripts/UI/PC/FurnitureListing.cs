@@ -44,19 +44,21 @@ namespace CryingSnow.CheckoutFrenzy
         {
             iconImage.sprite = furniture.Icon;
             nameText.text = furniture.Name;
-
+            string sectionTxT = LanguageControl.CheckLanguage("Reyon:","Section:");
             // Hide the section text if the furniture is in the General section (e.g., Trash Can, Decorations).
             if (furniture.Section == Section.General) sectionText.gameObject.SetActive(false);
-            else sectionText.text = $"Section: {furniture.Section}";
+            else sectionText.text = $"{sectionTxT} {furniture.Section}";
 
+            string priceTxt = LanguageControl.CheckLanguage("Fiyat:", "Price:"); 
             price = furniture.Price;
-            priceText.text = $"Price: ${price:N2}";
+            priceText.text = $"{priceTxt} ${price:N2}";
 
             UpdateAmount(1, false); // Initialize the amount to 1.
 
             decreaseButton.onClick.AddListener(() => UpdateAmount(-1)); // Add listener to decrease button.
             increaseButton.onClick.AddListener(() => UpdateAmount(1)); // Add listener to increase button.
-
+            string cartText = LanguageControl.CheckLanguage("Sepete Ekle", "Add to Cart");
+            addToCartButton.GetComponentInChildren<TextMeshProUGUI>().text = cartText;
             addToCartButton.onClick.AddListener(() => PC.Instance.AddToCart(furniture, amount)); // Add listener to add to cart button.
         }
 
@@ -69,10 +71,12 @@ namespace CryingSnow.CheckoutFrenzy
         {
             amount += value;
             amount = Mathf.Clamp(amount, 1, 10); // Clamp the amount between 1 and 10.
-            amountText.text = $"Amount: {amount}";
+            string amountTxt = LanguageControl.CheckLanguage("Miktar:","Amount:");
+            amountText.text = $"{amountTxt} {amount}";
 
             decimal totalPrice = price * amount;
-            totalText.text = $"Total: ${totalPrice:N2}";
+            string totalTxt = LanguageControl.CheckLanguage("Toplam:","Total:");
+            totalText.text = $"{totalTxt} ${totalPrice:N2}";
 
             if (playSFX) AudioManager.Instance.PlaySFX(AudioID.Click);
         }

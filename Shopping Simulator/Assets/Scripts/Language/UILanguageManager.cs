@@ -16,18 +16,18 @@ public class UILanguageManager : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);
+    }
     private void Start()
     {
-
         UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);
     }
 
     public void UpdateText()
     {
-
-
         UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);
-
     }
 
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+//using UnityEngine.UIElements;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -60,18 +61,23 @@ namespace CryingSnow.CheckoutFrenzy
             categoryText.text = formattedName;
 
             boxQuantity = product.GetBoxQuantity();
-            quantityText.text = $"<sprite=12> <size=30>{boxQuantity} pcs/pack"; // Set the quantity text.
+            string pack = LanguageControl.CheckLanguage("paket", "pack");
+            quantityText.text = $"<sprite=12> <size=30>{boxQuantity} {pack}"; // Set the quantity text.
 
-            sectionText.text = $"Section: {product.Section}";
+            string section = LanguageControl.CheckLanguage("Reyon:", "Section:");
+            sectionText.text = $"{section} {product.Section}";
 
+            string price = LanguageControl.CheckLanguage("Fiyat:", "Price:");
             singlePrice = product.Price * boxQuantity; // Calculate the price per box/pack.
-            priceText.text = $"Price: ${singlePrice:N2}";
+            priceText.text = $"{price} ${singlePrice:N2}";
 
             UpdateAmount(1, false); // Initialize amount to 1.
 
             decreaseButton.onClick.AddListener(() => UpdateAmount(-1)); // Add listener to decrease button.
             increaseButton.onClick.AddListener(() => UpdateAmount(1));  // Add listener to increase button.
 
+            string cartText = LanguageControl.CheckLanguage("Sepete Ekle","Add to Cart");
+            addToCartButton.GetComponentInChildren<TextMeshProUGUI>().text = cartText;
             addToCartButton.onClick.AddListener(() => PC.Instance.AddToCart(product, amount)); // Add listener to add to cart button.
         }
 
@@ -83,11 +89,13 @@ namespace CryingSnow.CheckoutFrenzy
         private void UpdateAmount(int value, bool playSFX = true)
         {
             amount += value;
-            amount = Mathf.Clamp(amount, 1, 10); // Clamp the amount between 1 and 10.
-            amountText.text = $"Amount: {amount}";
+            amount = Mathf.Clamp(amount, 1, 10);
+            string amountTxt = LanguageControl.CheckLanguage("Miktar:","Amount:");// Clamp the amount between 1 and 10.
+            amountText.text = $"{amountTxt} {amount}";
 
+            string total = LanguageControl.CheckLanguage("Toplam:","Total:");
             decimal totalPrice = singlePrice * amount; // Calculate the total price.
-            totalText.text = $"Total: ${totalPrice:N2}";
+            totalText.text = $"{total} ${totalPrice:N2}";
 
             if (playSFX) AudioManager.Instance.PlaySFX(AudioID.Click); // Play a click sound effect.
         }
