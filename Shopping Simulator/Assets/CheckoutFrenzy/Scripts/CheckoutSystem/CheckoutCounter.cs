@@ -312,6 +312,17 @@ namespace CryingSnow.CheckoutFrenzy
                     decimal paymentAmount = customerMoney - (givenChange / 100m);
                     DataManager.Instance.PlayerMoney += paymentAmount;
                     MissionManager.Instance.UpdateMission(Mission.Goal.Checkout, 1);
+
+                    print("Ödeme alýndý checkout counter");
+   
+                    /*int receivePayment = PlayerPrefs.GetInt("ReceivePayment", 0);
+                    receivePayment++;
+                    if (receivePayment % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
+                    {
+                        StartCoroutine(ShowAd());
+                    }
+                    PlayerPrefs.SetInt("ReceivePayment", receivePayment); */
+
                 }
                 else
                 {
@@ -380,6 +391,12 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             SetCurrentState(State.Standby);
+        }
+
+        private IEnumerator ShowAd()
+        {
+            yield return new WaitForSeconds(1);
+            AdManager.instance.ShowInterstitialAd();
         }
 
         private void UpdateGivenChange(int amount)

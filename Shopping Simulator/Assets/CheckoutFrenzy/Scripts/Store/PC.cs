@@ -216,6 +216,17 @@ namespace CryingSnow.CheckoutFrenzy
                 string text = LanguageControl.CheckLanguage("Ödeme başarılı!", "Checkout successful!");
                 UIManager.Instance.Message.Log(text);
                 AudioManager.Instance.PlaySFX(AudioID.Kaching);
+
+                int checkoutCount = PlayerPrefs.GetInt("CheckoutCount",0);
+                checkoutCount++;
+
+                if(checkoutCount % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
+                {
+                    StartCoroutine(ShowAd());
+                }
+
+                PlayerPrefs.SetInt("CheckoutCount", checkoutCount);
+
             }
             else
             {
@@ -223,6 +234,12 @@ namespace CryingSnow.CheckoutFrenzy
                 string text = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
                 UIManager.Instance.Message.Log(text, Color.red);
             }
+        }
+
+        private IEnumerator ShowAd()
+        {
+            yield return new WaitForSeconds(1);
+            AdManager.instance.ShowInterstitialAd();
         }
 
         /// <summary>

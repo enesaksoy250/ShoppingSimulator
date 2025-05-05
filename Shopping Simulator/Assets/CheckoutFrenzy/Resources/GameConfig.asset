@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa82b0bff3833e14ea8b513179f21d14, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  defaultStoreName: AWESOME MART
+  defaultStoreName: AWESOME MARKET
   storeNameMaxCharacters: 15
   startingMoney: 2000
   minSpawnTime: 5
@@ -23,7 +23,7 @@ MonoBehaviour:
     StartMinute: 0
     EndHour: 22
     EndMinute: 0
-  cashierCost: 500
+  cashierCost: 300
   cleanerCost: 300
   baseExperience: 5
   growthFactor: 1.1
@@ -51,4 +51,20 @@ MonoBehaviour:
     m_Bits: 512
   notFoundDialogue: {fileID: 11400000, guid: 754cd9229a920d44cabec116abbd94b9, type: 2}
   overpricedDialogue: {fileID: 11400000, guid: af2dac0d516a3544fa7812e01eab07f7, type: 2}
+  notFoundDialogueTurkish: {fileID: 11400000, guid: b1f7b61abc3fd44419b5ae2cfe608dca,
+    type: 2}
+  overPricedDialogueTurkish: {fileID: 11400000, guid: 64c1474304b7d9e45be6086532c67e8f,
+    type: 2}
+  satisfiedDialogueTurkish: {fileID: 11400000, guid: 8782d1e09b19a6e48948076703b82f08,
+    type: 2}
+  satisfiedDialogueEnglish: {fileID: 11400000, guid: 6d4e3c6c198a1f34a821f9e52090b313,
+    type: 2}
+  waitingLongDialogueTurkish: {fileID: 11400000, guid: 355a8f8a2ab11244b9208abc64a24c72,
+    type: 2}
+  waitingLongDialogueEnglish: {fileID: 11400000, guid: b0ae676c1ac0e2c4b9448731129fc115,
+    type: 2}
   controlMode: 0
+  minSpawnTimeAtMinReputation: 15
+  maxSpawnTimeAtMinReputation: 45
+  minSpawnTimeAtMaxReputation: 5
+  maxSpawnTimeAtMaxReputation: 15

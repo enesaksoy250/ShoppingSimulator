@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.AI.Navigation;
+using System;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -137,23 +138,23 @@ namespace CryingSnow.CheckoutFrenzy
         }
 
         private IEnumerator SpawnCustomer()
-        {
+        {       
             while (true)
             {
-                float waitTime = GameConfig.Instance.GetRandomSpawnTime;
+                float waitTime = GameConfig.Instance.GetRandomSpawnTime2;        
                 yield return new WaitForSeconds(waitTime);
-
+              
                 if (isOpen && customers.Count < maxCustomers && shelvingUnits.Count > 0)
                 {
-                    int randomCustomerIndex = Random.Range(0, customerPrefabs.Count);
+                    int randomCustomerIndex =UnityEngine.Random.Range(0, customerPrefabs.Count);
                     var customerPrefab = customerPrefabs[randomCustomerIndex];
 
-                    int randomSpawnIndex = Random.Range(0, spawnPoints.Count);
+                    int randomSpawnIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
                     var spawnPoint = spawnPoints[randomSpawnIndex];
 
                     var customer = Instantiate(customerPrefab, spawnPoint.position, spawnPoint.rotation);
                     customers.Add(customer);
-
+             
                     DataManager.Instance.Data.CurrentSummary.TotalCustomers++;
                 }
             }
@@ -200,10 +201,21 @@ namespace CryingSnow.CheckoutFrenzy
         /// <returns>An IEnumerator to control the customer's leaving process.</returns>
         public IEnumerator CustomerLeave(Customer customer)
         {
+            print("Müşteri dükkandan ayrılıyor...");
+
+            if (customer.waitingTimeExceeding)
+            {
+                ReputationManager.instance.RegisterCustomerFeedback(false);
+                string language = PlayerPrefs.GetString("Language");
+                string chat = language == "English" ? GameConfig.Instance.WaitingLongDialogueEnglish.GetRandomLine() 
+                    : GameConfig.Instance.WaitingLongDialogueTurkish.GetRandomLine();
+                customer.UpdateChatBubble(chat);
+            }
+
             liningCustomers.Remove(customer);
             customers.Remove(customer);
 
-            var exitPoint = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
+            var exitPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position;
             yield return customer.MoveTo(exitPoint);
             Destroy(customer.gameObject);
         }
@@ -231,7 +243,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (shelvingUnits.Count == 0) return null;
 
-            int randomIndex = Random.Range(0, shelvingUnits.Count);
+            int randomIndex = UnityEngine.Random.Range(0, shelvingUnits.Count);
             var shelvingUnit = shelvingUnits.ElementAt(randomIndex);
 
             return shelvingUnit;

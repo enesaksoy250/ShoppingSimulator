@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476256887766:android:8608ae79451c4409fb7a77",
+        "mobilesdk_app_id": "1:476256887766:android:820c086d3e067cb3fb7a77",
         "android_client_info": {
-          "package_name": "com.MaveraGame.ShoppingSimulator"
+          "package_name": "com.MaveraGame.ShopMasterMarketSimulator"
         }
       },
       "oauth_client": [],

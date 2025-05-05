@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/CheckoutFrenzy/Scenes/MainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 8a09cccff1b6ac04f9c44d21b75b4efb
   - enabled: 1
-    path: Assets/CheckoutFrenzy/Scenes/Game.unity
+    path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: cd89d206d69e58740a745f68a50a0d74,

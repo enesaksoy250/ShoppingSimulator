@@ -66,7 +66,8 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else if (input == "Enter") // Handle enter key.
             {
-                gameObject.SetActive(false); // Close the keyboard.
+                gameObject.SetActive(false);
+                PlayerPrefs.SetString("StoreName", tmp.text.ToUpper());// Close the keyboard.
             }
             else if (tmp.text.Length < GameConfig.Instance.StoreNameMaxCharacters) // Limit text length.
             {

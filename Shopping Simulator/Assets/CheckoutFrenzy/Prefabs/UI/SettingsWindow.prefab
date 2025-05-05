@@ -289,8 +289,9 @@ GameObject:
   - component: {fileID: 362279497715790480}
   - component: {fileID: 362279497715790486}
   - component: {fileID: 362279497715790481}
+  - component: {fileID: 5555113342592289736}
   m_Layer: 5
-  m_Name: Label
+  m_Name: MusicText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,7 +344,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'BGM Volume:'
+  m_text: 'Music Volume:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -412,6 +413,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5555113342592289736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362279497715790483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa54e1c02900a8340b044513c0e9db52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362279497727663611
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,8 +617,9 @@ GameObject:
   - component: {fileID: 362279497898836742}
   - component: {fileID: 362279497898836740}
   - component: {fileID: 362279497898836743}
+  - component: {fileID: 76946224733824006}
   m_Layer: 5
-  m_Name: Label
+  m_Name: EffectText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -727,6 +741,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &76946224733824006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362279497898836737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa54e1c02900a8340b044513c0e9db52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362279497976207232
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,8 +836,9 @@ GameObject:
   - component: {fileID: 362279498110434027}
   - component: {fileID: 362279498110434025}
   - component: {fileID: 362279498110434024}
+  - component: {fileID: 8694024952465998902}
   m_Layer: 5
-  m_Name: Label
+  m_Name: InteractionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -933,6 +960,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8694024952465998902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362279498110434026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa54e1c02900a8340b044513c0e9db52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362279498119341125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,8 +1096,9 @@ GameObject:
   - component: {fileID: 362279498456280988}
   - component: {fileID: 362279498456280991}
   - component: {fileID: 362279498456280990}
+  - component: {fileID: 5836153011958096872}
   m_Layer: 5
-  m_Name: Title
+  m_Name: SettingsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1200,6 +1240,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5836153011958096872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362279498456280984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa54e1c02900a8340b044513c0e9db52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362279498520204089
 GameObject:
   m_ObjectHideFlags: 0

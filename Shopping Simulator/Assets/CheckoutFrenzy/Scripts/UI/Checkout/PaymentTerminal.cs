@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Collections;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -65,6 +66,14 @@ namespace CryingSnow.CheckoutFrenzy
             if (decimal.TryParse(enteredAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal amount) && amount > 0)
             {
                 OnConfirm?.Invoke(amount);
+                print("Ödeme alındı payment terminal");
+               /* int receivePayment = PlayerPrefs.GetInt("ReceivePayment", 0);
+                receivePayment++;
+                if (receivePayment % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
+                {
+                    StartCoroutine(ShowAd());
+                }
+                PlayerPrefs.SetInt("ReceivePayment", receivePayment); */
             }
             else
             {
@@ -73,6 +82,12 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             AudioManager.Instance.PlaySFX(AudioID.Beep);
+        }
+
+        private IEnumerator ShowAd()
+        {
+            yield return new WaitForSeconds(1);
+            AdManager.instance.ShowInterstitialAd();
         }
 
         /// <summary>

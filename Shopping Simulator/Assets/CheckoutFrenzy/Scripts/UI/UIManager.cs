@@ -73,6 +73,10 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Key to display settings window.")]
         private KeyCode settingsKey = KeyCode.Escape;
 
+        [Header("Others")]
+        [SerializeField] private TextMeshProUGUI mixAdLoadingText;
+        [SerializeField] private TextMeshProUGUI storePriceText;
+        [SerializeField] private GameObject removeAdPanel;
         public Message Message => message;
         public PriceCustomizer PriceCustomizer => priceCustomizer;
         public PCMonitor PCMonitor => pcMonitor;
@@ -82,7 +86,10 @@ namespace CryingSnow.CheckoutFrenzy
         public SkipDialog SkipDialog => skipDialog;
         public InteractMessage InteractMessage { get; private set; }
         public VirtualKeyboard VirtualKeyboard => virtualKeyboard;
-
+        public TextMeshProUGUI MixAdLoadingText => mixAdLoadingText;
+        public TextMeshProUGUI StorePriceText => storePriceText;
+        public GameObject RemoveAdPanel => removeAdPanel;
+  
         private Canvas canvas;
         private bool isMobileControl;
         private List<IActionUI> actionUIs;

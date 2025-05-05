@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: WaitingLongDialogEnglish
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: If I had to wait this long, I would've gone to another store!
+  - Text: Why are there so few people working at the checkout?
+  - Text: Time is money, but this place feels like it's freezing time!
+  - Text: It would be great if you could speed things up a bit!
+  - Text: I've almost forgotten what I came to buy from waiting in line!
+  - Text: I'm not sure if all this waiting was worth it...
+  - Text: Next time, I'll just order online!

@@ -39,7 +39,25 @@ HireCashierInfoText;Hire a cashier to assist with customer checkouts for one day
 HireText;Hire;Kirala
 HCNameText;Hire Cashier;Kasiyer işe Al
 HCleanerNameText;Hire Cleaner;Temizlikçi işe Al
-HireCleanerInfoText;Hire a cleaning service to keep your store spotless!;Ma?azan?z? tertemiz tutmak için bir temizlik hizmeti kiralayın! 
+HireCleanerInfoText;Hire a cleaning service to keep your store spotless!;Mağazanızı tertemiz tutmak için bir temizlik hizmeti kiralayın! 
 TotalText;Total;Toplam
 QuantityText;Quantity;Miktar
 CheckoutText;Checkout;Ödeme
+AdPanelHeaderText;WIN AWARD!;ÖDÜL KAZAN!
+AdPanelInfoText;Watch ads to earn reward coins that you can use in-game;Reklam izleyerek oyun içinde kullanabileceğin ödül para kazanabilirsin
+AdButtonText;WATCH;İZLE
+StorePanelHeaderText;STORE;MAĞAZA
+RemoveAdText;Remove all ads!;Tüm reklamları kaldır!
+LoadingText;Loading...;Yükleniyor...
+WatchWinText;Watch ads and win!;Reklam izle kazan!
+RewardGivenText;Reward given!;Ödül verildi!
+ErrorText;An error has occurred!;Bir hata oluştu!
+WelcomeText;WELCOME!;HOŞGELDİNİZ!
+UsernameText;USERNAME;KULLANICI ADI
+StoreNameText;STORE NAME;MARKET ADI
+SaveButtonText;SAVE;KAYDET
+WaitingText;Please wait...;Lütfen bekleyin...
+ConnectText;Connection Error!            You must be connected to the internet to play the game.;Bağlantı Hatası!         Oyunu oynamak için internete bağlı olman gerekiyor.
+RemoveAdPanelInfoText;Enjoy an Ad-Free Experience! Would you like to play without any ads? With a one-time purchase, all ads will be permanently removed. Keep the fun going without interruptions!;Reklamsız bir deneyim için! Oyunumuzu reklamsız oynamak ister misin? Tek seferlik bir satın alma işlemiyle tüm reklamlar kalıcı olarak kaldırılacak. Eğlenceye kesintisiz devam et!
+BuyButtonText;BUY;SATIN AL
+RemoveAdPanelHeaderText;REMOVE ALL ADS!;TÜM REKLAMLARI KALDIR!

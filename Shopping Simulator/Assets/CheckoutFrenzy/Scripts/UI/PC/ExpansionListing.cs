@@ -52,7 +52,6 @@ namespace CryingSnow.CheckoutFrenzy
             {
                 DataManager.Instance.OnLevelUp += UpdateRequirements;
                 StoreManager.Instance.OnExpansionPurchased += UpdateRequirements;
-
                 UpdateRequirements(0);
             }
         }

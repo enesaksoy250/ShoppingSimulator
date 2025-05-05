@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,8 @@ namespace CryingSnow.CheckoutFrenzy
 
         [SerializeField, Tooltip("The background music to play on the main menu.")]
         private AudioClip backgroundMusic;
+
+        [SerializeField] GameObject loadingPanel;
 
         private void Start()
         {
@@ -31,6 +34,10 @@ namespace CryingSnow.CheckoutFrenzy
 
         private IEnumerator StartGameAsync()
         {
+
+            loadingPanel.SetActive(true);
+            //loadingPanel.GetComponentInChildren<TextMeshProUGUI>().text = PlayerPrefs.GetString("Language") == "English" ? "Loading..." : "Yükleniyor...";
+
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1); // Load Game scene (index 1) asynchronously.
             asyncLoad.allowSceneActivation = false; // Prevent automatic scene activation.
 

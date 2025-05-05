@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using DG.Tweening;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -25,7 +25,20 @@ namespace CryingSnow.CheckoutFrenzy
 
         private ChatBubble chatBubble;
         private Dialogue notFoundDialogue => GameConfig.Instance.NotFoundDialogue;
+        private Dialogue notFoundDialogueTurkish => GameConfig.Instance.NotFoundDialogueTurkish;
         private Dialogue overpricedDialogue => GameConfig.Instance.OverpricedDialogue;
+        private Dialogue overPricedDialogueTurkish => GameConfig.Instance.OverPricedDialogueTurkish;
+        private Dialogue satisfiedDialogueTurkish => GameConfig.Instance.SatisfiedDialogueTurkish;
+        private Dialogue satisfiedDialogueEnglish => GameConfig.Instance.SatisfiedDialogueEnglish;
+        private Dialogue waitingLongDialoguEnglish => GameConfig.Instance.WaitingLongDialogueEnglish;
+        private Dialogue waitingLongDialoguTurkish => GameConfig.Instance.WaitingLongDialogueTurkish;
+        
+        private string gameLanguage;
+      
+        private int waitingTimeAtCheckout;
+       
+        private int maxWaitingTimeAtCheckout = 63;
+        public bool waitingTimeExceeding { get; private set; } = false;
 
         private void Awake()
         {
@@ -43,6 +56,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             StartCoroutine(CheckEnteringStore());
             StartCoroutine(Shopping());
+            gameLanguage = PlayerPrefs.GetString("Language");
         }
 
         private void Update()
@@ -95,14 +109,44 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (inventory.Count > 0)
             {
+                bool isChat = Random.value < 0.5f;
+
+                if (isChat)
+                {
+                    string chat = gameLanguage == "English" ? satisfiedDialogueEnglish.GetRandomLine() : satisfiedDialogueTurkish.GetRandomLine();
+                    UpdateChatBubble(chat);
+                }
+
+                print("Müşteri kasaya vardı");
+                StartCoroutine(WaitingTimeAtCheckout());
                 yield return UpdateQueue();
                 yield return StoreManager.Instance.Checkout(this);
+                
             }
             else
             {
                 // Customer leaves without buying anything
-                UpdateChatBubble(notFoundDialogue.GetRandomLine());
+                if(gameLanguage == "English") { UpdateChatBubble(notFoundDialogue.GetRandomLine()); }
+                else { UpdateChatBubble(notFoundDialogueTurkish.GetRandomLine());}
+                
+                ReputationManager.instance.RegisterCustomerFeedback(false);
                 yield return StoreManager.Instance.CustomerLeave(this);
+            }
+        }
+
+        private IEnumerator WaitingTimeAtCheckout()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1);
+                waitingTimeAtCheckout++;
+
+                if(waitingTimeAtCheckout > maxWaitingTimeAtCheckout)
+                {
+                    waitingTimeExceeding = true;
+                    yield break;
+                }
+
             }
         }
 
@@ -165,41 +209,31 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (IsWillingToBuy(product))
             {
-                // Add the product to the customer's inventory.
+            
                 inventory.Add(product);
-
-                // Take the product model from the shelf.
+         
                 var productObj = shelf.TakeProductModel();
-
-                // Open the shelving unit if it's not already open.
+       
                 if (!shelf.ShelvingUnit.IsOpen) shelf.ShelvingUnit.Open(true, false);
-
-                // Determine the picking animation trigger based on the shelf height.
+        
                 float height = shelf.transform.position.y;
                 string pickTrigger = "PickMedium";
                 if (height < 0.5f) pickTrigger = "PickLow";
                 else if (height > 1.5f) pickTrigger = "PickHigh";
-
-                // Trigger the picking animation.
+           
                 animator.SetTrigger(pickTrigger);
-
-                // Wait until the picking animation is complete.
+          
                 yield return new WaitUntil(() => isPicking);
 
-                // Get the grip transform for the hand attachment.
                 Transform grip = handAttachments.Grip;
 
-                // Set the picked product's parent to the grip.
                 productObj.transform.SetParent(grip);
 
-                // Reset the isPicking flag.
                 isPicking = false;
 
-                // Animate the product moving to the hand.
                 productObj.transform.DOLocalRotate(Vector3.zero, 0.25f);
                 productObj.transform.DOLocalMove(Vector3.zero, 0.25f);
 
-                // Wait until the animation is complete (Idle state).
                 bool isIdle = false;
                 while (!isIdle)
                 {
@@ -207,37 +241,33 @@ namespace CryingSnow.CheckoutFrenzy
                     yield return null;
                 }
 
-                // Destroy the temporary product object.
                 Destroy(productObj);
 
-                // Wait for a short delay.
+                ReputationManager.instance.RegisterCustomerFeedback(true);
+     
                 yield return new WaitForSeconds(0.5f);
             }
             else
             {
-                // If not willing to buy, display the "overpriced" dialogue.
-                string chat = overpricedDialogue.GetRandomLine();
+                string chat;
+                if(gameLanguage == "English") { chat = overpricedDialogue.GetRandomLine(); }
+                else { chat = overPricedDialogueTurkish.GetRandomLine(); }
                 chat = chat.Replace("{product}", product.Name);
                 UpdateChatBubble(chat);
+                ReputationManager.instance.RegisterCustomerFeedback(false);
             }
 
-            // Re-register the shelving unit with the store manager.
             StoreManager.Instance.RegisterShelvingUnit(shelvingUnit);
         }
 
         private bool IsWillingToBuy(Product product)
-        {
-            // Calculate a price tolerance factor based on random value.
-            // Higher values mean more tolerance.
+        {        
             float priceToleranceFactor = 1f + Mathf.Pow(Random.value, 2f);
 
-            // Calculate the maximum acceptable price based on the product's market price and tolerance.
             decimal maxAcceptablePrice = product.MarketPrice * (decimal)priceToleranceFactor;
 
-            // Get the custom price for the product.
             decimal customPrice = DataManager.Instance.GetCustomProductPrice(product);
 
-            // Return true if the custom price is within the acceptable price range, otherwise false.
             return customPrice <= maxAcceptablePrice;
         }
 
@@ -290,6 +320,16 @@ namespace CryingSnow.CheckoutFrenzy
                     cashier.TakePayment();
                     yield return new WaitForSeconds(0.7f);
                     isPaying = false;
+                    print("Ödeme alındı customer");
+                  
+                  /*  int receivePayment = PlayerPrefs.GetInt("ReceivePayment", 0);
+                    receivePayment++;
+                    if(receivePayment % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
+                    {
+                        AdManager.instance.ShowInterstitialAd();
+                    }
+                    PlayerPrefs.SetInt("ReceivePayment",receivePayment); */
+                    
                 }
                 // Otherwise, allow the player to manually process the payment (e.g., started by clicking on a payment object).
                 else if (Input.GetMouseButtonDown(0))
@@ -299,7 +339,7 @@ namespace CryingSnow.CheckoutFrenzy
                     // Check if the raycast hits a payment object within the specified layer and range.
                     if (Physics.Raycast(ray, 10f, GameConfig.Instance.PaymentLayer))
                     {
-                        isPaying = false;
+                        isPaying = false;                   
                     }
                 }
 
@@ -368,7 +408,7 @@ namespace CryingSnow.CheckoutFrenzy
             return false;
         }
 
-        private void UpdateChatBubble(string chat)
+        public void UpdateChatBubble(string chat)
         {
             if (chatBubble != null) return;
             chatBubble = UIManager.Instance.ShowChatBubble(chat, transform);

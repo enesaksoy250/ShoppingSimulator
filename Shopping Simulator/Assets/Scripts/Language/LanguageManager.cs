@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LanguageManager : MonoBehaviour
 {
     public static LanguageManager instance;
     private Dictionary<string, string> localizedText;
-    public string currentLanguage = "Turkish"; // Varsayýlan dil
+    public string currentLanguage = "English"; // Varsayýlan dil
 
     void Awake()
     {
@@ -17,7 +15,7 @@ public class LanguageManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            GetLanguage();
+            SetLanguage();
             LoadLocalizedText(currentLanguage);
         }
         else
@@ -26,66 +24,62 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-   
-
-  
     public void LoadLocalizedText(string language)
     {
         localizedText = new Dictionary<string, string>();
-        LoadCSVFromResources(language);
+        LoadTextFileFromResources(language);
     }
 
-    private void LoadCSVFromResources(string language)
+    private void LoadTextFileFromResources(string language)
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("ShoppingSimulatorLanguage(Sayfa1)");
+        TextAsset textFile = Resources.Load<TextAsset>("ShoppingSimulatorLanguage"); // .txt uzantýsý olmadan
 
-        if (csvFile != null)
+        if (textFile != null)
         {
-            ProcessCSVData(csvFile.bytes, language); // TextAsset.text yerine bytes kullanýyoruz.
+            ProcessTextData(textFile.text, language);
         }
         else
         {
-            Debug.LogError("Localization CSV file not found in Resources!");
+            Debug.LogError("Localization text file not found in Resources!");
         }
     }
 
-    private void ProcessCSVData(byte[] csvBytes, string language)
+    private void ProcessTextData(string fileContent, string language)
     {
-        using (MemoryStream stream = new MemoryStream(csvBytes))
-        using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+        string[] lines = fileContent.Split('\n');
+        if (lines.Length == 0) return;
+
+        string[] headers = lines[0].Trim().Split(';');
+
+        int languageIndex = -1;
+        for (int i = 0; i < headers.Length; i++)
         {
-            string csvData = reader.ReadToEnd();
-            string[] data = csvData.Split('\n');
-            string[] headers = data[0].Split(';');
-
-            int languageIndex = -1;
-            for (int i = 0; i < headers.Length; i++)
+            if (headers[i].Trim() == language)
             {
-                if (headers[i].Trim() == language)
-                {
-                    languageIndex = i;
-                    break;
-                }
+                languageIndex = i;
+                break;
             }
+        }
 
-            if (languageIndex == -1)
-            {
-                Debug.LogError($"Language '{language}' not found in CSV file");
-                return;
-            }
+        if (languageIndex == -1)
+        {
+            Debug.LogError($"Language '{language}' not found in text file headers.");
+            return;
+        }
 
-            for (int i = 1; i < data.Length; i++)
+        for (int i = 1; i < lines.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(lines[i])) continue;
+
+            string[] row = lines[i].Trim().Split(';');
+            if (row.Length > languageIndex)
             {
-                string[] row = data[i].Split(';');
-                if (row.Length > languageIndex)
+                string key = row[0].Trim();
+                string value = row[languageIndex].Trim();
+
+                if (!localizedText.ContainsKey(key))
                 {
-                    string key = row[0].Trim();
-                    string value = row[languageIndex].Trim();
-
-                    if (!localizedText.ContainsKey(key))
-                    {
-                        localizedText.Add(key, value);
-                    }
+                    localizedText.Add(key, value);
                 }
             }
         }
@@ -104,10 +98,15 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    // Dilin alýnmasý için ek fonksiyon
-    public void GetLanguage()
+    public void SetLanguage()
     {
-        // Örnek olarak PlayerPrefs'ten dili alabilirsiniz
         currentLanguage = PlayerPrefs.GetString("Language", "Turkish");
     }
+
+    public static string GetLanguage()
+    {
+        return PlayerPrefs.GetString("Language", "English");
+    }
+
+
 }

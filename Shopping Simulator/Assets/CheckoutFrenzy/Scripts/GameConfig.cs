@@ -101,16 +101,54 @@ namespace CryingSnow.CheckoutFrenzy
 
         [SerializeField, Tooltip("Dialogue lines used when the customer thinks a product is too expensive.")]
         private Dialogue overpricedDialogue;
+       
+        [SerializeField]
+        private Dialogue notFoundDialogueTurkish;
+
+        [SerializeField]
+        private Dialogue overPricedDialogueTurkish;
+
+        [SerializeField]
+        private Dialogue satisfiedDialogueTurkish;
+
+        [SerializeField]
+        private Dialogue satisfiedDialogueEnglish;
+
+        [SerializeField]
+        private Dialogue waitingLongDialogueTurkish;
+        
+        [SerializeField]
+        private Dialogue waitingLongDialogueEnglish;
 
         [Header("Control Settings")]
         [SerializeField, Tooltip("Selected control mode for the game.")]
         private ControlMode controlMode;
+        
+        [Header("Spawn Times")]
+        [SerializeField] private float minSpawnTimeAtMinReputation = 15f;
+        [SerializeField] private float maxSpawnTimeAtMinReputation = 45f;
+        [SerializeField] private float minSpawnTimeAtMaxReputation = 5f;
+        [SerializeField] private float maxSpawnTimeAtMaxReputation = 15f;
 
         // Store Settings
         public string DefaultStoreName => defaultStoreName;
         public int StoreNameMaxCharacters => storeNameMaxCharacters;
         public int StartingMoney => startingMoney;
         public float GetRandomSpawnTime => Random.Range(minSpawnTime, maxSpawnTime);
+  
+        public float GetRandomSpawnTime2
+        {
+            get
+            {
+                float reputation = ReputationManager.instance.reputation;
+                float t = reputation / 100f;
+
+                float minSpawn = Mathf.Lerp(minSpawnTimeAtMinReputation, minSpawnTimeAtMaxReputation, t);
+                float maxSpawn = Mathf.Lerp(maxSpawnTimeAtMinReputation, maxSpawnTimeAtMaxReputation, t);
+
+                return Random.Range(minSpawn, maxSpawn);
+            }
+        }
         public int BaseMaxCustomers => baseMaxCustomers;
         public TimeRange OpenTime => openTime;
 
@@ -137,6 +175,12 @@ namespace CryingSnow.CheckoutFrenzy
         // Customer Dialogues
         public Dialogue NotFoundDialogue => notFoundDialogue;
         public Dialogue OverpricedDialogue => overpricedDialogue;
+        public Dialogue NotFoundDialogueTurkish => notFoundDialogueTurkish;
+        public Dialogue OverPricedDialogueTurkish => overPricedDialogueTurkish;
+        public Dialogue SatisfiedDialogueTurkish => satisfiedDialogueTurkish;
+        public Dialogue SatisfiedDialogueEnglish => satisfiedDialogueEnglish;
+        public Dialogue WaitingLongDialogueTurkish => waitingLongDialogueTurkish;
+        public Dialogue WaitingLongDialogueEnglish => waitingLongDialogueEnglish;
 
         // Control Mode
         public ControlMode ControlMode => controlMode;
