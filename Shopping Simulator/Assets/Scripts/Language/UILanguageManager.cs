@@ -15,11 +15,12 @@ public class UILanguageManager : MonoBehaviour
         UIText = GetComponent<TextMeshProUGUI>();
 
     }
-
+   
     private void OnEnable()
     {
-        UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);
-    }
+       if(UIText != null && LanguageManager.instance != null)
+            UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);           
+    } 
     private void Start()
     {
         UIText.text = LanguageManager.instance.GetLocalizedValue(gameObject.name);

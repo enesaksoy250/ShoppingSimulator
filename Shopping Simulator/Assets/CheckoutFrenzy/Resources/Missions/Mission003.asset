@@ -16,4 +16,4 @@ MonoBehaviour:
   goalType: 2
   targetId: 1
   goalAmount: 10
-  reward: 300
+  reward: 100

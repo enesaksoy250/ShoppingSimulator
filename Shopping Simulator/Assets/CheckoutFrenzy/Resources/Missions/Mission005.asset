@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionId: 5
   goalType: 4
-  targetId: 2
+  targetId: 6
   goalAmount: 1
-  reward: 300
+  reward: 150

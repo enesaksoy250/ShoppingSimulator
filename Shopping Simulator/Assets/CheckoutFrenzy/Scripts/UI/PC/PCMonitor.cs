@@ -112,7 +112,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Initialize Service Screen
-            string priceText = LanguageControl.CheckLanguage("Fiyat:","Price:");
+            string priceText = LanguageManager.instance.GetLocalizedValue("PriceText");
             cashierPriceText.text = $"{priceText} ${GameConfig.Instance.CashierCost:N2}";
             hireCashierButton.onClick.AddListener(StoreManager.Instance.HireCashier);
             cleanerPriceText.text = $"{priceText} ${GameConfig.Instance.CleanerCost:N2}";
@@ -122,7 +122,7 @@ namespace CryingSnow.CheckoutFrenzy
             clearCartButton.onClick.AddListener(() => PC.Instance.ClearCart());
             checkoutButton.onClick.AddListener(() => PC.Instance.Checkout());
             PC.Instance.OnCartChanged += HandleCartChanged;
-            totalText = LanguageControl.CheckLanguage("Toplam:", "Total:");
+            totalText = LanguageManager.instance.GetLocalizedValue("TotalText");
             totalPriceText.text = $"{totalText} $0.00";
 
             // Initialize All Screens
@@ -193,7 +193,7 @@ namespace CryingSnow.CheckoutFrenzy
                 Destroy(child.gameObject);
             }
 
-            decimal totalPrice = 0m;
+            decimal totalPrice = 0;
             int totalItems = 0;
 
             // Iterate through the cart items and update the UI.
@@ -212,7 +212,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Update the total price and cart label text in the UI.
-            totalText = LanguageControl.CheckLanguage("Toplam:", "Total:");
+            totalText = LanguageManager.instance.GetLocalizedValue("TotalText");
             totalPriceText.text = $"{totalText} ${totalPrice:N2}";
             cartLabel.text = "Cart";
             if (totalItems > 0) cartLabel.text += $"<color=#FFB414> ({totalItems})"; // Add item count to the cart label.

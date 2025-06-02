@@ -15,5 +15,7 @@
 
             Quantity = shelf.Quantity;
         }
+
+        public ShelfData() { }
     }
 }

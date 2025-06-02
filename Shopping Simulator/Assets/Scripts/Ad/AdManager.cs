@@ -145,7 +145,7 @@ public class AdManager : MonoBehaviour
           
             if (totalAd % 10 == 0)
             {
-                GamePanelManager.Instance.LoadPanel("RemoveAdPanel");
+                GamePanelManager.instance.LoadPanel("RemoveAdPanel");
                 PlayerPrefs.SetInt("TotalAd",totalAd);
             }
 
@@ -181,8 +181,8 @@ public class AdManager : MonoBehaviour
                     Debug.LogError("Rewarded ad failed to load an ad " +
                                    "with error : " + error);
 
-                    GamePanelManager.Instance.ClosePanel("LoadingPanel");
-                    GamePanelManager.Instance.LoadPanel("ErrorPanel");
+                    GamePanelManager.instance.ClosePanel("LoadingPanel");
+                    GamePanelManager.instance.LoadPanel("ErrorPanel");
                     //Invoke(nameof(CloseErrorAdPanel), 2);
                     return;
                 }
@@ -195,7 +195,7 @@ public class AdManager : MonoBehaviour
 
                 if (_rewardedAd != null)
                 {
-                    GamePanelManager.Instance.ClosePanel("LoadingPanel");
+                    GamePanelManager.instance.ClosePanel("LoadingPanel");
                     ShowRewardedAd();
                 }
 
@@ -224,7 +224,7 @@ public class AdManager : MonoBehaviour
         else
         {
 
-            GamePanelManager.Instance.LoadPanel("ErrorPanel");
+            GamePanelManager.instance.LoadPanel("ErrorPanel");
 
 
         }
@@ -259,7 +259,7 @@ public class AdManager : MonoBehaviour
 
     private void GivePlayerReward()
     {
-        GamePanelManager.Instance.LoadPanel("RewardGivenPanel");
+        GamePanelManager.instance.LoadPanel("RewardGivenPanel");
         DataManager.Instance.PlayerMoney += 100;
     }
 
@@ -343,7 +343,7 @@ public class AdManager : MonoBehaviour
         ad.OnAdFullScreenContentClosed += () =>
         {
             Debug.Log("Rewarded interstitial ad full screen content closed.");
-            GamePanelManager.Instance.ClosePanel("MixAdPanel");
+            GamePanelManager.instance.ClosePanel("MixAdPanel");
             StartCoroutine(HandleAdClosed());
             LoadRewardedInterstitialAd();
         };
@@ -359,7 +359,7 @@ public class AdManager : MonoBehaviour
     public IEnumerator StartInterstitialRewardedAtProcess()
     {
         yield return new WaitForSeconds(3);
-        GamePanelManager.Instance.LoadPanel("MixAdPanel");
+        GamePanelManager.instance.LoadPanel("MixAdPanel");
         TextMeshProUGUI adStartingtext = UIManager.Instance.MixAdLoadingText;
         string language = LanguageManager.GetLanguage();
 
@@ -368,7 +368,8 @@ public class AdManager : MonoBehaviour
         while(time > 0)
         {
             time--;
-            adStartingtext.text = language == "English" ? $"The video starts in {time} seconds..." : $"Video {time} saniye içinde baþlýyor...";        
+            //adStartingtext.text = language == "English" ? $"The video starts in {time} seconds..." : $"Video {time} saniye içinde baþlýyor...";        
+            adStartingtext.text = LanguageManager.instance.GetLocalizedValue("VideoStartTimerText").Replace("{time}",time.ToString());        
             yield return new WaitForSeconds(1);
         }
 

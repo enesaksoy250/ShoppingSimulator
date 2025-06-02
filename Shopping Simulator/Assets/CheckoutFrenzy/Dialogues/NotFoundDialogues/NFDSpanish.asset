@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: NFDSpanish
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: Uf, no encuentro nada por ninguna parte.
+  - Text: "\xBFD\xF3nde est\xE1? He buscado por todas partes..."
+  - Text: "Se supone que tienen esto aqu\xED..."
+  - Text: "Esta tienda es un desastre.\n\xBFC\xF3mo se supone que voy a encontrar
+      algo?"
+  - Text: 'Estoy perdiendo el tiempo.
+
+      Tengo que ir a otro sitio.'
+  - Text: "Quiz\xE1 deber\xEDa preguntarle a alguien...\npero odio pedir ayuda."
+  - Text: Probablemente ni siquiera lo tengan en stock.
+  - Text: "Nunca volver\xE9 a esta tienda."
+  - Text: No puedo creer que no haya encontrado lo que buscaba.

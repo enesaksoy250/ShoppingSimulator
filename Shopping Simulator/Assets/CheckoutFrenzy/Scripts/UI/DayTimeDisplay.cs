@@ -14,7 +14,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void Start()
         {
             displayText = GetComponent<TMP_Text>();
-            dayText = PlayerPrefs.GetString("Language", "Turkish") == "Turkish" ? "Gün" : "Day";
+            dayText = LanguageManager.instance.GetLocalizedValue("DayText");
             TimeManager.Instance.OnMinutePassed += UpdateDisplay; // Subscribe to the OnMinutePassed event.
             UpdateDisplay(); // Initial update of the display.
         }

@@ -8,6 +8,7 @@ public class LanguageControl : MonoBehaviour
     {
         string language = PlayerPrefs.GetString("Language","Turkish");
 
+
         if(language == "Turkish")
         {
             return turkishMessage;

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: SDEnglish
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: Just the product I was looking for, great!
+  - Text: The prices are really very reasonable!
+  - Text: You can't find this kind of variety anywhere else!
+  - Text: I will definitely visit this store again.
+  - Text: I felt very good here.
+  - Text: The products are of good quality, worth the price.
+  - Text: I will recommend this place to everyone!

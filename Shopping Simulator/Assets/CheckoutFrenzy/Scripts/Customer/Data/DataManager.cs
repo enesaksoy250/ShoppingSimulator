@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,7 +21,7 @@ namespace CryingSnow.CheckoutFrenzy
         public GameData Data { get; private set; }
 
         public Coroutine startAdProcessCoroutine;
-
+ 
         public decimal PlayerMoney
         {
             get => Data.PlayerMoney;
@@ -39,13 +41,11 @@ namespace CryingSnow.CheckoutFrenzy
                     // Money decrease, adding to spending
                     Data.CurrentSummary.TotalSpending += previousValue - value;
                 }
-
-                if(Data.PlayerMoney < 200)
+                if (Data.PlayerMoney < 200)
                 {
-                    if(startAdProcessCoroutine == null)
-                       startAdProcessCoroutine = StartCoroutine(AdManager.instance.StartInterstitialRewardedAtProcess());
+                    if (startAdProcessCoroutine == null)
+                        startAdProcessCoroutine = StartCoroutine(AdManager.instance.StartInterstitialRewardedAtProcess());
                 }
-
             }
         }
 
@@ -65,21 +65,16 @@ namespace CryingSnow.CheckoutFrenzy
             LoadGameData();
 
             IsLoaded = true;
-          
-           
+                   
         }
 
         private void Start()
-        {
-            
-            if (!PlayerPrefs.HasKey("SetLevelToFirebase"))
-            {
-               DatabaseManager.Instance.UpdateFirebaseInfo("level",Data.CurrentLevel);
-               PlayerPrefs.SetInt("SetLevelToFirebase", 1);
-            }
-
+        {            
+            StartCoroutine(AutoSaveSystem());
+       
             AdManager.instance.OnAdCoroutineFinished += () => { startAdProcessCoroutine = null; };
 
+            DatabaseManager.Instance.OnGameDataLoaded += HandleFirstRunFirebaseLoadSuccess;
         }
 
         IEnumerator AddEx()
@@ -101,7 +96,117 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (pauseStatus) SaveGameData();
         }
-    
+
+
+        private void HandleFirstRunFirebaseLoadSuccess(GameData loadedData)
+        {
+         
+            if (DatabaseManager.Instance != null)
+            {
+                DatabaseManager.Instance.OnGameDataLoaded -= HandleFirstRunFirebaseLoadSuccess;              
+            }
+
+            if (loadedData != null)
+            {
+                Data = loadedData;
+                Debug.Log("GameData loaded from Firebase. Saving a copy to local storage.");
+                //StartCoroutine(CloseLoadingPanel(2));
+                ApplyLoadedData();
+                SaveGameDataLocally();
+            
+            }
+            else
+            {
+                GamePanelManager.instance.LoadPanel("ErrorPanel");
+            }
+
+
+        }
+
+       
+
+        private void ApplyLoadedData()
+        {
+            if (Data == null) return;
+            Debug.Log("Applying loaded game data...");
+
+            // Mevcut oyun objelerini temizle ve yüklenen dataya göre yeniden oluştur
+            // Furniture, Box, etc. temizleme ve oluşturma kodları buraya gelecek
+            // (Önceki yanıttaki ApplyLoadedData metodunun içeriği)
+
+            // Örneğin:
+            // Temizleme
+            foreach (var furniture in FindObjectsOfType<Furniture>()) Destroy(furniture.gameObject);
+            foreach (var box in FindObjectsOfType<Box>()) Destroy(box.gameObject);
+
+            // Oluşturma (Yüklenen Data'dan)
+            // Furnitures
+            foreach (var savedFurniture in Data.SavedFurnitures)
+            {
+                var furniturePrefab = GetFurnitureById(savedFurniture.FurnitureID);
+                Vector3 position = savedFurniture.Location.ToVector3();
+                Quaternion rotation = savedFurniture.Orientation.ToQuaternion();
+                if (savedFurniture.WasMoving) position = Vector3.down;
+
+                if (furniturePrefab != null)
+                {
+                    var furniture = Instantiate(furniturePrefab, position, rotation);
+                    if (furniture is ShelvingUnit shelvingUnit)
+                    {
+                        shelvingUnit.RestoreProductsOnShelves(savedFurniture.SavedShelves);
+                    }
+                }
+                else { Debug.LogError($"Furniture prefab ID {savedFurniture.FurnitureID} not found!"); }
+            }
+            // Boxes
+            Dictionary<string, Box> boxPrefabs = Resources.LoadAll<Box>("Boxes").ToDictionary(box => box.name);
+            foreach (var savedBox in Data.SavedBoxes)
+            {
+                if (boxPrefabs.TryGetValue(savedBox.Name, out var boxPrefab))
+                {
+                    Vector3 position = savedBox.Location.ToVector3();
+                    Quaternion rotation = savedBox.Orientation.ToQuaternion();
+                    var box = Instantiate(boxPrefab, position, rotation);
+                    box.name = boxPrefab.name;
+
+                    if (!savedBox.IsEmpty)
+                    {
+                        var product = GetProductById(savedBox.ProductID);
+                        if (product != null) box.RestoreProducts(product, savedBox.Quantity);
+                        else Debug.LogError($"Product ID {savedBox.ProductID} not found for box {savedBox.Name}!");
+                    }
+                    if (savedBox.IsOpen) box.SetLidsOpen();
+                }
+                else { Debug.LogError($"Box prefab name '{savedBox.Name}' not found!"); }
+            }
+
+            PlayerMoney += Data.PendingOrdersValue;
+            Data.PendingOrdersValue = 0m;
+
+            // 4. Refund unpaid products customers were carrying to Player's money
+            PlayerMoney += Data.UnpaidProductsValue;
+            Data.UnpaidProductsValue = 0m;
+
+            Debug.Log("Game state application complete.");
+            // Oyun durumu uygulandıktan sonra tetiklenecek event
+        }
+
+        private void SaveGameDataLocally()
+        {
+
+            Data.SavedFurnitures.Clear();
+            Data.SavedBoxes.Clear();
+
+            Data.TotalMinutes = TimeManager.Instance.TotalMinutes;
+
+            OnSave?.Invoke();
+
+            SaveSystem.SaveData<GameData>(Data, "GameData");
+
+            ReputationManager.instance.SaveReputation();
+
+        }
+
         private void LoadDatabases()
         {
             ProductDB = Resources.LoadAll<Product>("Products").OrderBy(p => p.ProductID).ToList();
@@ -172,6 +277,9 @@ namespace CryingSnow.CheckoutFrenzy
                 // 4. Refund unpaid products customers were carrying to Player's money
                 PlayerMoney += Data.UnpaidProductsValue;
                 Data.UnpaidProductsValue = 0m;
+
+               
+
             }
             else
             {
@@ -190,16 +298,13 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void SaveGameData()
         {
-            // Clear saved furniture and box data before saving.  This prevents duplicate entries
-            // as the OnSave event will trigger updates from each object based on their current state.
-            Data.SavedFurnitures.Clear();
-            Data.SavedBoxes.Clear();
+            SaveGameDataLocally();
 
-            Data.TotalMinutes = TimeManager.Instance.TotalMinutes;
-
-            OnSave?.Invoke();
-
-            SaveSystem.SaveData<GameData>(Data, "GameData");
+            if (PlayerPrefs.HasKey("GoogleLogin"))
+            {
+                DatabaseManager.Instance.SaveGameDataToFirebase(Data);            
+            }
+              
         }
 
         public Product GetProductById(int id)
@@ -258,8 +363,9 @@ namespace CryingSnow.CheckoutFrenzy
                 Data.CurrentExperience -= experienceForNextLevel;
                 Data.CurrentLevel++;
                 DatabaseManager.Instance.IncreaseFirebaseInfo("level", 1);
+                DatabaseManager.Instance.IncreaseLevel();
                 OnLevelUp?.Invoke(Data.CurrentLevel);
-                string text = LanguageControl.CheckLanguage("Seviye Atlandı!","Level Up!");
+                string text = LanguageManager.instance.GetLocalizedValue("LevelUpText");
                 UIManager.Instance.Message.Log(text, Color.yellow);
                 AudioManager.Instance.PlaySFX(AudioID.LevelUp);
 
@@ -278,7 +384,21 @@ namespace CryingSnow.CheckoutFrenzy
             return Mathf.CeilToInt(baseExperience * Mathf.Pow(growthFactor, Data.CurrentLevel - 1));
         }
 
-    
-      
+        IEnumerator AutoSaveSystem()
+        {     
+            while (true)
+            {
+                yield return new WaitForSeconds(300);
+                SaveGameData();
+            }
+        }
+
+        private IEnumerator CloseLoadingPanel(int time)
+        {
+            GamePanelManager.instance.LoadPanel("LoadingPanel2");
+            yield return new WaitForSeconds(time);
+            GamePanelManager.instance.ClosePanel("LoadingPanel2");
+        }
     }
-}
+
+ }

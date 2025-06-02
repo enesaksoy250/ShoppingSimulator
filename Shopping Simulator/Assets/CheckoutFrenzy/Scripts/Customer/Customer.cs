@@ -24,21 +24,25 @@ namespace CryingSnow.CheckoutFrenzy
         private bool isPicking;
 
         private ChatBubble chatBubble;
-        private Dialogue notFoundDialogue => GameConfig.Instance.NotFoundDialogue;
-        private Dialogue notFoundDialogueTurkish => GameConfig.Instance.NotFoundDialogueTurkish;
-        private Dialogue overpricedDialogue => GameConfig.Instance.OverpricedDialogue;
-        private Dialogue overPricedDialogueTurkish => GameConfig.Instance.OverPricedDialogueTurkish;
-        private Dialogue satisfiedDialogueTurkish => GameConfig.Instance.SatisfiedDialogueTurkish;
-        private Dialogue satisfiedDialogueEnglish => GameConfig.Instance.SatisfiedDialogueEnglish;
-        private Dialogue waitingLongDialoguEnglish => GameConfig.Instance.WaitingLongDialogueEnglish;
-        private Dialogue waitingLongDialoguTurkish => GameConfig.Instance.WaitingLongDialogueTurkish;
+        //private Dialogue notFoundDialogue => GameConfig.Instance.NotFoundDialogue;
+        //private Dialogue notFoundDialogueTurkish => GameConfig.Instance.NotFoundDialogueTurkish;
+        //private Dialogue overpricedDialogue => GameConfig.Instance.OverpricedDialogue;
+        //private Dialogue overPricedDialogueTurkish => GameConfig.Instance.OverPricedDialogueTurkish;
+        //private Dialogue satisfiedDialogueTurkish => GameConfig.Instance.SatisfiedDialogueTurkish;
+        //private Dialogue satisfiedDialogueEnglish => GameConfig.Instance.SatisfiedDialogueEnglish;
+        //private Dialogue waitingLongDialoguEnglish => GameConfig.Instance.WaitingLongDialogueEnglish;
+        //private Dialogue waitingLongDialoguTurkish => GameConfig.Instance.WaitingLongDialogueTurkish;
         
-        private string gameLanguage;
+        //private string gameLanguage;
       
         private int waitingTimeAtCheckout;
        
         private int maxWaitingTimeAtCheckout = 63;
         public bool waitingTimeExceeding { get; private set; } = false;
+
+        bool positiveFeedbackGiven = false;
+        bool negativeFeedbackGiven = false;
+
 
         private void Awake()
         {
@@ -56,7 +60,6 @@ namespace CryingSnow.CheckoutFrenzy
         {
             StartCoroutine(CheckEnteringStore());
             StartCoroutine(Shopping());
-            gameLanguage = PlayerPrefs.GetString("Language");
         }
 
         private void Update()
@@ -91,14 +94,21 @@ namespace CryingSnow.CheckoutFrenzy
         private IEnumerator Shopping()
         {
             bool continueShopping = true;
+   
 
             while (continueShopping)
-            {
+            {              
                 yield return FindShelvingUnit();
                 yield return PickProduct();
+              
+                float reputation = ReputationManager.instance.reputation;
+                float normalizedReputation = Mathf.Clamp01(reputation / 100f);
 
-                // 50% chance to continue shopping
-                continueShopping = Random.value < 0.5f;
+                float minChance = 0.4f;
+                float maxChance = 0.6f;
+                float continueChance = Mathf.Lerp(minChance, maxChance, normalizedReputation);
+              
+                continueShopping = Random.value < continueChance;
             }
 
             if (shelvingUnit != null && shelvingUnit.IsOpen)
@@ -113,7 +123,9 @@ namespace CryingSnow.CheckoutFrenzy
 
                 if (isChat)
                 {
-                    string chat = gameLanguage == "English" ? satisfiedDialogueEnglish.GetRandomLine() : satisfiedDialogueTurkish.GetRandomLine();
+                    int index = LanguageManager.GetCurrentLanguageIndex();
+                    string chat = GameConfig.Instance.SatisfiedDialogues[index].GetRandomLine();
+                    //string chat = gameLanguage == "English" ? satisfiedDialogueEnglish.GetRandomLine() : satisfiedDialogueTurkish.GetRandomLine();
                     UpdateChatBubble(chat);
                 }
 
@@ -126,9 +138,12 @@ namespace CryingSnow.CheckoutFrenzy
             else
             {
                 // Customer leaves without buying anything
-                if(gameLanguage == "English") { UpdateChatBubble(notFoundDialogue.GetRandomLine()); }
-                else { UpdateChatBubble(notFoundDialogueTurkish.GetRandomLine());}
-                
+                //if(gameLanguage == "English") { UpdateChatBubble(notFoundDialogue.GetRandomLine()); }
+                //else { UpdateChatBubble(notFoundDialogueTurkish.GetRandomLine());}
+
+                int index = LanguageManager.GetCurrentLanguageIndex();
+                UpdateChatBubble(GameConfig.Instance.NotFoundDialogues[index].GetRandomLine());
+
                 ReputationManager.instance.RegisterCustomerFeedback(false);
                 yield return StoreManager.Instance.CustomerLeave(this);
             }
@@ -243,18 +258,30 @@ namespace CryingSnow.CheckoutFrenzy
 
                 Destroy(productObj);
 
-                ReputationManager.instance.RegisterCustomerFeedback(true);
+                if (!positiveFeedbackGiven)
+                {
+                    ReputationManager.instance.RegisterCustomerFeedback(true);
+                    positiveFeedbackGiven = true;
+                }
+                   
      
                 yield return new WaitForSeconds(0.5f);
             }
             else
             {
-                string chat;
-                if(gameLanguage == "English") { chat = overpricedDialogue.GetRandomLine(); }
-                else { chat = overPricedDialogueTurkish.GetRandomLine(); }
+                string chat;            
+                int index = LanguageManager.GetCurrentLanguageIndex();
+                chat = GameConfig.Instance.OverPricedDialogues[index].GetRandomLine();
+                
                 chat = chat.Replace("{product}", product.Name);
                 UpdateChatBubble(chat);
-                ReputationManager.instance.RegisterCustomerFeedback(false);
+
+                if (!negativeFeedbackGiven)
+                {
+                    ReputationManager.instance.RegisterCustomerFeedback(false);
+                    negativeFeedbackGiven = true;
+                }
+                   
             }
 
             StoreManager.Instance.RegisterShelvingUnit(shelvingUnit);
@@ -321,22 +348,13 @@ namespace CryingSnow.CheckoutFrenzy
                     yield return new WaitForSeconds(0.7f);
                     isPaying = false;
                     print("Ödeme alındı customer");
-                  
-                  /*  int receivePayment = PlayerPrefs.GetInt("ReceivePayment", 0);
-                    receivePayment++;
-                    if(receivePayment % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
-                    {
-                        AdManager.instance.ShowInterstitialAd();
-                    }
-                    PlayerPrefs.SetInt("ReceivePayment",receivePayment); */
-                    
+                                                    
                 }
-                // Otherwise, allow the player to manually process the payment (e.g., started by clicking on a payment object).
+          
                 else if (Input.GetMouseButtonDown(0))
                 {
                     Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-                    // Check if the raycast hits a payment object within the specified layer and range.
+           
                     if (Physics.Raycast(ray, 10f, GameConfig.Instance.PaymentLayer))
                     {
                         isPaying = false;                   

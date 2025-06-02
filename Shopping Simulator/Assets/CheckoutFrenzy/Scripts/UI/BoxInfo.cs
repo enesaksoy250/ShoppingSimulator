@@ -19,7 +19,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void Awake()
         {
             emptyIcon = iconImage.sprite;
-            titleText.text = LanguageControl.CheckLanguage("İsim\nMiktar\nKutu Boyutu", "Name\nQuantity\nBox Size");
+            titleText.text = LanguageManager.instance.GetLocalizedValue("InventoryColumnLabelsText").Replace("\\n","\n");
         }
 
         /// <summary>

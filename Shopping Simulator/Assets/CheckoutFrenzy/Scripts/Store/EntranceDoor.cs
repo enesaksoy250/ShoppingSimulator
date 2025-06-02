@@ -56,13 +56,13 @@ namespace CryingSnow.CheckoutFrenzy
             // Construct a message indicating whether to "open" or "close" the door.
             string action;
 
-            if (isOpen) {action =  LanguageControl.CheckLanguage("kapatmak","close");  }
+            if (isOpen) { action = LanguageManager.instance.GetLocalizedValue("TapToCloseDoorsText");  }
 
-            else { action = LanguageControl.CheckLanguage("açmak", "open"); }
+            else { action = LanguageManager.instance.GetLocalizedValue("TapToOpenDoorsText"); }
 
-            string message = LanguageControl.CheckLanguage($"Giriş kapılarını {action} için dokunun.", $"Tap to {action} the entrance doors.");
+            //string message = LanguageControl.CheckLanguage($"Giriş kapılarını {action} için dokunun.", $"Tap to {action} the entrance doors.");
 
-            UIManager.Instance.InteractMessage.Display(message);
+            UIManager.Instance.InteractMessage.Display(action);
         }
 
         public void OnDefocused()

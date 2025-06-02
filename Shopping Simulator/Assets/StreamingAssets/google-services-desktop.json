@@ -8,12 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476256887766:android:820c086d3e067cb3fb7a77",
+        "mobilesdk_app_id": "1:476256887766:android:6b12f073e8d75335fb7a77",
         "android_client_info": {
-          "package_name": "com.MaveraGame.ShopMasterMarketSimulator"
+          "package_name": "com.DefaultCompany.ShopMasterAdmin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "476256887766-o2qdgmp2210vd8dlu67q5bbhg4srrp9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyClsswITB54TMsc-MLeo8MhqQzrVzfZGko"
@@ -21,7 +26,49 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476256887766-o2qdgmp2210vd8dlu67q5bbhg4srrp9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476256887766:android:820c086d3e067cb3fb7a77",
+        "android_client_info": {
+          "package_name": "com.MaveraGame.ShopMasterMarketSimulator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476256887766-8ciutq4q89srhcbj0tmlapcmq4eks31l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.MaveraGame.ShopMasterMarketSimulator",
+            "certificate_hash": "ad06f755451dd7e71750e978f19659d65bec60aa"
+          }
+        },
+        {
+          "client_id": "476256887766-o2qdgmp2210vd8dlu67q5bbhg4srrp9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClsswITB54TMsc-MLeo8MhqQzrVzfZGko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476256887766-o2qdgmp2210vd8dlu67q5bbhg4srrp9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

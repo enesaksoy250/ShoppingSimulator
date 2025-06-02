@@ -77,6 +77,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] private TextMeshProUGUI mixAdLoadingText;
         [SerializeField] private TextMeshProUGUI storePriceText;
         [SerializeField] private GameObject removeAdPanel;
+        [SerializeField] private Button menuGoogleLoginButton;
+        [SerializeField] private Button googleLoginButton;
         public Message Message => message;
         public PriceCustomizer PriceCustomizer => priceCustomizer;
         public PCMonitor PCMonitor => pcMonitor;
@@ -135,6 +137,10 @@ namespace CryingSnow.CheckoutFrenzy
 
             ToggleDeliveryTimer(false);
             UpdateHoldProgress(0f);
+
+            googleLoginButton.onClick.AddListener(LoginWithGoogle.instance.LoginWithGoogleAndCheckDatabase);
+            menuGoogleLoginButton.onClick.AddListener(LoginWithGoogle.instance.LoginWithGoogleAndCheckDatabase);
+
         }
 
         private void Update()
@@ -207,7 +213,7 @@ namespace CryingSnow.CheckoutFrenzy
             ToggleDeliveryTimer(true);
 
             System.TimeSpan timeSpan = System.TimeSpan.FromSeconds(time);
-            string deliveryText = LanguageControl.CheckLanguage("Sonraki Teslimat:", "Next Delivery:");
+            string deliveryText = LanguageManager.instance.GetLocalizedValue("NextDeliveryText");
             deliveryTimerText.text = $"{deliveryText}\n{timeSpan:mm\\:ss}";
 
             if (time <= 0) ToggleDeliveryTimer(false);

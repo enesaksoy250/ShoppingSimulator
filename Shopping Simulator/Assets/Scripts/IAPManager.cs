@@ -46,32 +46,34 @@ public class IAPManager : MonoBehaviour, IStoreListener
         if (string.Equals(purchaseEvent.purchasedProduct.definition.id, product[0], StringComparison.Ordinal))
         {
             PlayerPrefs.SetInt("RemoveAd", 1);
-            GamePanelManager.Instance.LoadPanel("PaymentCompletedPanel");
+            GamePanelManager.instance.LoadPanel("PaymentCompletedPanel");
             DatabaseManager.Instance.UpdateFirebaseInfo("removeAd", true);
+            StorePriceManager.CheckRemoveAdState();
+            Stopwatch.Instance.StopShowAdCoroutine();
             return PurchaseProcessingResult.Complete;
         }
         if (string.Equals(purchaseEvent.purchasedProduct.definition.id, product[1], StringComparison.Ordinal))
         {
             DataManager.Instance.PlayerMoney += 5000;
-            GamePanelManager.Instance.LoadPanel("PaymentCompletedPanel");
+            GamePanelManager.instance.LoadPanel("PaymentCompletedPanel");
             return PurchaseProcessingResult.Complete;
         }
         if (string.Equals(purchaseEvent.purchasedProduct.definition.id, product[2], StringComparison.Ordinal))
         {
             DataManager.Instance.PlayerMoney += 10000;
-            GamePanelManager.Instance.LoadPanel("PaymentCompletedPanel");
+            GamePanelManager.instance.LoadPanel("PaymentCompletedPanel");
             return PurchaseProcessingResult.Complete;
         }
         if (string.Equals(purchaseEvent.purchasedProduct.definition.id, product[3], StringComparison.Ordinal))
         {
             DataManager.Instance.PlayerMoney += 25000;
-            GamePanelManager.Instance.LoadPanel("PaymentCompletedPanel");
+            GamePanelManager.instance.LoadPanel("PaymentCompletedPanel");
             return PurchaseProcessingResult.Complete;
         }
         if (string.Equals(purchaseEvent.purchasedProduct.definition.id, product[4], StringComparison.Ordinal))
         {
             DataManager.Instance.PlayerMoney += 50000;
-            GamePanelManager.Instance.LoadPanel("PaymentCompletedPanel");
+            GamePanelManager.instance.LoadPanel("PaymentCompletedPanel");
             return PurchaseProcessingResult.Complete;
         }
        

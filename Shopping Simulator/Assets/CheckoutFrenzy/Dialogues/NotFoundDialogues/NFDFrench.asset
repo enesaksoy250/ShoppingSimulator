@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: NFDFrench
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: Je ne trouve rien nulle part.
+  - Text: "O\xF9 se trouve-t-il ? J'ai cherch\xE9 partout..."
+  - Text: "Ils sont cens\xE9s l'avoir ici..."
+  - Text: "Ce magasin est un v\xE9ritable capharna\xFCm.\nComment suis-je cens\xE9
+      trouver quelque chose ?"
+  - Text: 'Je perds mon temps.
+
+      Je dois aller ailleurs.'
+  - Text: "Je devrais peut-\xEAtre demander \xE0 quelqu'un...\nmais je d\xE9teste
+      demander de l'aide."
+  - Text: "Ils ne l'ont probablement m\xEAme pas en stock."
+  - Text: Je ne reviendrai plus jamais dans ce magasin.
+  - Text: "Je n'arrive pas \xE0 croire que je n'ai pas trouv\xE9 ce que je cherchais."

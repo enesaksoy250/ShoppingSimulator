@@ -13,78 +13,63 @@ public class LanguageButton : MonoBehaviour
     private void Awake()
     {
         languageButton = GetComponent<Button>();
-        languageText = GetComponentInChildren<TextMeshProUGUI>();
+        //languageText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     void Start()
     {
 
-        SetLanguageButtonText();
-        languageButton.onClick.AddListener(delegate { LanguageButtons(); });
+        switch (gameObject.name)
+        {
+           
+            case "RightButton":
+                languageButton.onClick.AddListener(delegate { ChangeLanguage("right"); });
+                break;
+            case "LeftButton":
+                languageButton.onClick.AddListener(delegate { ChangeLanguage("left"); });
+                break;
+        }
+
     }
 
 
-    public void LanguageButtons()
+
+    private void ChooseLanguage()
     {
-
-        string language = PlayerPrefs.GetString("Language", "English");
-
-        if (language == "English")
-        {
-
-            PlayerPrefs.SetString("Language", "Turkish");
-            LanguageManager.instance.LoadLocalizedText(PlayerPrefs.GetString("Language"));
-            UILanguageManager[] uiLanguageManager = FindObjectsOfType<UILanguageManager>();
-
-            foreach (UILanguageManager manager in uiLanguageManager)
-            {
-
-                manager.UpdateText();
-
-            }
-            languageText.text = "TURKCE";
-
-        }
-
-        else if (language == "Turkish")
-        {
-
-            PlayerPrefs.SetString("Language", "English");
-            LanguageManager.instance.LoadLocalizedText(PlayerPrefs.GetString("Language"));
-            languageText.text = "ENGLISH";
-
-        }
+        PlayerPrefs.SetString("Language",LanguageManager.instance.GetSelectedLanguage());
+        LanguageManager.instance.LoadLocalizedText(LanguageManager.instance.GetSelectedLanguage());
 
         UILanguageManager[] uiLanguageManagers = FindObjectsOfType<UILanguageManager>();
 
         foreach (UILanguageManager manager in uiLanguageManagers)
         {
-
             manager.UpdateText();
-
         }
 
     }
 
-    private void SetLanguageButtonText()
+    private void ChangeLanguage(string direction)
     {
+        int index = LanguageManager.instance.selectedIndex;
+        int max = LanguageManager.GetNumberOfLanguage() - 1;
 
-        string currentLanguage = PlayerPrefs.GetString("Language", "English");
-
-        if (currentLanguage == "English")
+        if (direction == "right" && index < max)
         {
-
-            languageText.text = "ENGLISH";
-
+            LanguageManager.instance.selectedIndex++;
+        }
+            
+        else if (direction == "left" && index > 0)
+        {
+            LanguageManager.instance.selectedIndex--;
         }
 
-        else if (currentLanguage == "Turkish")
-        {
+        ChooseLanguage();
 
-            languageText.text = "TURKCE";
+        if(UIRepository.Instance.LanguageText.IsActive())
+            UIRepository.Instance.LanguageText.text = LanguageManager.instance.GetSelectedLanguage();
 
-        }
-
-
+        if(UIRepository.Instance.SettingsLanguageText.IsActive())
+           UIRepository.Instance.SettingsLanguageText.text = LanguageManager.instance.GetSelectedLanguage();
     }
+ 
 }

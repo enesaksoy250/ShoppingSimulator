@@ -21,7 +21,7 @@ public class ReputationDisplay : MonoBehaviour
     }
 
     void Start()
-    {
+    {  
         ReputationManager.instance.OnReputationChanged += UpdateFill;
     }
 
@@ -30,30 +30,68 @@ public class ReputationDisplay : MonoBehaviour
         ReputationManager.instance.OnReputationChanged -= UpdateFill;
     }
 
-    public void UpdateFill(float reputation)
+    public void UpdateFill(float reputation,bool isInitial)
     {
         targetFill = Mathf.Clamp01(reputation / 100f);
         StopAllCoroutines();
-        StartCoroutine(SmoothFill());
+        StartCoroutine(SmoothFill(isInitial));
     }
 
-    private IEnumerator SmoothFill()
+    private IEnumerator SmoothFill(bool isInitial)
     {
+
+        float oldFill = currentFill;
+        float direction = targetFill - oldFill;
+
+        if (!isInitial)
+        {
+
+            Color originalColor = reputationFill.color;
+            Color flashColor = direction > 0 ? Color.green : Color.red;
+            float flashDuration = 1;
+            float elapsed = 0f;
+
+            while (elapsed < flashDuration)
+            {
+                float t = elapsed / flashDuration;
+                reputationFill.color = Color.Lerp(originalColor, flashColor, t);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            reputationFill.color = flashColor;
+
+            elapsed = 0f;
+            while (elapsed < flashDuration)
+            {
+                float t = elapsed / flashDuration;
+                reputationFill.color = Color.Lerp(flashColor, originalColor, t);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            reputationFill.color = originalColor;
+
+        }
+
+
         while (Mathf.Abs(currentFill - targetFill) > 0.01f)
         {
             currentFill = Mathf.Lerp(currentFill, targetFill, Time.deltaTime * transitionSpeed);
             reputationFill.fillAmount = currentFill;
 
-            // Renk geçiþi
-            Color color = Color.Lerp(Color.red, Color.yellow, currentFill * 2);
+
+            Color fillColor = Color.Lerp(Color.red, Color.yellow, currentFill * 2f);
             if (currentFill > 0.5f)
-                color = Color.Lerp(Color.yellow, Color.green, (currentFill - 0.5f) * 2);
-            reputationFill.color = color;
+                fillColor = Color.Lerp(Color.yellow, Color.green, (currentFill - 0.5f) * 2f);
+
+            reputationFill.color = fillColor;
 
             yield return null;
         }
 
-        currentFill = targetFill;
-        reputationFill.fillAmount = currentFill;
+           currentFill = targetFill;
+           reputationFill.fillAmount = currentFill;
     }
+
 }

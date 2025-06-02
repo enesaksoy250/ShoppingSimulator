@@ -74,7 +74,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else
             {
-                string text = LanguageControl.CheckLanguage("Raf dolu!", "Shelf is full!");
+                string text = LanguageManager.instance.GetLocalizedValue("ShelfIsFullText");
                 UIManager.Instance.Message.Log(text);
                 return false;
             }

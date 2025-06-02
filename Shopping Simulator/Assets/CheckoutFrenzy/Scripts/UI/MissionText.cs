@@ -15,7 +15,7 @@ public class MissionText : MonoBehaviour
 
     void Start()
     {
-        string text = LanguageControl.CheckLanguage("<u>Görev #001</u>\r\n<align=left>Hedef Türü:\r\nUzun Hedef Adý\r\n<align=center>0 / 5\r\n<align=left>Toplanan Ödül:", "<u>Mission #001</u>\r\n<align=left>Goal Type:\r\nLong Target Name\r\n<align=center>0 / 5\r\n<align=left>Collect Reward:");     
+        string text = LanguageManager.instance.GetLocalizedValue("MissionObjectiveDisplay").Replace("\\n", "\n");     
         missionText.text = text;
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mission008
   m_EditorClassIdentifier: 
   missionId: 8
-  goalType: 4
-  targetId: 0
-  goalAmount: 1
-  reward: 400
+  goalType: 3
+  targetId: 1
+  goalAmount: 10
+  reward: 200

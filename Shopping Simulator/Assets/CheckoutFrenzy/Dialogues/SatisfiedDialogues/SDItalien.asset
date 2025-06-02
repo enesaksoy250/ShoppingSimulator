@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: SDItalien
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: Proprio il prodotto che cercavo, ottimo!
+  - Text: I prezzi sono davvero vantaggiosi!
+  - Text: "Non c'\xE8 una variet\xE0 simile da nessun'altra parte!"
+  - Text: "Torner\xF2 sicuramente a visitare questo negozio."
+  - Text: Mi sono trovata molto bene qui.
+  - Text: "I prodotti sono di buona qualit\xE0 e valgono il prezzo."
+  - Text: "Consiglier\xF2 questo posto a tutti!"

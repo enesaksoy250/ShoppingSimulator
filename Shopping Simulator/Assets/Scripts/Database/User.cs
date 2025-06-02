@@ -5,7 +5,7 @@ using UnityEngine;
 public class User : MonoBehaviour
 {
 
-    public string username;
+    public string nickname;
     public int watchedAdCount;
     public int gameTime;
     public string date;
@@ -13,9 +13,9 @@ public class User : MonoBehaviour
     public int adLoadingErrorCount;
     public int level;
 
-    public User(string username,int watchedAdCount,int gameTime,string date,bool removeAd,int adLoadingErrorCount,int level)
+    public User(string nickname,int watchedAdCount,int gameTime,string date,bool removeAd,int adLoadingErrorCount,int level)
     {
-        this.username = username;
+        this.nickname = nickname;
         this.watchedAdCount = watchedAdCount;
         this.gameTime = gameTime;
         this.date = date;

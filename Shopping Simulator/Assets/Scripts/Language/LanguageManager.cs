@@ -1,13 +1,17 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+
 
 public class LanguageManager : MonoBehaviour
 {
     public static LanguageManager instance;
     private Dictionary<string, string> localizedText;
-    public string currentLanguage = "English"; // Varsay�lan dil
+    public string currentLanguage = "English"; // Varsayılan dil
+    public int selectedIndex; 
+
+    private readonly static List<string> avaliableLanguages = new () { "English","Türkçe", "Deutsch", "Español", "Italiano", "Français", "Português"};
 
     void Awake()
     {
@@ -24,6 +28,11 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        selectedIndex = GetCurrentLanguageIndex();
+    }
+
     public void LoadLocalizedText(string language)
     {
         localizedText = new Dictionary<string, string>();
@@ -32,7 +41,7 @@ public class LanguageManager : MonoBehaviour
 
     private void LoadTextFileFromResources(string language)
     {
-        TextAsset textFile = Resources.Load<TextAsset>("ShoppingSimulatorLanguage"); // .txt uzant�s� olmadan
+        TextAsset textFile = Resources.Load<TextAsset>("ShoppingSimulatorLanguage"); // .txt uzantısı olmadan
 
         if (textFile != null)
         {
@@ -85,7 +94,7 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    public string GetLocalizedValue(string key)
+    public  string GetLocalizedValue(string key)
     {
         if (localizedText.ContainsKey(key))
         {
@@ -100,13 +109,39 @@ public class LanguageManager : MonoBehaviour
 
     public void SetLanguage()
     {
-        currentLanguage = PlayerPrefs.GetString("Language", "Turkish");
+        currentLanguage = PlayerPrefs.GetString("Language", "English");
+
+        if (currentLanguage == "Turkish")
+            currentLanguage = "Türkçe";
+
     }
 
     public static string GetLanguage()
     {
-        return PlayerPrefs.GetString("Language", "English");
+        string language = PlayerPrefs.GetString("Language", "English");
+
+        if (language == "Turkish")
+            language = "Türkçe";
+
+        return language;
     }
 
+    public static int GetCurrentLanguageIndex()
+    {
+       return avaliableLanguages.IndexOf(GetLanguage());
+    }
 
+    public static void SetLanguagePanel()
+    {
+        UIRepository.Instance.LanguageText.text = avaliableLanguages[GetCurrentLanguageIndex()];
+    }
+
+    public string GetSelectedLanguage()
+    {
+        return avaliableLanguages[selectedIndex];
+    }
+    public static int GetNumberOfLanguage()
+    {
+        return avaliableLanguages.Count;
+    }
 }

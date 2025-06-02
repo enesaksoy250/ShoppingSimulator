@@ -60,7 +60,7 @@ namespace CryingSnow.CheckoutFrenzy
 
                 decimal profit = price - product.Price; // Calculate profit.
                 string color = profit > 0 ? "green" : profit < 0 ? "red" : "white"; // Set color based on profit.
-                string text = LanguageControl.CheckLanguage("Kâr:","Profit:");
+                string text = LanguageManager.instance.GetLocalizedValue("ProfitText");
                 profitText.text = $"<color={color}>{text}: ${profit:N2}"; // Update the profit text.
             });
 
@@ -85,12 +85,12 @@ namespace CryingSnow.CheckoutFrenzy
 
             // Display the product's current custom price (if it exists).
             decimal productPrice = DataManager.Instance.GetCustomProductPrice(product);
-            string priceText = LanguageControl.CheckLanguage("Güncel Fiyat", "Current Price:");
+            string priceText = LanguageManager.instance.GetLocalizedValue("CurrentPriceText");
             currentPriceText.text = $"{priceText} ${productPrice:N2}";
 
             // Display the product's default market price.
             decimal defaultPrice = product.Price;
-            string priceText2 = LanguageControl.CheckLanguage("Market Fiyatı","Market Price");
+            string priceText2 = LanguageManager.instance.GetLocalizedValue("MarketPriceText");
             marketPriceText.text = $"{priceText2} ${product.MarketPrice:N2}";
 
             // Set up the price slider's range and initial value.

@@ -13,7 +13,6 @@ public class TutorialManager : MonoBehaviour
     public Button nextButton;
     public GameObject infoPanel;
     public TextMeshProUGUI infoText;
-    //public RectTransform arrowContainer;
     public List<TutorialStep> steps;
   
     private GameObject currentArrow;
@@ -107,6 +106,13 @@ public class TutorialManager : MonoBehaviour
         nextButton.gameObject.SetActive(false);
         PlayerPrefs.SetInt("TutorialEnd", 1);
         Debug.Log("Tutorial tamamlandý.");
+        StartCoroutine(ShowGoogleLoginPanel());
+    }
+
+    private IEnumerator ShowGoogleLoginPanel()
+    {
+        yield return new WaitForSeconds(3);
+        LoginWithGoogle.instance.LoginWithGoogleAndCheckDatabase();
     }
 
 }

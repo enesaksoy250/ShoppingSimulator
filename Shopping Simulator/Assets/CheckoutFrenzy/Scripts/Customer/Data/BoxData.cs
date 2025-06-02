@@ -12,6 +12,11 @@
 
         public bool IsEmpty => ProductID == 0 || Quantity == 0;
 
+        public BoxData()
+        {
+
+        }
+
         public BoxData(Box box)
         {
             Name = box.name;

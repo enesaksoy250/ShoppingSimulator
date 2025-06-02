@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: License F
   price: 12000
-  level: 30
+  level: 40
   isOwnedByDefault: 0
   products:
   - {fileID: 11400000, guid: f17f876b6e223494b850379646ada3ad, type: 2}

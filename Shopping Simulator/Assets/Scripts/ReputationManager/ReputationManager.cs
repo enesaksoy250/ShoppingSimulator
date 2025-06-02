@@ -8,11 +8,15 @@ public class ReputationManager : MonoBehaviour
 {
     public static ReputationManager instance;
 
-    public float reputation;
-    public int totalCustomers;
-    public int satisfiedCustomers;
+    public float reputation => reputationData.reputation;
 
-    public Action<float> OnReputationChanged;
+
+    //public int totalCustomers;
+    //public int satisfiedCustomers;
+
+    private ReputationData reputationData;
+
+    public Action<float,bool> OnReputationChanged;
 
     private void Awake()
     {
@@ -29,50 +33,42 @@ public class ReputationManager : MonoBehaviour
 
     private void Start()
     {
-        ReputationDisplay.Instance.UpdateFill(reputation);
+        ReputationDisplay.Instance.UpdateFill(reputationData.reputation, true);
     }
 
     public void RegisterCustomerFeedback(bool isSatisfied)
     {
-        totalCustomers++;
+     
+        reputationData.totalCustomers++;
 
         if (isSatisfied)
-            satisfiedCustomers++;
+            reputationData.satisfiedCustomers++;
 
-        reputation = (float)satisfiedCustomers / totalCustomers * 100f; // Örn. yüzde üzerinden hesap
+        reputationData.reputation = (float)reputationData.satisfiedCustomers / reputationData.totalCustomers * 100f; // Örn. yüzde üzerinden hesap
 
-        SaveReputation();
+        //SaveReputation();
 
-        OnReputationChanged?.Invoke(reputation);
+        OnReputationChanged?.Invoke(reputationData.reputation,false);
     }
 
-    private void SaveReputation()
-    {
-        ReputationData data = new ReputationData
-        {
-            reputation = reputation,
-            totalCustomers = totalCustomers,
-            satisfiedCustomers = satisfiedCustomers
-        };
-
-        SaveSystem.SaveData(data, "reputationData");
+    public void SaveReputation()
+    {       
+        SaveSystem.SaveData(reputationData, "reputationData");
     }
 
     private void LoadReputation()
     {
-        ReputationData data = SaveSystem.LoadData<ReputationData>("reputationData");
+         reputationData = SaveSystem.LoadData<ReputationData>("reputationData");
 
-        if (data != null)
+        if (reputationData == null)
         {
-            reputation = data.reputation;                
-            totalCustomers = data.totalCustomers;      
-            satisfiedCustomers = data.satisfiedCustomers;
+            reputationData = new ReputationData();
+            reputationData.Inititalize();
         }
-        else
-        {
-            reputation = 50f;
-            totalCustomers = 100;
-            satisfiedCustomers = 50;
-        }
+      
     }
+
+
+
+   
 }

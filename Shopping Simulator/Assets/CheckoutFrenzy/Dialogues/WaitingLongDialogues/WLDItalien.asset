@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: WLDItalien
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: "Se dovessi aspettare cos\xEC tanto, andrei in un altro supermercato!"
+  - Text: "Perch\xE9 c'\xE8 cos\xEC poca gente alla cassa?"
+  - Text: "Il tempo \xE8 denaro, ma questo posto sembra fermare il tempo!"
+  - Text: Sarebbe bello se si potesse accelerare un po'!
+  - Text: "Ho dimenticato di fare la spesa perch\xE9 ero in fila!"
+  - Text: Non so se sia valsa la pena aspettare...
+  - Text: "La prossima volta ordiner\xF2 online!"

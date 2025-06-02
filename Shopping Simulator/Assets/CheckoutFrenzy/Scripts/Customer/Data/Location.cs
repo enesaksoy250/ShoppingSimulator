@@ -16,6 +16,7 @@ namespace CryingSnow.CheckoutFrenzy
             Z = position.z;
         }
 
+
         public Vector3 ToVector3()
         {
             return new Vector3(X, Y, Z);

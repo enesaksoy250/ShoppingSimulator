@@ -6,7 +6,7 @@ public class Stopwatch : MonoBehaviour
 {
     
     public static Stopwatch Instance;
-
+    Coroutine showAdCoroutine;
 
     private void Awake()
     {
@@ -26,7 +26,9 @@ public class Stopwatch : MonoBehaviour
     void Start()
     {
         StartCoroutine(UpdateGameTime());
-        StartCoroutine(ShowAd());
+
+        if(!PlayerPrefs.HasKey("RemoveAd"))
+           showAdCoroutine = StartCoroutine(ShowAd());
     }
 
     IEnumerator UpdateGameTime()
@@ -44,6 +46,15 @@ public class Stopwatch : MonoBehaviour
         {
             yield return new WaitForSeconds(120);
             AdManager.instance.ShowInterstitialAd();
+        }
+    }
+
+    public void StopShowAdCoroutine()
+    {
+        if(showAdCoroutine != null)
+        {
+            StopCoroutine(showAdCoroutine);
+            showAdCoroutine = null;
         }
     }
 

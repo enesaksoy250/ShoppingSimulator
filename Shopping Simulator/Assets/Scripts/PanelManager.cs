@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PanelManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class PanelManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("Login"))
         {
             ChangePanelVisibility("LanguagePanel", true);
+            LanguageManager.SetLanguagePanel();
         }
     }
 
@@ -41,6 +43,22 @@ public class PanelManager : MonoBehaviour
             if (panel.name == panelName)
             {
                 panel.SetActive(true);
+            }
+        }
+    }
+
+    public void LoadPanel(string panelName,string message = null)
+    {
+        foreach (GameObject panel in panels)
+        {
+            if (panel.name == panelName)
+            {
+                panel.SetActive(true);
+
+                if(message != null)
+                {
+                    panel.GetComponentInChildren<TextMeshProUGUI>().text = message;
+                }
             }
         }
     }
@@ -71,8 +89,6 @@ public class PanelManager : MonoBehaviour
             manager.UpdateText();
 
         }
-
-
 
     }
 

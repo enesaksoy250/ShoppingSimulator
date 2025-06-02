@@ -39,7 +39,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             Instance = this;
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
-            standByText = LanguageControl.CheckLanguage("Beklemede...","Standby...");
+            standByText = LanguageManager.instance.GetLocalizedValue("StandbyStatusText");
             monitorText.text = $"<size=0.5>{standByText}";
         }
 
@@ -68,8 +68,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = LanguageControl.CheckLanguage("Bilgisayarı açmak ve Sipariş Programını başlatmak için dokunun.","Tap to turn on the PC and start the Order Program");
-            UIManager.Instance.InteractMessage.Display(message);
+            string message = LanguageManager.instance.GetLocalizedValue("TapToStartOrderProgramText");
         }
 
         public void OnDefocused()
@@ -80,7 +79,7 @@ namespace CryingSnow.CheckoutFrenzy
         private IEnumerator LoadOrderProgram()
         {
             float elapsedTime = 0f;
-            string monitorTxt = LanguageControl.CheckLanguage("Sipariş Programı Yükleniyor\nLütfen bekleyin... ", "Loading Order Program\nPlease wait...");
+            string monitorTxt = LanguageManager.instance.GetLocalizedValue("LoadingOrderProgramText").Replace("\\n","\n");
 
             while (elapsedTime < loadingDuration)
             {
@@ -165,7 +164,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (cart.Count == 0)
             {
-                string text = LanguageControl.CheckLanguage("Sepet boş. Önce ürün veya mobilya ekleyin.", "Cart is empty. Add products or furnitures first.");
+                string text = LanguageManager.instance.GetLocalizedValue("CartEmptyAddItemsText");
                 UIManager.Instance.Message.Log(text, Color.red);
                 return;
             }
@@ -213,7 +212,7 @@ namespace CryingSnow.CheckoutFrenzy
                 // Deduct the total price from the player's money.
                 DataManager.Instance.PlayerMoney -= totalPrice;
 
-                string text = LanguageControl.CheckLanguage("Ödeme başarılı!", "Checkout successful!");
+                string text = LanguageManager.instance.GetLocalizedValue("CheckoutSuccessfulText");
                 UIManager.Instance.Message.Log(text);
                 AudioManager.Instance.PlaySFX(AudioID.Kaching);
 
@@ -231,7 +230,7 @@ namespace CryingSnow.CheckoutFrenzy
             else
             {
                 // Display an error message if the player doesn't have enough money.
-                string text = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                string text = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
                 UIManager.Instance.Message.Log(text, Color.red);
             }
         }
@@ -249,7 +248,7 @@ namespace CryingSnow.CheckoutFrenzy
         /// <returns>The total price of all items in the list.</returns>
         private decimal CalculateOrderPrice(List<IPurchasable> orders)
         {
-            decimal totalPrice = 0m;
+            decimal totalPrice = 0;
 
             foreach (var order in orders)
             {

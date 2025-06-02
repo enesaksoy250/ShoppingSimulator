@@ -17,12 +17,12 @@ public class PlayAdButton : MonoBehaviour
     {
         if (CheckInternetConnection.GetInternetConnection())
         {
-            GamePanelManager.Instance.LoadPanel("LoadingPanel");
+            GamePanelManager.instance.LoadPanel("LoadingPanel");
             AdManager.instance.LoadRewardedAd();
         }
         else
         {
-            GamePanelManager.Instance.LoadPanel("ErrorPanel"); 
+            GamePanelManager.instance.LoadPanel("ErrorPanel"); 
         }
     }
     

@@ -21,11 +21,12 @@ public class DatabaseStatistic : MonoBehaviour
         this.userID = userID;
 
         //GetDailyRegisterDetails();
-        GetDailyInfo();
+        //GetDailyInfo();
         
         GetUsersWhoRemoveAds();
-        GetWatchedCount(0);
-        //GetPhoneAccount(); //c9912 benim tel 6f8b recep tel  1365e bilgisayar
+        GetTotalRegister();
+        //GetWatchedCount(0);
+        //GetPhoneAccount(); //c9912 ve 37a benim tel 6f8b recep tel  1365e bilgisayar
     }
 
 
@@ -208,7 +209,7 @@ public class DatabaseStatistic : MonoBehaviour
                         string id = user.Key;
                         string name = user.Child("username").Value.ToString();
 
-                        if(name == "bilgisayar")
+                        if(name == "enes")
                         {
                             print($"Telefon ID = {id}");
                         }
@@ -291,5 +292,28 @@ public class DatabaseStatistic : MonoBehaviour
 
     }
 
+    private void GetTotalRegister()
+    {
+        databaseReference.Child("users").GetValueAsync().ContinueWith(t => {
+
+            if (t.IsCompleted && t.Result.Exists)
+            {
+                DataSnapshot dataSnapshot = t.Result;
+
+                int count = 0;
+
+                foreach (var user in dataSnapshot.Children)
+                {
+                    count++;
+                }
+
+                print("Toplam kayýt= "+count);
+
+            }
+          
+        
+        
+        });
+    }
     
 }

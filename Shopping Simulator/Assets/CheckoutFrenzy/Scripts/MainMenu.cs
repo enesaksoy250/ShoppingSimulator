@@ -13,7 +13,7 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("The background music to play on the main menu.")]
         private AudioClip backgroundMusic;
 
-        [SerializeField] GameObject loadingPanel;
+        [SerializeField]  GameObject loadingPanel;
 
         private void Start()
         {

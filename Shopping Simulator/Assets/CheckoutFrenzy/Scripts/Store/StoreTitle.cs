@@ -23,8 +23,8 @@ namespace CryingSnow.CheckoutFrenzy
         {
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
 
-            //textMeshPro.text = DataManager.Instance.Data.StoreName;
-            textMeshPro.text = PlayerPrefs.GetString("StoreName");
+            textMeshPro.text = DataManager.Instance.Data.StoreName;
+  
             DataManager.Instance.OnSave += () => DataManager.Instance.Data.StoreName = textMeshPro.text;
         }
 
@@ -41,7 +41,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = LanguageControl.CheckLanguage("Mağazanızı yeniden adlandırmak için dokunun.", "Tap to rename your store.");
+            string message = LanguageManager.instance.GetLocalizedValue("TapToRenameStoreText");
             UIManager.Instance.InteractMessage.Display(message);
         }
 

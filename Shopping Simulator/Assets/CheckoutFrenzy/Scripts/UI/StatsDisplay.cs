@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static Cinemachine.DocumentationSortingAttribute;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -14,6 +15,13 @@ namespace CryingSnow.CheckoutFrenzy
 
         [SerializeField, Tooltip("Image used as a fill bar to visualize level progress.")]
         private Image levelFill;
+
+        public static StatsDisplay instance;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         private void Start()
         {
@@ -46,7 +54,8 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="level">The player / store current level.</param>
         private void UpdateLevelDisplay(int level)
         {
-            levelDisplay.text = $"Level {level}";
+            string text = LanguageManager.instance.GetLocalizedValue("LevelText2");
+            levelDisplay.text = $"{text} {level}";
         }
 
         /// <summary>
@@ -57,5 +66,18 @@ namespace CryingSnow.CheckoutFrenzy
         {
             levelFill.fillAmount = progress;
         }
+
+
+        public void UpdateLevelDisplay()
+        {
+            int level = DataManager.Instance.Data.CurrentLevel;
+            string text = LanguageManager.instance.GetLocalizedValue("LevelText2");
+            levelDisplay.text = $"{text} {level}";
+            float currentExp = (float)DataManager.Instance.Data.CurrentExperience;
+            int expForNextLevel = DataManager.Instance.CalculateExperienceForNextLevel();
+            float progress = currentExp / expForNextLevel;
+            UpdateLevelFill(progress);
+        }
+
     }
 }

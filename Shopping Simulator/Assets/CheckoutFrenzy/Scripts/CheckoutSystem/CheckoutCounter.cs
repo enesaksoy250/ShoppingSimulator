@@ -91,8 +91,9 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (hasCashier)
             {
-                string text = LanguageControl.CheckLanguage("Burada zaten bir kasiyer çalýþýyor.", "A cashier is already working here."); 
-                message.Log(text);
+                //string text = LanguageControl.CheckLanguage("Burada zaten bir kasiyer çalýþýyor.", "A cashier is already working here."); 
+                string cashierText = LanguageManager.instance.GetLocalizedValue("CashierText");
+                message.Log(cashierText);
                 return;
             }
 
@@ -111,8 +112,9 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string text = LanguageControl.CheckLanguage("Kasiyer olarak ödeme yapmak için dokunun!", "Tap to perform checkout as a cashier");
-            UIManager.Instance.InteractMessage.Display(text);
+            //string text = LanguageControl.CheckLanguage("Kasiyer olarak ödeme yapmak için dokunun!", "Tap to perform checkout as a cashier");
+            string TapToPayAsCashierText = LanguageManager.instance.GetLocalizedValue("TapToPayAsCashierText");
+            UIManager.Instance.InteractMessage.Display(TapToPayAsCashierText);
         }
 
         public void OnDefocused()
@@ -326,8 +328,9 @@ namespace CryingSnow.CheckoutFrenzy
                 }
                 else
                 {
-                    string text = LanguageControl.CheckLanguage("Yetersiz bozukluk. Lütfen doðru miktarý giriniz.", "Insufficient change. Please provide the correct amount.");
-                    message.Log(text, Color.red);
+                    //string text = LanguageControl.CheckLanguage("Yetersiz bozukluk. Lütfen doðru miktarý giriniz.", "Insufficient change. Please provide the correct amount.");
+                    string InsufficientChangeText = LanguageManager.instance.GetLocalizedValue("InsufficientChangeText");
+                    message.Log(InsufficientChangeText, Color.red);
                 }
             }
 
@@ -343,8 +346,9 @@ namespace CryingSnow.CheckoutFrenzy
                 }
                 else
                 {
-                    string text = LanguageControl.CheckLanguage("Geçersiz tutar. Lütfen geçerli bir tutar girin.", "Invalid amount. Please enter a valid amount.");
-                    message.Log(text, Color.red);
+                    //string text = LanguageControl.CheckLanguage("Geçersiz tutar. Lütfen geçerli bir tutar girin.", "Invalid amount. Please enter a valid amount.");
+                    string InvalidAmountText = LanguageManager.instance.GetLocalizedValue("InvalidAmountText");
+                    message.Log(InvalidAmountText, Color.red);
                 }
             }
 
@@ -484,40 +488,42 @@ namespace CryingSnow.CheckoutFrenzy
             switch (CurrentState)
             {
                 case State.Standby:
-                    text = LanguageControl.CheckLanguage("Beklemede...", "Standby...");
+                    //text = LanguageControl.CheckLanguage("Beklemede...", "Standby...");
+                    text = LanguageManager.instance.GetLocalizedValue("PendingStatusText");
                     displayText = $"\n\n{text}";
                     break;
 
                 case State.Placing:
-                    displayText = LanguageControl.CheckLanguage("\n\nBekleniyor...","\n\nWaiting...");
+                    //displayText = LanguageControl.CheckLanguage("\n\nBekleniyor...","\n\nWaiting...");
+                    displayText = LanguageManager.instance.GetLocalizedValue("WaitingMessageText").Replace("\\n", "\n");
                     break;
 
                 case State.Scanning:
-                    displayText = LanguageControl.CheckLanguage("Taranýyor...", "Scanning...");
-                    text = LanguageControl.CheckLanguage("Toplam:", "Total:");
+                    displayText = LanguageManager.instance.GetLocalizedValue("ScanningStatusText");
+                    text = LanguageManager.instance.GetLocalizedValue("TotalText");
                     displayText += $"\n<color=#00a4ff>{text} ${totalPrice:N2}</color>";
                     break;
 
                 case State.CashPay:
-                    displayText = LanguageControl.CheckLanguage("Nakit Ödeme", "Cash Payment");
-                    text = LanguageControl.CheckLanguage("Toplam:","Total:");
+                    displayText = LanguageManager.instance.GetLocalizedValue("CashPaymentText");
+                    text = LanguageManager.instance.GetLocalizedValue("TotalText");
                     displayText += $"\n<color=#00a4ff>{text} ${totalPrice:N2}</color>";
-                    text = LanguageControl.CheckLanguage("Alýnan:","Received:");
+                    text = LanguageManager.instance.GetLocalizedValue("AmountReceivedText");
                     displayText += $"\n{text} ${customerMoney:N2}";
 
                     decimal change = customerMoney - totalPrice;
-                    text = LanguageControl.CheckLanguage("Para Üstü:","Change:");
+                    text = LanguageManager.instance.GetLocalizedValue("ChangeText");
                     displayText += $"\n<color=yellow>{text} ${change:N2}";
 
-                    text = LanguageControl.CheckLanguage("Verilen:","Give:");
+                    text = LanguageManager.instance.GetLocalizedValue("GivenAmountText");
                     string color = givenChange / 100m >= change ? "green" : "red";
                     displayText += $"\n<color={color}>{text} ${givenChange / 100m:N2}";
                     break;
 
                 case State.CardPay:
-                    displayText = LanguageControl.CheckLanguage("Kartla Ödeme","Card Payment");
+                    displayText = LanguageManager.instance.GetLocalizedValue("CardPaymentText");
                     displayText += $"\n<color=#00a4ff>Total: ${totalPrice:N2}</color>";
-                    text = LanguageControl.CheckLanguage("\nÖdeme terminaline toplam tutarý girin", "\nInput total amount in the payment terminal.");
+                    text = LanguageManager.instance.GetLocalizedValue("EnterTotalOnTerminalText").Replace("\\n","\n");
                     displayText += text;
                     break;
 
@@ -557,15 +563,15 @@ namespace CryingSnow.CheckoutFrenzy
 
             // 2. Round up to nearest convenient denomination
             int roundedUpAmount = GetRoundedUpAmount(totalCents);
-            paymentOptions.Add(roundedUpAmount / 100m);
+            paymentOptions.Add(roundedUpAmount / 100);
 
             // 3. Smallest excess payment
             int smallestExcessAmount = GetSmallestExcessAmount(totalCents);
-            paymentOptions.Add(smallestExcessAmount / 100m);
+            paymentOptions.Add(smallestExcessAmount / 100);
 
             // 4. Higher denomination payment (e.g., round up to nearest 5 or 10 dollar increment)
             int roundedUpHigherDenomination = GetHigherDenomination(totalCents);
-            paymentOptions.Add(roundedUpHigherDenomination / 100m);
+            paymentOptions.Add(roundedUpHigherDenomination / 100);
 
             int randomIndex = Random.Range(0, paymentOptions.Count);
             return paymentOptions[randomIndex];

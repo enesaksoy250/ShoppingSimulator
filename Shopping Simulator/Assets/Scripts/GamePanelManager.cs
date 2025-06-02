@@ -1,6 +1,7 @@
 using CryingSnow.CheckoutFrenzy;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,11 @@ public class GamePanelManager : MonoBehaviour
 
     [SerializeField] GameObject[] panels;
 
-    public static GamePanelManager Instance;
+    public static GamePanelManager instance;
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
     }
 
     private void Start()
@@ -66,15 +67,22 @@ public class GamePanelManager : MonoBehaviour
             if (panel.name == panelName)
             {
                 panel.SetActive(true);
+            
+            }
+        }
+    }
 
-                if(panel.name == "StorePanel")
+    public void LoadPanel(string panelName,string message = null)
+    {
+        foreach (GameObject panel in panels)
+        {
+            if (panel.name == panelName)
+            {
+                panel.SetActive(true);
+
+                if(message != null)
                 {
-                    if (PlayerPrefs.GetInt("RemoveAd") == 1)
-                    {
-                        UIManager.Instance.RemoveAdPanel.GetComponent<Button>().interactable = false;
-                        string language = LanguageManager.GetLanguage();
-                        UIManager.Instance.StorePriceText.text = language == "English" ? "PURCHASED" : "SATIN ALINDI";
-                    }
+                    panel.GetComponentInChildren<TextMeshProUGUI>().text = message;
                 }
 
             }
@@ -90,6 +98,27 @@ public class GamePanelManager : MonoBehaviour
                 panel.SetActive(false);
             }
         }
+    }
+
+    public void CloseAllPanel()
+    {
+        foreach(GameObject panel in panels)
+        {
+            panel.SetActive(false);
+        }
+    }
+
+    public bool IsThereOpenPanel()
+    {
+        foreach(GameObject panel in panels)
+        {
+            if (panel.activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

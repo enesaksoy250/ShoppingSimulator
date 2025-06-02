@@ -26,7 +26,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public void OnFocused()
         {
-            string message = LanguageControl.CheckLanguage("Mağazayı kapatmak veya açmak için dokunun", "Tap to close or open the store");
+            string message = LanguageManager.instance.GetLocalizedValue("TapToOpenOrCloseStoreText");
             UIManager.Instance.InteractMessage.Display(message);
         }
 

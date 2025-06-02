@@ -32,9 +32,9 @@ namespace CryingSnow.CheckoutFrenzy
             this.license = license;
 
             nameText.text = license.Name;
-            string priceTxt = LanguageControl.CheckLanguage("Fiyat:","Price:");
+            string priceTxt = LanguageManager.instance.GetLocalizedValue("PriceText");
             priceText.text = $"{priceTxt} ${license.Price:N2}";
-            string descriptionTxt = LanguageControl.CheckLanguage("Aşağıdaki ürünleri satmak için izin:", "Permission to sell the following products:");
+            string descriptionTxt = LanguageManager.instance.GetLocalizedValue("PermissionToSellText");
             descriptionText.text = descriptionTxt;
 
             // Add each product unlocked by the license to the description text.
@@ -62,7 +62,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void DisablePurchasing()
         {
             purchaseButton.gameObject.SetActive(false);
-            string requirementTxt = LanguageControl.CheckLanguage("Bu lisansa zaten sahipsiniz.", "You already own this license.");
+            string requirementTxt = LanguageManager.instance.GetLocalizedValue("LicenseAlreadyOwnedText");
             requirementText.text = requirementTxt;
         }
 
@@ -72,25 +72,25 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="level">The player / store current level.</param>
         private void UpdatePurchaseAvailability(int level)
         {
-            string requiresText = LanguageControl.CheckLanguage("Gerekli Seviye", "Requires Level");
+            string requiresText = LanguageManager.instance.GetLocalizedValue("RequiredLevelText");
        
 
             if (level >= license.Level)
             {
-                string avaliableText = LanguageControl.CheckLanguage("KULLANILABİLİR","AVAILABLE");
+                string avaliableText = LanguageManager.instance.GetLocalizedValue("AvailableText");
                 
                 requirementText.text = $"<color=green>{avaliableText}\n{requiresText} {license.Level}";
                 purchaseButton.interactable = true;
-                string buttonText = LanguageControl.CheckLanguage("Satın Al", "Purchase");
+                string buttonText =LanguageManager.instance.GetLocalizedValue("BuyButtonText");
                 purchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
                 purchaseButton.onClick.AddListener(() => HandlePurchase(license)); // Add purchase listener.
                 DataManager.Instance.OnLevelUp -= UpdatePurchaseAvailability; // Unsubscribe after availability confirmed.
             }
             else
             {
-                string buttonText = LanguageControl.CheckLanguage("Satın Al", "Purchase");
+                string buttonText = LanguageManager.instance.GetLocalizedValue("AvailableText");
                 purchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                string unavailableText = LanguageControl.CheckLanguage("KULLANILAMAZ", "UNAVAILABLE");
+                string unavailableText =LanguageManager.instance.GetLocalizedValue("UnavailableText");
                 requirementText.text = $"<color=red>{unavailableText}\n{requiresText} {license.Level}";
                 purchaseButton.interactable = false;
             }

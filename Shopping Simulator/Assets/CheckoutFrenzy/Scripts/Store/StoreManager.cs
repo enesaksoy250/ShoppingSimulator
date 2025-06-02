@@ -90,7 +90,7 @@ namespace CryingSnow.CheckoutFrenzy
             DataManager.Instance.OnSave += () =>
             {
                 // Calculate and store the total value of products currently held by customers but not yet paid for.
-                decimal productsValue = 0m;
+                decimal productsValue = 0;
                 foreach (var customer in customers)
                 {
                     foreach (var product in customer.Inventory)
@@ -206,9 +206,13 @@ namespace CryingSnow.CheckoutFrenzy
             if (customer.waitingTimeExceeding)
             {
                 ReputationManager.instance.RegisterCustomerFeedback(false);
-                string language = PlayerPrefs.GetString("Language");
-                string chat = language == "English" ? GameConfig.Instance.WaitingLongDialogueEnglish.GetRandomLine() 
-                    : GameConfig.Instance.WaitingLongDialogueTurkish.GetRandomLine();
+                //string language = PlayerPrefs.GetString("Language");
+                //string chat = language == "English" ? GameConfig.Instance.WaitingLongDialogueEnglish.GetRandomLine() 
+                //    : GameConfig.Instance.WaitingLongDialogueTurkish.GetRandomLine();
+
+                int index = LanguageManager.GetCurrentLanguageIndex();
+                string chat = GameConfig.Instance.WaitingLongDialogues[index].GetRandomLine();
+
                 customer.UpdateChatBubble(chat);
             }
 
@@ -271,7 +275,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (DataManager.Instance.PlayerMoney < license.Price)
             {
-                string text = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                string text = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
                 UIManager.Instance.Message.Log(text, Color.red);
                 return false;
             }
@@ -282,7 +286,7 @@ namespace CryingSnow.CheckoutFrenzy
                 DataManager.Instance.Data.LicensedProducts.Add(product.ProductID);
             }
 
-            DataManager.Instance.PlayerMoney -= (decimal)license.Price;
+            DataManager.Instance.PlayerMoney -= license.Price;
 
             OnLicensePurchased?.Invoke(license);
 
@@ -326,14 +330,14 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (DataManager.Instance.PlayerMoney < expansion.UnlockPrice)
             {
-                string text = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                string text = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
                 UIManager.Instance.Message.Log(text, Color.red);
                 return false;
             }
 
             expansion.SetPurchasedState(true);
             DataManager.Instance.Data.ExpansionLevel++;
-            DataManager.Instance.PlayerMoney -= (decimal)expansion.UnlockPrice;
+            DataManager.Instance.PlayerMoney -= expansion.UnlockPrice;
 
             UpdateNavMeshSurface();
 
@@ -450,7 +454,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (checkoutCounter.HasCashier)
             {
-                string text2 = LanguageControl.CheckLanguage("Bir kasiyer işe alındı bile", "A cashier is already hired.");
+                string text2 = LanguageManager.instance.GetLocalizedValue("CashierAlreadyHiredText");
                 UIManager.Instance.Message.Log(text2);
                 return;
             }
@@ -459,14 +463,14 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (DataManager.Instance.PlayerMoney < cashierCost)
             {
-                string text1 = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                string text1 = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
                 UIManager.Instance.Message.Log(text1, Color.red);
                 return;
             }
 
             DataManager.Instance.PlayerMoney -= cashierCost;
             checkoutCounter.HasCashier = true;
-            string text = LanguageControl.CheckLanguage("Kasiyer başarıyla işe alındı!", "Cashier hired successfully!");
+            string text = LanguageManager.instance.GetLocalizedValue("CashierHiredSuccessText");
             UIManager.Instance.Message.Log(text);
             AudioManager.Instance.PlaySFX(AudioID.Kaching);
         }
@@ -485,7 +489,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (emptyBoxes.Count == 0)
             {
-                string text = LanguageControl.CheckLanguage("Mağazanız zaten temiz!", "Your store is already clean.");
+                string text = LanguageManager.instance.GetLocalizedValue("StoreAlreadyCleanText");
                 UIManager.Instance.Message.Log(text);
                 return;
             }
@@ -494,14 +498,14 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (DataManager.Instance.PlayerMoney < cleanerCost)
             {
-                string text2 = LanguageControl.CheckLanguage("Yeterli paran yok!", "You don't have enough money!");
+                string text2 = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
                 UIManager.Instance.Message.Log(text2, Color.red);
                 return;
             }
 
             DataManager.Instance.PlayerMoney -= cleanerCost;
             emptyBoxes.ForEach(box => Destroy(box.gameObject));
-            string text3 = LanguageControl.CheckLanguage("Temizlikçi başarıyla işe alındı!", "Cleaner hired successfully!");
+            string text3 =LanguageManager.instance.GetLocalizedValue("CleanerHiredSuccessText");
             UIManager.Instance.Message.Log(text3);
             AudioManager.Instance.PlaySFX(AudioID.Kaching);
         }

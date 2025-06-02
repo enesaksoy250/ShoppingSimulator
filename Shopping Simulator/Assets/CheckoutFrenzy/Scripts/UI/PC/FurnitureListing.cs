@@ -44,12 +44,12 @@ namespace CryingSnow.CheckoutFrenzy
         {
             iconImage.sprite = furniture.Icon;
             nameText.text = furniture.Name;
-            string sectionTxT = LanguageControl.CheckLanguage("Reyon:","Section:");
+            string sectionTxT = LanguageManager.instance.GetLocalizedValue("SectionText");
             // Hide the section text if the furniture is in the General section (e.g., Trash Can, Decorations).
             if (furniture.Section == Section.General) sectionText.gameObject.SetActive(false);
             else sectionText.text = $"{sectionTxT} {furniture.Section}";
 
-            string priceTxt = LanguageControl.CheckLanguage("Fiyat:", "Price:"); 
+            string priceTxt = LanguageManager.instance.GetLocalizedValue("PriceText"); 
             price = furniture.Price;
             priceText.text = $"{priceTxt} ${price:N2}";
 
@@ -57,7 +57,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             decreaseButton.onClick.AddListener(() => UpdateAmount(-1)); // Add listener to decrease button.
             increaseButton.onClick.AddListener(() => UpdateAmount(1)); // Add listener to increase button.
-            string cartText = LanguageControl.CheckLanguage("Sepete Ekle", "Add to Cart");
+            string cartText = LanguageManager.instance.GetLocalizedValue("AddToCartText");
             addToCartButton.GetComponentInChildren<TextMeshProUGUI>().text = cartText;
             addToCartButton.onClick.AddListener(() => PC.Instance.AddToCart(furniture, amount)); // Add listener to add to cart button.
         }
@@ -71,11 +71,11 @@ namespace CryingSnow.CheckoutFrenzy
         {
             amount += value;
             amount = Mathf.Clamp(amount, 1, 10); // Clamp the amount between 1 and 10.
-            string amountTxt = LanguageControl.CheckLanguage("Miktar:","Amount:");
+            string amountTxt = LanguageManager.instance.GetLocalizedValue("AmountText");
             amountText.text = $"{amountTxt} {amount}";
 
             decimal totalPrice = price * amount;
-            string totalTxt = LanguageControl.CheckLanguage("Toplam:","Total:");
+            string totalTxt = LanguageManager.instance.GetLocalizedValue("TotalText");
             totalText.text = $"{totalTxt} ${totalPrice:N2}";
 
             if (playSFX) AudioManager.Instance.PlaySFX(AudioID.Click);

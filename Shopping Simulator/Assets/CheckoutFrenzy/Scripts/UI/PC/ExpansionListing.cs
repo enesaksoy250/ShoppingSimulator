@@ -31,16 +31,16 @@ namespace CryingSnow.CheckoutFrenzy
         {
             this.expansion = expansion;
 
-            string priceTxt = LanguageControl.CheckLanguage("Fiyat:","Price:");
+            string priceTxt = LanguageManager.instance.GetLocalizedValue("PriceText");
             nameText.text = expansion.Name;
             priceText.text = $"{priceTxt} ${expansion.UnlockPrice:N2}";
 
-            string description = LanguageControl.CheckLanguage("Mağazanıza daha fazla yer ekleyin", "Add more room to your store");
+            string description = LanguageManager.instance.GetLocalizedValue("AddMoreRoomText");
             descriptionText.text = $"\u2022 {description}";
 
             if (expansion.AdditionalCustomers > 0)
             {
-                string customerTxt = LanguageControl.CheckLanguage("Müşteri kapasitesi ", "Customer capacity");
+                string customerTxt = LanguageManager.instance.GetLocalizedValue("CustomerCapacityText");
                 descriptionText.text += $"\n\u2022 {customerTxt} +{expansion.AdditionalCustomers}";
             }
 
@@ -62,7 +62,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void DisablePurchasing()
         {
             purchaseButton.gameObject.SetActive(false);
-            requirementText.text = LanguageControl.CheckLanguage("Bu genişleme zaten sizin.", "You already own this expansion.");
+            requirementText.text = LanguageManager.instance.GetLocalizedValue("ExpansionAlreadyOwnedText");
         }
 
         /// <summary>
@@ -75,21 +75,21 @@ namespace CryingSnow.CheckoutFrenzy
             bool isCurrentExpansion = StoreManager.Instance.IsCurrentExpansion(expansion);
 
             bool isAvailable = isLevelMet && isCurrentExpansion;
-            string requirement = LanguageControl.CheckLanguage("KULLANILABİLİR", "AVAILABLE");
-            string requirement2 = LanguageControl.CheckLanguage("KULLANILAMAZ", "UNAVAILABLE");
+            string requirement = LanguageManager.instance.GetLocalizedValue("AvailableText");
+            string requirement2 = LanguageManager.instance.GetLocalizedValue("UnavailableText");
             requirementText.text = isAvailable ? $"<color=green>{requirement}" : $"<color=red>{requirement2}";
 
             requirementText.text += isLevelMet ? "\n<color=green>" : "\n<color=red>";
-            string text = LanguageControl.CheckLanguage("Gerekli Seviye", "Requires Level");
+            string text = LanguageManager.instance.GetLocalizedValue("RequiredLevelText");
             requirementText.text += $"{text} {expansion.RequiredLevel}";
 
-            string text2 = LanguageControl.CheckLanguage("Önceki genişleme satın alındı", "Previous expansion purchased");
-            string text3 = LanguageControl.CheckLanguage("Önceki genişletmeyi satın alın ", "Purchase previous expansion");
+            string text2 = LanguageManager.instance.GetLocalizedValue("PreviousExpansionPurchasedText");
+            string text3 = LanguageManager.instance.GetLocalizedValue("PurchasePreviousExpansionText");
 
             if (isCurrentExpansion) requirementText.text += $"\n<color=green>{text2}";
             else requirementText.text += $"\n<color=red>{text3}";
 
-            string buttonText = LanguageControl.CheckLanguage("Satın Al", "Purchase");
+            string buttonText = LanguageManager.instance.GetLocalizedValue("BuyButtonText");
             purchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
 
             purchaseButton.interactable = isAvailable;

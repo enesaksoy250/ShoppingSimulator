@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -72,7 +73,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             string displayText = "";
 
-            string missionText1 = LanguageControl.CheckLanguage("Görev", "Mission");
+            string missionText1 = LanguageManager.instance.GetLocalizedValue("MissionText");
             displayText = $"<u>{missionText1} #{mission.missionId:D3}</u>"; // Format mission ID.
             displayText += $"\n<align=left>{GetFormattedGoal(mission.goalType)}:"; // Add formatted goal type.
 
@@ -133,23 +134,23 @@ namespace CryingSnow.CheckoutFrenzy
             switch (goalType)
             {
                 case Mission.Goal.Checkout:
-                    goal = LanguageControl.CheckLanguage("Ödeme Gerçekleştir","Perform Checkout");
+                    goal = LanguageManager.instance.GetLocalizedValue("PerformCheckoutText");
                     break;
 
                 case Mission.Goal.Revenue:
-                    goal = LanguageControl.CheckLanguage("Gelir Topla","Collect Revenue");
+                    goal = LanguageManager.instance.GetLocalizedValue("CollectRevenueText");
                     break;
 
                 case Mission.Goal.Sell:
-                    goal = LanguageControl.CheckLanguage("Ürün Sat","Sell Product");
+                    goal = LanguageManager.instance.GetLocalizedValue("SellProductText");
                     break;
 
                 case Mission.Goal.Restock:
-                    goal = LanguageControl.CheckLanguage("Ürünü Yeniden Stokla","Restock Product");
+                    goal =LanguageManager.instance.GetLocalizedValue("RestockProductText");
                     break;
 
                 case Mission.Goal.Furnish:
-                    goal = LanguageControl.CheckLanguage("Mağazayı Döşe","Furnish The Store");
+                    goal = LanguageManager.instance.GetLocalizedValue("FurnishStoreText");
                     break;
 
                 default:

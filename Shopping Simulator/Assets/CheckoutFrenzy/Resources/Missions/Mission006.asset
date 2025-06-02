@@ -15,5 +15,5 @@ MonoBehaviour:
   missionId: 6
   goalType: 0
   targetId: 0
-  goalAmount: 100
-  reward: 400
+  goalAmount: 25
+  reward: 150

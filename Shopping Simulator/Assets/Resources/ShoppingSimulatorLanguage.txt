@@ -1,73 +1,156 @@
-Key;English;Turkish
-PlayText;START GAME;OYUNA BAŞLA
-SettingsText;SETTINGS;AYARLAR
-QuitText;QUIT GAME;OYUNDAN ÇIK
-ConfirmText;Confirm;Onayla
-PaymentText;Payment Terminal;Ödeme Terminali
-CashRegisterText;Cash Register;Yasar Kasa
-ClearButtonText;Clear;Temizle
-ThrowText;Throw;At
-OpenText;Open;Aç
-CloseText;Close;Kapat
-PlaceText;Place;Yerleştir
-TakeText;Take;Al
-SetPriceText;Set Price;Fiyat Ayarla
-ReturnText;Return;Geri
-RotateText;Rotate;Döndür
-DialogText;No customers arrive during the night;Gece boyunca hic müşteri gelmez
-SkipButtonText;Skip To The Next Day;Ertesi Güne Geç
-BackText;Back;Geri
-SettingsText;Settings;Ayarlar
-InteractionText;Display interaction message;Etkileşim mesajını görüntüle 
-ProductText;Product;Ürün
-FurnitureText;Furniture;Mobilya
-LicenseText;License;Lisans
-ExpansionText;Expansion;Genişleme
-ServiceText;Service;Servis
-CartText;Cart;Sepet
-ProductNameText;Product Name;Ürün adı
-SummaryText;TODAY'S SUMMARY;BUGÜNÜN ÖZETİ
-SkipNextDayText;Skip To Next Day;Ertesi Güne Geç
-ContinueText;Continue;Devam
-TotalCustomerText;Total Customers;Toplam Müşteri
-PreviousBalanceText;Previous Balance;Önceki Denge
-TotalRevenuesText;Total Revenues;Toplam Gelir
-TotalSpendingText;Total Spending;Toplam Harcama
-CurrentBalanceText;Current Balance;Mevcut Bakiye
-HireCashierInfoText;Hire a cashier to assist with customer checkouts for one day!;Müşteri ödemelerine yardımcı olması için bir günlüğüne bir kasiyer kiralayın!
-HireText;Hire;Kirala
-HCNameText;Hire Cashier;Kasiyer işe Al
-HCleanerNameText;Hire Cleaner;Temizlikçi işe Al
-HireCleanerInfoText;Hire a cleaning service to keep your store spotless!;Mağazanızı tertemiz tutmak için bir temizlik hizmeti kiralayın! 
-TotalText;Total;Toplam
-QuantityText;Quantity;Miktar
-CheckoutText;Checkout;Ödeme
-AdPanelHeaderText;WIN AWARD!;ÖDÜL KAZAN!
-AdPanelInfoText;Watch ads to earn reward coins that you can use in-game;Reklam izleyerek oyun içinde kullanabileceğin ödül para kazanabilirsin
-AdButtonText;WATCH;İZLE
-StorePanelHeaderText;STORE;MAĞAZA
-RemoveAdText;Remove all ads!;Tüm reklamları kaldır!
-LoadingText;Loading...;Yükleniyor...
-WatchWinText;Watch ads and win!;Reklam izle kazan!
-RewardGivenText;Reward given!;Ödül verildi!
-ErrorText;An error has occurred!;Bir hata oluştu!
-WelcomeText;WELCOME!;HOŞGELDİNİZ!
-UsernameText;USERNAME;KULLANICI ADI
-StoreNameText;STORE NAME;MARKET ADI
-SaveButtonText;SAVE;KAYDET
-WaitingText;Please wait...;Lütfen bekleyin...
-ConnectText;Connection Error!            You must be connected to the internet to play the game.;Bağlantı Hatası!         Oyunu oynamak için internete bağlı olman gerekiyor.
-RemoveAdPanelInfoText;Enjoy an Ad-Free Experience! Would you like to play without any ads? With a one-time purchase, all ads will be permanently removed. Keep the fun going without interruptions!;Reklamsız bir deneyim için! Oyunumuzu reklamsız oynamak ister misin? Tek seferlik bir satın alma işlemiyle tüm reklamlar kalıcı olarak kaldırılacak. Eğlenceye kesintisiz devam et!
-BuyButtonText;BUY;SATIN AL
-RemoveAdPanelHeaderText;REMOVE ALL ADS!;TÜM REKLAMLARI KALDIR!
-EnterText;Enter;Tamam
-BackText;Delete;Sil
-MusicText;Music Volume;Müzik Sesleri
-EffectText;SFX Volume;Efekt Sesleri
-ReputationTitle;What is the market popularity?;Market popülerliği nedir?
-OkeyText;OKEY;TAMAM
-PopularityText;Popularity;Popülerlik
-LeaderboardButtonText;BEST PLAYERS;EN İYİLER
-LeadTitleText;TOP PLAYERS;EN İYİ OYUNCULAR
-PaymentCompletedText;Payment completed successfully!;Ödeme başarıyla tamamlandı!
-MainMenuButtonText;BACK TO MAIN MENU;ANA MENÜYE DÖN
+Key;English;Türkçe;Deutsch;Español;Italiano;Français;Português
+PlayText;START GAME;OYUNA BAŞLA;SPIEL STARTEN;INICIAR JUEGO;INIZIA PARTITA;COMMENCER LE JEU;INICIAR JOGO
+SettingsText;SETTINGS;AYARLAR;EINSTELLUNGEN;AJUSTES;IMPOSTAZIONI;PARAMÈTRES;DEFINIÇÕES
+QuitText;QUIT GAME;OYUNDAN ÇIK;SPIEL BEENDEN;SALIR DEL JUEGO;ESCI DAL GIOCO;QUITTER LE JEU;SAIR DO JOGO
+ConfirmText;Confirm;Onayla;Bestätigen;Confirmar;Conferma;Confirmer;Confirmar
+PaymentText;Payment Terminal;Ödeme Terminali;Zahlungsterminal;Terminal de pago;Terminale di pagamento;Terminal de paiement;Terminal de Pagamento
+CashRegisterText;Cash Register;Yazar Kasa;Kasse;Caja registradora;Registratore di cassa;Caisse enregistreuse;Caixa Registradora
+ClearButtonText;Clear;Temizle;Leeren;Limpiar;Cancella;Effacer;Limpar
+ThrowText;Throw;At;Werfen;Lanzar;Lancia;Lancer;Lançar
+ChooseLanguageText;LANGUAGE SELECTION;DİL SEÇİMİ;SPRACHAUSWAHL;SELECCIÓN DE IDIOMA;SELEZIONE LINGUA;SÉLECTION DE LA LANGUE;SELEÇÃO DE IDIOMA
+OpenText;Open;Aç;Öffnen;Abrir;Apri;Ouvrir;Abrir
+CloseText;Close;Kapat;Schließen;Cerrar;Chiudi;Fermer;Fechar
+PlaceText;Place;Yerleştir;Platzieren;Colocar;Posiziona;Placer;Colocar
+TakeText;Take;Al;Nehmen;Tomar;Prendi;Prendre;Pegar
+SetPriceText;Set Price;Fiyat Ayarla;Preis festlegen;Establecer precio;Imposta prezzo;Définir le prix;Definir Preço
+ReturnText;Return;Geri;Zurück;Volver;Indietro;Retour;Retornar
+RotateText;Rotate;Döndür;Drehen;Rotar;Ruota;Rotation;Rotacionar
+DialogText;No customers arrive during the night;Gece boyunca hic müşteri gelmez;Nachts kommen keine Kunden;No llegan clientes durante la noche;Nessun cliente arriva durante la notte;Aucun client n'arrive pendant la nuit;Nenhum cliente chega durante a noite
+SkipButtonText;Skip To The Next Day;Ertesi Güne Geç;Zum nächsten Tag springen;Saltar al día siguiente;Passa al giorno successivo;Passer au jour suivant;Pular Para O Próximo Dia
+BackText;Back;Geri;Zurück;Atrás;Indietro;Retour;Voltar
+SettingsText;Settings;Ayarlar;Einstellungen;Ajustes;Impostazioni;Paramètres;Definições
+InteractionText;Display interaction message;Etkileşim mesajını görüntüle;Interaktionsnachricht anzeigen;Mostrar mensaje de interacción;Visualizza messaggio di interazione;Afficher le message d'interaction;Exibir mensagem de interação
+ProductText;Product;Ürün;Produkt;Producto;Prodotto;Produit;Produto
+FurnitureText;Furniture;Mobilya;Möbel;Muebles;Mobili;Meubles;Móveis
+LicenseText;License;Lisans;Lizenz;Licencia;Licenza;Licence;Licença
+ExpansionText;Expansion;Genişleme;Erweiterung;Expansión;Espansione;Expansion;Expansão
+ServiceText;Service;Servis;Service;Servicio;Servizio;Service;Serviço
+CartText;Cart;Sepet;Warenkorb;Carrito;Carrello;Panier;Carrinho
+ProductNameText;Product Name;Ürün adı;Produktname;Nombre del producto;Nome del prodotto;Nom du produit;Nome do Produto
+SummaryText;TODAY'S SUMMARY;BUGÜNÜN ÖZETİ;ZUSAMMENFASSUNG DES TAGES;RESUMEN DEL DÍA;RIEPILOGO DEL GIORNO;RÉSUMÉ DU JOUR;RESUMO DE HOJE
+SkipNextDayText;Skip To The Next Day;Ertesi Güne Geç;Zum nächsten Tag springen;Saltar al día siguiente;Passa al giorno successivo;Passer au jour suivant;Pular Para O Próximo Dia
+ContinueText;Continue;Devam;Weiter;Continuar;Continua;Continuer;Continuar
+TotalCustomerText;Total Customers;Toplam Müşteri;Gesamtkunden;Total de clientes;Totale clienti;Total Clients;Total de Clientes
+PreviousBalanceText;Previous Balance;Önceki Denge;Vorheriger Saldo;Saldo anterior;Saldo precedente;Solde précédent;Saldo Anterior
+TotalRevenuesText;Total Revenues;Toplam Gelir;Gesamteinnahmen;Ingresos totales;Entrate totali;Revenus totaux;Receita Total
+TotalSpendingText;Total Spending;Toplam Harcama;Gesamtausgaben;Gasto total;Spesa totale;Dépenses totales;Gasto Total
+CurrentBalanceText;Current Balance;Mevcut Bakiye;Aktueller Saldo;Saldo actual;Saldo attuale;Solde actuel;Saldo Atual
+HireCashierInfoText;Hire a cashier to assist with customer checkouts for one day!;Müşteri ödemelerine yardımcı olması için bir günlüğüne bir kasiyer kiralayın!;Stellen Sie einen Kassierer ein, der einen Tag lang bei der Kundenabwicklung hilft!;¡Contrate un cajero para ayudar con los pagos de los clientes por un día!;Assumi un cassiere per assistere con i pagamenti dei clienti per un giorno!;Embauchez un caissier pour vous aider avec les paiements des clients pendant une journée !;Contrate um caixa para ajudar com as finalizações de compra dos clientes por um dia!
+HireText;Hire;Kirala;Einstellen;Contratar;Assumi;Embaucher;Contratar
+HCNameText;Hire Cashier;Kasiyer işe Al;Kassierer einstellen;Contratar cajero;Assumi cassiere;Embaucher caissier;Contratar Caixa
+HCleanerNameText;Hire Cleaner;Temizlikçi işe Al;Reiniger einstellen;Contratar limpiador;Assumi addetto alle pulizie;Embaucher nettoyeur;Contratar Faxineiro
+HireCleanerInfoText;Hire a cleaning service to keep your store spotless!;Mağazanızı tertemiz tutmak için bir temizlik hizmeti kiralayın!;Mieten Sie einen Reinigungsservice, um Ihr Geschäft makellos sauber zu halten!;¡Contrate un servicio de limpieza para mantener su tienda impecable!;Assumi un servizio di pulizia per mantenere il tuo negozio impeccabile!;Embauchez un service de nettoyage pour garder votre magasin impeccable !;Contrate um serviço de limpeza para manter sua loja impecável!
+TotalText;Total;Toplam;Gesamt;Total;Totale;Total;Total
+QuantityText;Quantity;Miktar;Menge;Cantidad;Quantità;Quantité;Quantidade
+CheckoutText;Checkout;Ödeme;Kasse;Pagar;Cassa;Paiement;Finalização
+AdPanelHeaderText;WIN AWARD!;ÖDÜL KAZAN!;GEWINNEN SIE EINE AUSZEICHNUNG!;¡GANA UN PREMIO!;VINCI UN PREMIO!;GAGNEZ UN PRIX!;GANHE UM PRÊMIO!
+AdPanelInfoText;Watch ads to earn reward coins that you can use in-game;Reklam izleyerek oyun içinde kullanabileceğin ödül para kazanabilirsin;Sehen Sie sich Anzeigen an, um Belohnungsmünzen zu verdienen, die Sie im Spiel verwenden können;Mira anuncios para ganar monedas de recompensa que puedes usar en el juego;Guarda annunci per guadagnare monete premio che puoi usare nel gioco;Regardez des publicités pour gagner des pièces de récompense que vous pouvez utiliser dans le jeu ;Assista a anúncios para ganhar moedas de recompensa que você pode usar no jogo
+AdButtonText;WATCH;İZLE;ANSEHEN;VER;GUARDA;REGARDER;ASSISTIR
+StorePanelHeaderText;STORE;MAĞAZA;GESCHÄFT;TIENDA;NEGOZIO;MAGASIN;LOJA
+RemoveAdText;Remove all ads!;Tüm reklamları kaldır!;Alle Anzeigen entfernen!;¡Quitar todos los anuncios!;Rimuovi tutti gli annunci!;Supprimer toutes les publicités !;Remover todos os anúncios!
+LoadingText;Loading...;Yükleniyor...;Wird geladen...;Cargando...;Caricamento in corso...;Chargement...;Carregando...
+WatchWinText;Watch ads and win!;Reklam izle kazan!;Anzeigen ansehen und gewinnen!;¡Mira anuncios y gana!;Guarda annunci e vinci!;Regardez des publicités et gagnez !;Assista a anúncios e ganhe!
+RewardGivenText;Reward given!;Ödül verildi!;Belohnung erhalten!;¡Recompensa dada!;Ricompensa data!;Récompense donnée !;Recompensa dada!
+ErrorText;An error has occurred!;Bir hata oluştu!;Ein Fehler ist aufgetreten!;¡Ha ocurrido un error!;Si è verificato un errore!;Une erreur est survenue !;Ocorreu um erro!
+WelcomeText;WELCOME!;HOŞGELDİNİZ!;WILLKOMMEN!;¡BIENVENIDO!;BENVENUTO!;BIENVENUE !;BEM-VINDO!
+UsernameText;USERNAME;KULLANICI ADI;BENUTZERNAME;NOMBRE DE USUARIO;NOME UTENTE;NOM D'UTILISATEUR;NOME DE USUÁRIO
+StoreNameText;STORE NAME;MARKET ADI;GESCHÄFTSNAME;NOMBRE DE LA TIENDA;NOME DEL NEGOZIO;NOM DU MAGASIN;NOME DA LOJA
+SaveButtonText;SAVE;KAYDET;SPEICHERN;GUARDAR;SALVA;ENREGISTRER;SALVAR
+WaitingText;Please wait...;Lütfen bekleyin...;Bitte warten...;Por favor espera...;Attendere prego...;Veuillez patienter...;Por favor, espere...
+ConnectText;Connection Error! You must be connected to the internet to play the game.;Bağlantı Hatası! Oyunu oynamak için internete bağlı olman gerekiyor.;Verbindungsfehler! Sie müssen mit dem Internet verbunden sein, um das Spiel spielen zu können.;¡Error de conexión! Debes estar conectado a internet para jugar.;Errore di connessione! Devi essere connesso a Internet per giocare.;Erreur de connexion ! Vous devez être connecté à Internet pour jouer au jeu.;Erro de conexão! Você deve estar conectado à internet para jogar.
+RemoveAdPanelInfoText;Enjoy an Ad-Free Experience! Would you like to play without any ads? With a one-time purchase, all ads will be permanently removed. Keep the fun going without interruptions!;Reklamsız bir deneyim için! Oyunumuzu reklamsız oynamak ister misin? Tek seferlik bir satın alma işlemiyle tüm reklamlar kalıcı olarak kaldırılacak. Eğlenceye kesintisiz devam et!;Genießen Sie ein werbefreies Erlebnis! Möchten Sie ohne Werbung spielen? Mit einem einmaligen Kauf werden alle Anzeigen dauerhaft entfernt. Halten Sie den Spaß ohne Unterbrechungen aufrecht!;¡Disfruta de una experiencia sin anuncios! ¿Te gustaría jugar sin anuncios? Con una compra única, todos los anuncios se eliminarán permanentemente. ¡Sigue divirtiéndote sin interrupciones!;Goditi un'esperienza senza pubblicità! Ti piacerebbe giocare senza pubblicità? Con un acquisto una tantum, tutte le pubblicità verranno rimosse in modo permanente. Continua a divertirti senza interruzioni!;Profitez d'une expérience sans publicité ! Souhaitez-vous jouer sans publicité ? Avec un achat unique, toutes les publicités seront définitivement supprimées. Continuez à vous amuser sans interruption !;Desfrute de uma experiência sem anúncios! Gostaria de jogar sin anuncios? Com uma compra única, todos os anúncios serão removidos permanentemente. Mantenha a diversão sem interrupções!
+BuyButtonText;BUY;SATIN AL;KAUFEN;COMPRAR;ACQUISTA;ACHETER;COMPRAR
+RemoveAdPanelHeaderText;REMOVE ALL ADS!;TÜM REKLAMLARI KALDIR!;ALLE ANZEIGEN ENTFERNEN!;¡QUITAR TODOS LOS ANUNCIOS!;RIMUOVI TUTTI GLI ANNUNCI!;SUPPRIMER TOUTES LES PUBLICITÉS !;REMOVER TODOS OS ANÚNCIOS!
+EnterText;Enter;Tamam;Eingeben;Introducir;Invio;Entrer;Entrar
+BackText;Delete;Sil;Löschen;Eliminar;Elimina;Supprimer;Deletar
+MusicText;Music Volume;Müzik Sesleri;Musiklautstärke;Volumen de la música;Volume musica;Volume de la musique;Volume da Música
+EffectText;SFX Volume;Efekt Sesleri;SFX-Lautstärke;Volumen SFX;Volume SFX;Volume SFX;Volume SFX
+ReputationTitle;What is the market popularity?;Market popülerliği nedir?;Was ist die Marktpopularität?;¿Cuál es la popularidad del mercado?;Qual è la popolarità del mercato?;Quelle est la popularité du marché ?;Qual é a popularidade do mercado?
+OkeyText;OKEY;TAMAM;OKAY;OKAY;OKAY;OKAY;OKAY
+PopularityText;Popularity;Popülerlik;Popularität;Popularidad;Popolarità;Popularité;Popularidade
+LeaderboardButtonText;BEST PLAYERS;EN İYİLER;BESTE SPIELER;MEJORES JUGADORES;MIGLIORI GIOCATORI;MEILLEURS JOUEURS;MELHORES JOGADORES
+LeadTitleText;TOP PLAYERS;EN İYİ OYUNCULAR;TOP-SPIELER;MEJORES JUGADORES;MIGLIORI GIOCATORI;MEILLEURS JOUEURS;MELHORES JOGADORES
+PaymentCompletedText;Payment completed successfully!;Ödeme başarıyla tamamlandı!;Zahlung erfolgreich abgeschlossen!;¡Pago completado con éxito!;Pagamento completato con successo!;Paiement effectué avec succès !;Pagamento concluído com sucesso!
+MainMenuButtonText;BACK TO MAIN MENU;ANA MENÜYE DÖN;ZURÜCK ZUM HAUPTMENÜ;VOLVER AL MENÚ PRINCIPAL;TORNA AL MENU PRINCIPALE;RETOUR AU MENU PRINCIPAL;VOLTAR AO MENU PRINCIPAL
+ConnectGoogleText;Connect your google account!;Google hesabınızı bağlayın!;Verbinden Sie Ihr Google-Konto!;¡Conecta tu cuenta de Google!;Collega il tuo account Google!;Connectez votre compte Google !;Conecte sua conta do Google!
+ConnectGoogleInfoText;Connect your google account so that your game progress can be saved.;Oyun ilerlemenizin kaydedilebilmesi için google hesabınızı bağlayın.;Verbinden Sie Ihr Google-Konto, damit Ihr Spielfortschritt gespeichert werden kann.;Conecta tu cuenta de Google para que se pueda guardar tu progreso en el juego.;Collega il tuo account Google in modo che i tuoi progressi di gioco possano essere salvati.;Connectez votre compte Google afin que votre progression dans le jeu puisse être enregistrée.;Conecte sua conta do Google para que seu progresso no jogo possa ser salvo.
+CashierText;A cashier is already working here;Burada zaten bir kasiyer çalışıyor;Hier arbeitet bereits ein Kassierer;Ya hay un cajero trabajando aquí;Qui sta già lavorando un cassiere;Un caissier travaille déjà ici;Já há um caixa trabalhando aqui
+TapToPayAsCashierText;Tap to pay as cashier!;Kasiyer olarak ödeme yapmak için dokunun!;Tippen Sie, um als Kassierer zu bezahlen!;¡Toca para pagar como cajero!;Tocca per pagare come cassiere!;Touchez pour payer en tant que caissier !;Toque para pagar como caixa!
+InsufficientChangeText;Insufficient change. Please enter the correct amount.;Yetersiz bozukluk. Lütfen doğru miktarı giriniz.;Ungenügend Wechselgeld. Bitte geben Sie den korrekten Betrag ein.;Cambio insuficiente. Por favor, ingrese la cantidad correcta.;Resto insufficiente. Si prega di inserire l'importo corretto.;Monnaie insuffisante. Veuillez entrer le montant correct.;Troco insuficiente. Por favor, insira o valor correto.
+GoogleAccountConnectedText;Your google account is connected;Google hesabınız bağlı;Ihr Google-Konto ist verbunden;Tu cuenta de Google está conectada;Il tuo account Google è connesso;Votre compte Google est connecté;Sua conta Google está conectada
+InvalidAmountText;Invalid amount. Please enter a valid amount.;Geçersiz tutar.Lütfen geçerli bir tutar girin.;Ungültiger Betrag. Bitte geben Sie einen gültigen Betrag ein.;Cantidad inválida. Por favor, ingrese una cantidad válida.;Importo non valido. Si prega di inserire un importo valido.;Montant invalide. Veuillez entrer le montant valide.;Valor inválido. Por favor, insira um valor válido.
+PendingStatusText;Pending...;Beklemede...;Ausstehend...;Pendiente...;In sospeso...;En attente...;Pendente...
+WaitingMessageText;\n\nWaiting...;\n\nBekleniyor...;\n\nWird gewartet...;\n\nEsperando...;\n\nIn attesa...;En attente...;\n\nAguardando...
+ScanningStatusText;Scanning...;Taranıyor...;Wird gescannt...;Escaneando...;Scansione in corso...;Scan en cours...;Escaneando...
+TotalText;Total:;Toplam:;Gesamt:;Total:;Totale:;Total:;Total:
+CashPaymentText;Cash Payment;Nakit Ödeme;Barzahlung;Pago en efectivo;Pagamento in contanti;Paiement en espèces;Pagamento em dinheiro
+TotalText;Total:;Toplam:;Gesamt:;Total:;Totale:;Total:;Total:
+AmountReceivedText;Received:;Alınan:;Erhalten:;Recibido:;Ricevuto:;Reçu:;Recebido:
+ChangeText;Change:;Para Üstü:;Wechselgeld:;Cambio:;Resto:;Monnaie:;Troco:
+GivenAmountText;Given:;Verilen:;Gegeben:;Entregado:;Dato:;Donné:;Dado:
+CardPaymentText;Card Payment;Kartla Ödeme;Kartenzahlung;Pago con tarjeta;Pagamento con carta;Paiement par carte;Pagamento com cartão
+EnterTotalOnTerminalText;\nEnter the total amount on the payment terminal;\nÖdeme terminaline toplam tutarı girin;\nGeben Sie den Gesamtbetrag am Zahlungsterminal ein;\nIngrese el importe total en el terminal de pago;\nInserire l'importo totale nel terminale di pagamento;\nEntrez le montant total sur le terminal de paiement;\nInsira o valor total no terminal de pagamento
+LevelUpText;Level Up!;Seviye Atlandı!;Level aufgestiegen!;¡Nivel subido!;Livello raggiunto!;Niveau supérieur !;Subiu de nível!
+HoldToMoveFurnitureText;Hold to move this furniture within the store!;Bu mobilyayı mağaza içinde taşımak için tutun!;Halten Sie gedrückt, um dieses Möbelstück im Laden zu bewegen!;¡Mantén pulsado para mover este mueble dentro de la tienda!;Tieni premuto per spostare questo mobile all'interno del negozio!;Maintenez pour déplacer ce meuble à l'intérieur du magasin !;Segure para mover este móvel dentro da loja!
+CannotPlaceFurnitureHereText;You cannot place furniture here!;Buraya mobilya yerleştiremezsiniz!;Sie können hier keine Möbel platzieren!;¡No puedes colocar muebles aquí!;Non puoi posizionare mobili qui!;Vous ne pouvez pas placer de meubles ici !;Você não pode colocar móveis aqui!
+RewardCollectedText;Reward Collected!;Ödül Toplandı!;Belohnung eingesammelt!;¡Recompensa recogida!;Ricompensa raccolta!;Récompense collectée !;Recompensa coletada!
+TapToTakeBoxText;Tap to take this box!;Bu kutuyu almak için dokunun!;Tippen Sie, um diese Kiste zu nehmen!;¡Toca para coger esta caja!;Tocca per prendere questa scatola!;Touchez pour prendre cette boîte !;Toque para pegar esta caixa!
+CannotThrowObjectHereText;You cannot throw an object here!;Buraya nesne atamazsınız!;Sie können hier kein Objekt werfen!;¡No puedes lanzar un objeto aquí!;Non puoi lanciare un oggetto qui!;Vous ne pouvez pas lancer d'objet ici !;Você não pode jogar um objeto aqui!
+ProductWrongSectionText;Product doesn't belong in this section.;Ürün bu bölüme ait değildir.;Das Produkt gehört nicht in diesen Bereich.;El producto no pertenece a esta sección.;Il prodotto non appartiene a questa sezione.;Le produit n'appartient pas à cette section.;O produto não pertence a esta seção.
+DifferentProductOnShelfText;There is a different product on the shelf.;Rafta farklı bir ürün bulunmaktadır.;Auf dem Regal befindet sich ein anderes Produkt.;Hay un producto diferente en la estantería.;C'è un prodotto diverso sullo scaffale.;Il y a un produit différent sur l'étagère.;Há um produto diferente na prateleira.
+BoxIsFullText;Box is full.;Kutu dolu.;Kiste ist voll.;La caja está llena.;La scatola è piena.;La boîte est pleine.;A caixa está cheia.
+BoxContainsDifferentProductText;The box contains a different product.;Kutu farklı bir ürün içeriyor.;Die Kiste enthält ein anderes Produkt.;La caja contiene un producto diferente.;La scatola contiene un prodotto diverso.;La boîte contient un produit différent.;A caixa contém um produto diferente.
+IncompatibleBoxSizeText;Incompatible box size.;Uyumsuz kutu boyutu.;Inkompatible Kartongröße.;Tamaño de caja incompatible.;Dimensioni della scatola incompatibili.;Taille de boîte incompatible.;Tamanho de caixa incompatível.
+ShelfIsFullText;Shelf is full!;Raf dolu!;Regal ist voll!;¡El estante está lleno!;Lo scaffale è pieno!;L'étagère est pleine !;A prateleira está cheia!
+TapToCloseDoorsText;Tap to close the entrance doors.;Giriş kapılarını kapatmak için dokunun.;Tippen Sie, um die Eingangstüren zu schließen.;Toca para cerrar las puertas de entrada.;Tocca per chiudere le porte d'ingresso.;Touchez pour fermer les portes d'entrée.;Toque para fechar as portas de entrada.
+TapToOpenDoorsText;Tap to open the entrance doors.;Giriş kapılarını açmak için dokunun.;Tippen Sie, um die Eingangstüren zu öffnen.;Toca para abrir las puertas de entrada.;Tocca per aprire le porte d'ingresso.;Touchez pour ouvrir les portes d'entrée.;Toque para abrir as portas de entrada.
+StandbyStatusText;Standby...;Beklemede...;Bereitschaft...;En espera...;In standby...;En veille...;Em espera...
+TapToStartOrderProgramText;Tap to turn on the PC and start the Order Program.;Bilgisayarı açmak ve Sipariş Programını başlatmak için dokunun.;Tippen Sie, um den PC einzuschalten und das Bestellprogramm zu starten.;Toca para encender la PC e iniciar el Programa de Pedidos.;Tocca per accendere il PC e avviare il Programma Ordini.;Touchez pour allumer le PC et démarrer le programme de commande.;Toque para ligar o PC e iniciar o Programa de Pedidos.
+LoadingOrderProgramText;Loading Order Program\nPlease wait...;Sipariş Programı Yükleniyor\nLütfen bekleyin...;Bestellprogramm wird geladen\nBitte warten...;Cargando Programa de Pedidos\nPor favor espera...;Caricamento Programma Ordini\nAttendere prego...;Chargement du programme de commande\nVeuillez patienter...;Carregando Programa de Pedidos\nPor favor, espere...
+CartEmptyAddItemsText;Cart is empty. Add products or furnitures first.;Sepet boş. Önce ürün veya mobilya ekleyin.;Warenkorb ist leer. Fügen Sie zuerst Produkte oder Möbel hinzu.;El carrito está vacío. Agregue productos o muebles primero.;Il carrello è vuoto. Aggiungi prima prodotti o mobili.;Le panier est vide. Ajoutez d'abord des produits ou des meubles.;O carrinho está vazio. Adicione produtos ou móveis primeiro.
+CheckoutSuccessfulText;Checkout successful!;Ödeme başarılı!;Kasse erfolgreich!;¡Pago realizado con éxito!;Pagamento riuscito!;Paiement réussi !;Pagamento bem-sucedido!
+NotEnoughMoneyText;You don't have enough money!;Yeterli paran yok!;Sie haben nicht genug Geld!;¡No tienes suficiente dinero!;Non hai abbastanza soldi!;Vous n'avez pas assez d'argent !;Você não tem dinheiro suficiente!
+CashierAlreadyHiredText;A cashier is already hired.;Bir kasiyer işe alındı bile.;Ein Kassierer wurde bereits eingestellt.;Ya se ha contratado a un cajero.;Un cassiere è già stato assunto.;Un caissier a déjà été embauché.;Um caixa já foi contratado.
+CashierHiredSuccessText;Cashier hired successfully!;Kasiyer başarıyla işe alındı!;Kassierer erfolgreich eingestellt!;¡Cajero contratado con éxito!;Cassiere assunto con successo!;Caissier embauché avec succès !;Caixa contratado com sucesso!
+CleanerHiredSuccessText;Cleaner hired successfully!;Temizlikçi başarıyla işe alındı!;Reinigungskraft erfolgreich eingestellt!;¡Limpiador contratado con éxito!;Addetto alle pulizie assunto con successo!;Agent d'entretien embauché avec succès !;Faxineiro contratado com sucesso!
+StoreAlreadyCleanText;Your store is already clean.;Mağazanız zaten temiz!;Ihr Laden ist bereits sauber!;¡Tu tienda ya está limpia!;Il tuo negozio è già pulito!;Votre magasin est déjà propre !;Sua loja já está limpa!
+TapToOpenOrCloseStoreText;Tap to close or open the store.;Mağazayı kapatmak veya açmak için dokunun.;Tippen Sie, um den Laden zu schließen oder zu öffnen.;Toca para cerrar o abrir la tienda.;Tocca per chiudere o aprire il negozio.;Touchez pour fermer ou ouvrir le magasin.;Toque para fechar ou abrir a loja.
+TapToRenameStoreText;Tap to rename your store.;Mağazanızı yeniden adlandırmak için dokunun.;Tippen Sie, um Ihren Laden umzubenennen.;Toca para renombrar tu tienda.;Tocca per rinominare il tuo negozio.;Touchez pour renommer votre magasin.;Toque para renomear sua loja.
+InventoryColumnLabelsText;Name\n Quantity\n Box Size;İsim\n Miktar\nKutu Boyutu;Name\nMenge\nKartongröße;Nombre\nCantidad\nTamaño de caja;Nome\nQuantità\nDimensioni della scatola;Nom\nQuantité\nTaille de la boîte;Nome\nQuantidade\nTamanho da Caixa
+InvalidAmountText;Invalid amount.Please enter a valid amount.;Geçersiz tutar.Lütfen geçerli bir tutar girin.;Ungültiger Betrag. Bitte geben Sie einen gültigen Betrag ein.;Cantidad inválida. Por favor, ingrese una cantidad válida.;Importo non valido. Si prega di inserire un importo valido.;Montant invalide. Veuillez entrer le montant valide.;Valor inválido. Por favor, insira um valor válido.
+MissionObjectiveDisplay;<u>Mission #001</u>\r\n<align=left>Goal Type:\r\nLong Target Name\r\n<align=center>0 / 5\r\n<align=left>Collect Reward:;<u>Görev #001</u>\r\n<align=left>Hedef Türü:\r\nUzun Hedef Adı\r\n<align=center>0 / 5\r\n<align=left>Toplanan Ödül:;<u>Mission #001</u>\r\n<align=left>Zieltyp:\r\nLanger Zielname\r\n<align=center>0 / 5\r\n<align=left>Belohnung sammeln:;<u>Misión #001</u>\r\n<align=left>Tipo de objetivo:\r\nNombre de objetivo largo\r\n<align=center>0 / 5\r\n<align=left>Recolectar recompensa:;<u>Missione #001</u>\r\n<align=left>Tipo obiettivo:\r\nNome obiettivo lungo\r\n<align=center>0 / 5\r\n<align=left>Riscuoti ricompensa:;<u>Mission #001</u>\r\n<align=left>Type d'objectif :\r\nNom de l'objectif long\r\n<align=center>0 / 5\r\n<align=left>Récompense à collecter :;<u>Missão #
+001</u>\r\n<align=left>Tipo de Objetivo:\r\nNome do Objetivo Longo\r\n<align=center>0 / 5\r\n<align=left>Coletar Recompensa:
+MissionText;Mission;Görev;Mission;Misión;Missione;Mission;Missão
+PerformCheckoutText;Perform Checkout;Ödeme Gerçekleştir;Kasse durchführen;Realizar pago;Esegui checkout;Effectuer le paiement;Realizar pagamento
+CollectRevenueText;Collect Revenue;Gelir Topla;Einnahmen sammeln;Recolectar ingresos;Raccogli entrate;Collecter les revenus;Coletar receita
+SellProductText;Sell Product;Ürün Sat;Produkt verkaufen;Vender producto;Vendi prodotto;Vendre le produit;Vender produto
+RestockProductText;Restock Product;Ürünü Yeniden Stokla;Produkt nachfüllen;Reabastecer producto;Rifornisci prodotto;Réapprovisionner le produit;Reabastecer produto
+FurnishStoreText;Furnish The Store;Mağazayı Döşe;Den Laden einrichten;Amueblar la tienda;Arreda il negozio;Meubler le magasin;Mobiliar a Loja
+PriceText;Price:;Fiyat:;Preis:;Precio:;Prezzo:;Prix:;Preço:
+AddMoreRoomText;Add more room to your store;Mağazanıza daha fazla yer ekleyin;Fügen Sie Ihrem Geschäft mehr Platz hinzu;Agregue más espacio a su tienda;Aggiungi più spazio al tuo negozio;Ajoutez plus d'espace à votre magasin;Adicione mais espaço à sua Loja
+CustomerCapacityText;Customer capacity;Müşteri kapasitesi;Kundenkapazität;Capacidad de clientes;Capacità clienti;Capacité client;Capacidade de clients
+AvailableText;AVAILABLE;KULLANILABİLİR;VERFÜGBAR;DISPONIBLE;DISPONIBILE;DISPONIBLE;DISPONÍVEL
+UnavailableText;UNAVAILABLE;KULLANILAMAZ;NICHT VERFÜGBAR;NO DISPONIBLE;NON DISPONIBILE;INDISPONIBLE;INDISPONÍVEL
+RequiredLevelText;Required Level;Gerekli Seviye;Erforderliches Level;Nivel requerido;Livello richiesto;Niveau requis;Nível necessário
+PreviousExpansionPurchasedText;Previous expansion purchased;Önceki genişleme satın alındı;Vorherige Erweiterung gekauft;Expansión anterior comprada;Espansione precedente acquistata;Extension précédente achetée;Expansão anterior comprada
+PurchasePreviousExpansionText;Purchase previous expansion;Önceki genişletmeyi satın alın;Vorherige Erweiterung kaufen;Comprar expansión anterior;Acquista espansione precedente;Acheter l'extension précédente;Comprar expansão anterior
+BuyButtonText;BUY;SATIN AL;KAUFEN;COMPRAR;ACQUISTA;ACHETER;COMPRAR
+ExpansionAlreadyOwnedText;You already own this expansion.;Bu genişleme zaten sizin.;Diese Erweiterung gehört Ihnen bereits.;Ya tienes esta expansión.;Possiedi già questa espansione.;Vous possédez déjà cette extension.;Você já possui esta expansão.
+SectionText;Section:;Reyon:;Abteilung:;Sección:;Sezione:;Section:;Seção:
+AddToCartText;Add to Cart;Sepete Ekle;Zum Warenkorb hinzufügen;Añadir al carrito;Aggiungi al carrello;Ajouter au panier;Adicionar ao carrinho
+AmountText;Amount:;Miktar:;Menge:;Cantidad:;Quantità:;Quantité :;Quantidade:
+PermissionToSellText;Permission to sell the following products:;Aşağıdaki ürünleri satmak için izin:;Genehmigung zum Verkauf der folgenden Produkte:;Permiso para vender los siguientes productos:;Permesso di vendere i seguenti prodotti:;Autorisation de vendre les produits suivants :;Permissão para vender os seguintes produtos:
+LicenseAlreadyOwnedText;You already own this license.;Bu lisansa zaten sahipsiniz.;Sie besitzen diese Lizenz bereits.;Ya tienes esta licencia.;Possiedi già questa licenza.;Vous possédez déjà cette licence.;Você já possui esta licença.
+PackText;Pack;Paket;Packung;Paquete;Pacchetto;Paquet;Pacote
+ProfitText;Profit:;Kâr:;Gewinn:;Ganancia:;Profitto:;Bénéfice :;Lucro:
+CurrentPriceText;Current Price:;Güncel Fiyat;Aktueller Preis;Precio actual;Prezzo attuale;Prix actuel;Preço atual
+MarketPriceText;Market Price;Market Fiyatı;Marktpreis;Precio de mercado;Prezzo di mercato;Prix du marché;Preço de mercado
+NextDeliveryText;Next Delivery:;Sonraki Teslimat:;Nächste Lieferung:;Próxima entrega:;Prossima consegna:;Prochaine livraison :;Próxima entrega:
+DayText;Day;Gün;Tag;Día;Giorno;Jour;Dia
+LevelText2;Level;Seviye;Level;Nivel;Livello;Niveau;Nível
+ConnectGoogleAccountText;Connect your google account!;Google hesabını bağla!;Verbinden Sie Ihr Google-Konto!;¡Conecta tu cuenta de Google!;Collega il tuo account Google!;Connectez votre compte Google !;Conecte sua conta Google!
+LanguageText;LANGUAGE;DİL;SPRACHE;IDIOMA;LINGUA;LANGUE;IDIOMA
+LoginSuccessText;Successfully logged in!;Başarıyla giriş yapıldı!;Erfolgreich angemeldet!;¡Inicio de sesión exitoso!;Accesso effettuato con successo!;Connexion réussie !;Login efetuado com sucesso!
+LeaderboardUsernameText;USERNAME;KULLANICI ADI;BENUTZERNAME;NOMBRE DE USUARIO;NOME UTENTE;NOM D'UTILISATEUR;NOME DE USUÁRIO
+LeaderboardLevelText;LEVEL;SEVİYE;LEVEL;NIVEL;LIVELLO;NIVEAU;NÍVEL
+VideoStartTimerText;The video starts in {time} seconds...;Video {time} saniye içinde başlıyor...;Das Video beginnt in {time} Sekunden...;El video comienza en {time} segundos...;Il video inizia tra {time} secondi...;La vidéo commence dans {time} secondes...;O vídeo começa em {time} segundos...

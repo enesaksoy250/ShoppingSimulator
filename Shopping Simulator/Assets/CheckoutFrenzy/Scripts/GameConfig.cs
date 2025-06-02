@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -94,31 +95,10 @@ namespace CryingSnow.CheckoutFrenzy
         private LayerMask playerLayer;
 
 
-
-        [Header("Customer Dialogues")]
-        [SerializeField, Tooltip("Dialogue lines used when the customer can't find a product.")]
-        private Dialogue notFoundDialogue;
-
-        [SerializeField, Tooltip("Dialogue lines used when the customer thinks a product is too expensive.")]
-        private Dialogue overpricedDialogue;
-       
-        [SerializeField]
-        private Dialogue notFoundDialogueTurkish;
-
-        [SerializeField]
-        private Dialogue overPricedDialogueTurkish;
-
-        [SerializeField]
-        private Dialogue satisfiedDialogueTurkish;
-
-        [SerializeField]
-        private Dialogue satisfiedDialogueEnglish;
-
-        [SerializeField]
-        private Dialogue waitingLongDialogueTurkish;
-        
-        [SerializeField]
-        private Dialogue waitingLongDialogueEnglish;
+        [SerializeField] List<Dialogue> notFoundDialogues;
+        [SerializeField] List<Dialogue> overpricedDialogues;
+        [SerializeField] List<Dialogue> satisfiedDialogues;
+        [SerializeField] List<Dialogue> waitingLongDialogues;
 
         [Header("Control Settings")]
         [SerializeField, Tooltip("Selected control mode for the game.")]
@@ -129,6 +109,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] private float maxSpawnTimeAtMinReputation = 45f;
         [SerializeField] private float minSpawnTimeAtMaxReputation = 5f;
         [SerializeField] private float maxSpawnTimeAtMaxReputation = 15f;
+
+     
 
         // Store Settings
         public string DefaultStoreName => defaultStoreName;
@@ -172,15 +154,11 @@ namespace CryingSnow.CheckoutFrenzy
         public LayerMask HeldObjectLayer => heldObjectLayer;
         public LayerMask PlayerLayer => playerLayer;
 
-        // Customer Dialogues
-        public Dialogue NotFoundDialogue => notFoundDialogue;
-        public Dialogue OverpricedDialogue => overpricedDialogue;
-        public Dialogue NotFoundDialogueTurkish => notFoundDialogueTurkish;
-        public Dialogue OverPricedDialogueTurkish => overPricedDialogueTurkish;
-        public Dialogue SatisfiedDialogueTurkish => satisfiedDialogueTurkish;
-        public Dialogue SatisfiedDialogueEnglish => satisfiedDialogueEnglish;
-        public Dialogue WaitingLongDialogueTurkish => waitingLongDialogueTurkish;
-        public Dialogue WaitingLongDialogueEnglish => waitingLongDialogueEnglish;
+        public List<Dialogue> NotFoundDialogues => notFoundDialogues;
+        public List<Dialogue> OverPricedDialogues => overpricedDialogues;
+        public List<Dialogue> SatisfiedDialogues => satisfiedDialogues;
+        public List<Dialogue> WaitingLongDialogues => waitingLongDialogues;
+
 
         // Control Mode
         public ControlMode ControlMode => controlMode;

@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Audio;
+using TMPro;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -22,6 +25,10 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Toggle to enable/disable interaction messages.")]
         private Toggle interactMessageToggle;
 
+        [SerializeField] private TextMeshProUGUI googleConnectText;
+
+        [SerializeField] private TextMeshProUGUI languageText;
+        
         private PlayerController _player;
         private PlayerController player
         {
@@ -113,11 +120,32 @@ namespace CryingSnow.CheckoutFrenzy
         public void Open()
         {
             gameObject.SetActive(true);
+      
+            if(SceneManager.GetActiveScene().buildIndex == 1)
+            {
 
-            StoreManager.Instance.IsUIBlockingActions = true;
+                StoreManager.Instance.IsUIBlockingActions = true;
 
-            if (player.CanMove)
-                UIManager.Instance.ToggleCrosshair(false);
+                if (player.CanMove)
+                    UIManager.Instance.ToggleCrosshair(false);
+
+                if (PlayerPrefs.HasKey("GoogleLogin"))
+                {
+                    googleConnectText.text = LanguageManager.instance.GetLocalizedValue("GoogleAccountConnectedText");
+                }
+
+                else
+                {
+                    googleConnectText.text = LanguageManager.instance.GetLocalizedValue("ConnectGoogleAccountText");
+                }
+            }
+
+            else
+            {
+                languageText.text = LanguageManager.GetLanguage();
+            }
+
+           
 
             AudioManager.Instance.PlaySFX(AudioID.Click);
         }
@@ -126,10 +154,14 @@ namespace CryingSnow.CheckoutFrenzy
         {
             gameObject.SetActive(false);
 
-            StoreManager.Instance.IsUIBlockingActions = false;
+            if(SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                StoreManager.Instance.IsUIBlockingActions = false;
 
-            if (player.CanMove)
-                UIManager.Instance.ToggleCrosshair(true);
+                if (player.CanMove)
+                    UIManager.Instance.ToggleCrosshair(true);
+            }
+         
         }
     }
 }

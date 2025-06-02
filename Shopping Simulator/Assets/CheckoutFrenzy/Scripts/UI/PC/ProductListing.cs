@@ -61,13 +61,13 @@ namespace CryingSnow.CheckoutFrenzy
             categoryText.text = formattedName;
 
             boxQuantity = product.GetBoxQuantity();
-            string pack = LanguageControl.CheckLanguage("paket", "pack");
+            string pack = LanguageManager.instance.GetLocalizedValue("PackText");
             quantityText.text = $"<sprite=12> <size=30>{boxQuantity} {pack}"; // Set the quantity text.
 
-            string section = LanguageControl.CheckLanguage("Reyon:", "Section:");
+            string section = LanguageManager.instance.GetLocalizedValue("SectionText");
             sectionText.text = $"{section} {product.Section}";
 
-            string price = LanguageControl.CheckLanguage("Fiyat:", "Price:");
+            string price = LanguageManager.instance.GetLocalizedValue("PriceText");
             singlePrice = product.Price * boxQuantity; // Calculate the price per box/pack.
             priceText.text = $"{price} ${singlePrice:N2}";
 
@@ -76,7 +76,7 @@ namespace CryingSnow.CheckoutFrenzy
             decreaseButton.onClick.AddListener(() => UpdateAmount(-1)); // Add listener to decrease button.
             increaseButton.onClick.AddListener(() => UpdateAmount(1));  // Add listener to increase button.
 
-            string cartText = LanguageControl.CheckLanguage("Sepete Ekle","Add to Cart");
+            string cartText = LanguageManager.instance.GetLocalizedValue("AddToCartText");
             addToCartButton.GetComponentInChildren<TextMeshProUGUI>().text = cartText;
             addToCartButton.onClick.AddListener(() => PC.Instance.AddToCart(product, amount)); // Add listener to add to cart button.
         }
@@ -90,10 +90,10 @@ namespace CryingSnow.CheckoutFrenzy
         {
             amount += value;
             amount = Mathf.Clamp(amount, 1, 10);
-            string amountTxt = LanguageControl.CheckLanguage("Miktar:","Amount:");// Clamp the amount between 1 and 10.
+            string amountTxt = LanguageManager.instance.GetLocalizedValue("AmountText");// Clamp the amount between 1 and 10.
             amountText.text = $"{amountTxt} {amount}";
 
-            string total = LanguageControl.CheckLanguage("Toplam:","Total:");
+            string total = LanguageManager.instance.GetLocalizedValue("TotalText");
             decimal totalPrice = singlePrice * amount; // Calculate the total price.
             totalText.text = $"{total} ${totalPrice:N2}";
 

@@ -37,7 +37,7 @@ namespace CryingSnow.CheckoutFrenzy
         // IPurchasable Properties
         public string Name => name;
         public Sprite Icon => icon;
-        public decimal Price => priceInCents / 100m;
+        public decimal Price => priceInCents / 100;
         public int OrderTime => orderTime;
         public Section Section => section;
 
@@ -63,7 +63,7 @@ namespace CryingSnow.CheckoutFrenzy
         protected virtual void Start()
         {
             // Subscribe to the OnSave event to save this furniture's data.
-            DataManager.Instance.OnSave += () =>
+         /*   DataManager.Instance.OnSave += () =>
             {
                 // Create a new FurnitureData object from this furniture's properties.
                 var furnitureData = new FurnitureData(this);
@@ -71,9 +71,40 @@ namespace CryingSnow.CheckoutFrenzy
                 // Add the furniture data to the list of saved furniture.
                 DataManager.Instance.Data.SavedFurnitures.Add(furnitureData);
             };
+         */
+            DataManager.Instance.OnSave += CollectDataForSave;
 
             HandlePlacementIssues();
         }
+
+        public virtual void OnDestroy()
+        {
+            if (DataManager.Instance != null)
+                DataManager.Instance.OnSave -= CollectDataForSave;
+        }
+
+        private void CollectDataForSave()
+        {
+           
+            if (this == null || this.gameObject == null)
+            {
+                Debug.LogWarning("CollectDataForSave called on a destroyed Furniture object. (Should not happen with proper unsubscribe)");
+                return; // Obje geçerli değilse çık
+            }
+       
+            var furnitureData = new FurnitureData(this);
+
+           
+            if (DataManager.Instance != null && DataManager.Instance.Data != null)
+            {
+                DataManager.Instance.Data.SavedFurnitures.Add(furnitureData);
+            }
+            else
+            {
+                Debug.LogError("DataManager.Instance or DataManager.Instance.Data is null during Furniture data collection!");
+            }
+        }
+
 
         ///<summary>
         /// Handles furniture placement issues on game load:
@@ -123,7 +154,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public virtual void OnFocused()
         {
-            string message = LanguageControl.CheckLanguage("Bu mobilyayı mağaza içinde taşımak için tutun!", "Hold to move this furniture around the store");
+            string message = LanguageManager.instance.GetLocalizedValue("HoldToMoveFurnitureText");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
@@ -225,7 +256,7 @@ namespace CryingSnow.CheckoutFrenzy
             // If there are any overlapping objects, the furniture cannot be placed.
             if (others.Count > 0)
             {
-                string text = LanguageControl.CheckLanguage("Buraya mobilya yerleştiremezsiniz!", "Can't place furnitures here!");
+                string text = LanguageManager.instance.GetLocalizedValue("CannotPlaceFurnitureHereText");
                 UIManager.Instance.Message.Log(text, Color.red);
                 return;
             }

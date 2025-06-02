@@ -42,7 +42,7 @@ public class CheckInternetConnection : MonoBehaviour
 
             else if(sceneIndex == 1)
             {
-                GamePanelManager.Instance.LoadPanel("NotConnectPanel");
+                GamePanelManager.instance.LoadPanel("NotConnectPanel");
             }
             
             isOpen = true;
@@ -57,7 +57,7 @@ public class CheckInternetConnection : MonoBehaviour
 
             else if (sceneIndex == 1)
             {
-                GamePanelManager.Instance.ClosePanel("NotConnectPanel");
+                GamePanelManager.instance.ClosePanel("NotConnectPanel");
             }
       
             isOpen = false;

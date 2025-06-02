@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be19370a790ad14e8a67f6a205dcfa2, type: 3}
+  m_Name: WLDSpanish
+  m_EditorClassIdentifier: 
+  lines:
+  - Text: "Si tuviera que esperar tanto, me ir\xEDa a otro supermercado."
+  - Text: "\xBFPor qu\xE9 hay tan poca gente en la caja?"
+  - Text: "El tiempo es oro, \xA1pero este sitio parece detener el tiempo!"
+  - Text: "\xA1Estar\xEDa bien que aceleraran un poco!"
+  - Text: "Me olvid\xE9 de comprar porque estaba haciendo cola."
+  - Text: "No s\xE9 si vali\xF3 la pena la espera..."
+  - Text: "La pr\xF3xima vez har\xE9 el pedido por Internet."

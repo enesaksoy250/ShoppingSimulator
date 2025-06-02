@@ -18,7 +18,8 @@ namespace CryingSnow.CheckoutFrenzy
         public decimal PendingOrdersValue { get; set; }
         public decimal UnpaidProductsValue { get; set; }
 
-        public HashSet<int> LicensedProducts { get; set; }
+        //public HashSet<int> LicensedProducts { get; set; }
+        public List<int> LicensedProducts { get; set; }
 
         public int ExpansionLevel { get; set; }
 
@@ -26,7 +27,16 @@ namespace CryingSnow.CheckoutFrenzy
         public int TotalMinutes { get; set; }
 
         public SummaryData CurrentSummary { get; set; }
-        public MissionData CurrentMission { get; set; }
+        public MissionData CurrentMission { get; set; } 
+
+        public GameData()
+        {
+            SavedFurnitures = new List<FurnitureData>();
+            SavedBoxes = new List<BoxData>();
+            CustomPrices = new List<CustomPrice>();
+            LicensedProducts = new List<int>();
+        }
+
 
         public void Initialize()
         {
@@ -38,7 +48,8 @@ namespace CryingSnow.CheckoutFrenzy
             SavedFurnitures = new List<FurnitureData>();
             SavedBoxes = new List<BoxData>();
             CustomPrices = new List<CustomPrice>();
-            LicensedProducts = new HashSet<int>();
+            //LicensedProducts = new HashSet<int>();
+            LicensedProducts = new List<int>();
 
             TotalDays = 1;
 
@@ -48,6 +59,10 @@ namespace CryingSnow.CheckoutFrenzy
 
             CurrentSummary = new SummaryData(PlayerMoney);
             CurrentMission = new MissionData(1);
+         
+
         }
+   
+
     }
 }

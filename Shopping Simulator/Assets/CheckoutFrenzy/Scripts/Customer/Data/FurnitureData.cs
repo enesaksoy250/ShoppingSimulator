@@ -11,7 +11,7 @@ namespace CryingSnow.CheckoutFrenzy
         public Orientation Orientation { get; set; }
         public bool WasMoving { get; set; }
         public List<ShelfData> SavedShelves { get; set; }
-
+  
         public FurnitureData(Furniture furniture)
         {
             FurnitureID = furniture.FurnitureID;
@@ -30,5 +30,7 @@ namespace CryingSnow.CheckoutFrenzy
                 }
             }
         }
+
+        public FurnitureData() { }
     }
 }
