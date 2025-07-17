@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+using Cinemachine;
 using SimpleInputNamespace;
+using DG.Tweening;
+using UnityEngine.Playables;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -63,10 +66,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         public Transform HoldPoint => holdPoint;
 
-        public enum State { Free, Holding, Moving, Working, Busy }
-        public State CurrentState { get; set; }
-
-        public bool CanMove => CurrentState != State.Working && CurrentState != State.Busy;
+        public PlayerStateManager StateManager { get; private set; }
 
         private Camera mainCamera;
 
@@ -79,9 +79,11 @@ namespace CryingSnow.CheckoutFrenzy
         private bool isMobileControl;
 
         private AudioSource audioSource;
+        private CinemachineVirtualCamera playerVirtualCam;
 
         private IInteractable lastInteractable;
         private Shelf lastShelf;
+        private Rack lastRack;
 
         private Vector3 holdPointOrigin;
 
@@ -90,12 +92,20 @@ namespace CryingSnow.CheckoutFrenzy
 
         private float distanceTraveled;
 
-        private void Start()
+        private void Awake()
         {
+            StateManager = new PlayerStateManager(this);
+
             controller = GetComponent<CharacterController>();
             audioSource = GetComponent<AudioSource>();
-            mainCamera = Camera.main;
+            playerVirtualCam = GetComponentInChildren<CinemachineVirtualCamera>();
+
             holdPointOrigin = holdPoint.localPosition;
+        }
+
+        private void Start()
+        {
+            mainCamera = Camera.main;
 
             isMobileControl = GameConfig.Instance.ControlMode == ControlMode.Mobile;
             xLookAxis = isMobileControl ? "Look X" : "Mouse X";
@@ -114,23 +124,26 @@ namespace CryingSnow.CheckoutFrenzy
             HandleBobbing();
             HandleFootsteps();
 
-            switch (CurrentState)
+            switch (StateManager.CurrentState)
             {
-                case State.Free:
+                case PlayerState.Free:
                     DetectInteractable();
-                    DetectProduct();
+                    DetectShelfToCustomize();
+                    DetectRack();
                     break;
 
-                case State.Holding:
-                    DetectShelf();
+                case PlayerState.Holding:
+                    DetectShelfToRestock();
+                    DetectRack();
                     break;
 
-                case State.Working:
+                case PlayerState.Working:
                     Work();
                     break;
 
-                case State.Moving:
-                case State.Busy:
+                case PlayerState.Moving:
+                case PlayerState.Busy:
+                case PlayerState.Paused:
                 default:
                     break;
             }
@@ -148,8 +161,8 @@ namespace CryingSnow.CheckoutFrenzy
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
 
-            float curSpeedX = CanMove ? movingSpeed * SimpleInput.GetAxis("Vertical") : 0f;
-            float curSpeedY = CanMove ? movingSpeed * SimpleInput.GetAxis("Horizontal") : 0f;
+            float curSpeedX = !IsMovementBlocked() ? movingSpeed * SimpleInput.GetAxis("Vertical") : 0f;
+            float curSpeedY = !IsMovementBlocked() ? movingSpeed * SimpleInput.GetAxis("Horizontal") : 0f;
 
             movement = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -163,13 +176,20 @@ namespace CryingSnow.CheckoutFrenzy
             controller.Move(playerVelocity * Time.deltaTime);
 
             // Handle player rotation (if applicable)
-            if (CanMove)
+            if (!IsMovementBlocked())
             {
                 rotationX += -SimpleInput.GetAxis(yLookAxis) * lookSpeed;
                 rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
                 playerCamera.localRotation = Quaternion.Euler(rotationX, 0, 0);
                 transform.rotation *= Quaternion.Euler(0, SimpleInput.GetAxis(xLookAxis) * lookSpeed, 0);
             }
+        }
+
+        private bool IsMovementBlocked()
+        {
+            return StateManager.CurrentState is PlayerState.Working
+            or PlayerState.Busy
+                or PlayerState.Paused;
         }
 
         private void HandleSway()
@@ -236,6 +256,12 @@ namespace CryingSnow.CheckoutFrenzy
 
             AudioClip clip = footstepClips[Random.Range(0, footstepClips.Length)];
             audioSource.PlayOneShot(clip);
+        }
+
+        public void SetInteractable(IInteractable interactable)
+        {
+            lastInteractable = interactable;
+            InteractWithCurrent();
         }
 
         private void DetectInteractable()
@@ -313,7 +339,7 @@ namespace CryingSnow.CheckoutFrenzy
             UIManager.Instance.ToggleInteractButton(false);
         }
 
-        private void DetectProduct()
+        private void DetectShelfToCustomize()
         {
             // Create a ray from the center of the viewport.
             Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
@@ -326,6 +352,9 @@ namespace CryingSnow.CheckoutFrenzy
                 // Check if the detected shelf is different from the last detected shelf.
                 if (detectedShelf != lastShelf)
                 {
+                    UIManager.Instance.ToggleActionUI(ActionType.Price, false, null);
+                    UIManager.Instance.ToggleActionUI(ActionType.Label, false, null);
+
                     // Check if the detected shelf has a product.
                     if (detectedShelf?.Product != null)
                     {
@@ -334,8 +363,7 @@ namespace CryingSnow.CheckoutFrenzy
                         {
                             UIManager.Instance.ToggleActionUI(ActionType.Price, false, null);
 
-                            CurrentState = State.Busy;
-                            UIManager.Instance.ToggleCrosshair(false);
+                            StateManager.PushState(PlayerState.Busy);
 
                             var priceCustomizer = UIManager.Instance.PriceCustomizer;
 
@@ -343,8 +371,7 @@ namespace CryingSnow.CheckoutFrenzy
                             priceCustomizer.OnClose.RemoveAllListeners();
                             priceCustomizer.OnClose.AddListener(() =>
                             {
-                                CurrentState = State.Free;
-                                UIManager.Instance.ToggleCrosshair(true);
+                                StateManager.PopState();
                             });
 
                             priceCustomizer.Open(detectedShelf.Product);
@@ -358,21 +385,43 @@ namespace CryingSnow.CheckoutFrenzy
                             detectedShelf.ShelvingUnit.OnDefocused();
                         });
                     }
+                    else
+                    {
+                        UIManager.Instance.ToggleActionUI(ActionType.Label, true, () =>
+                        {
+                            UIManager.Instance.ToggleActionUI(ActionType.Label, false, null);
+
+                            StateManager.PushState(PlayerState.Busy);
+
+                            var labelCustomizer = UIManager.Instance.LabelCustomizer;
+
+                            // Remove any existing listeners and add a new listener for the label customizer's close event.
+                            labelCustomizer.OnClose.RemoveAllListeners();
+                            labelCustomizer.OnClose.AddListener(() =>
+                            {
+                                StateManager.PopState();
+                            });
+
+                            labelCustomizer.Open(detectedShelf);
+                            detectedShelf.ShelvingUnit.OnDefocused();
+                        });
+                    }
 
                     lastShelf = detectedShelf;
                 }
             }
             else if (lastShelf != null)
             {
-                // Disable the set price button if no shelf is detected.
+                // Disable the set price and set label action UIs if no shelf is detected.
                 UIManager.Instance.ToggleActionUI(ActionType.Price, false, null);
+                UIManager.Instance.ToggleActionUI(ActionType.Label, false, null);
 
                 // Reset the last detected shelf.
                 lastShelf = null;
             }
         }
 
-        private void DetectShelf()
+        private void DetectShelfToRestock()
         {
             // Create a ray from the center of the viewport.
             Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
@@ -432,6 +481,65 @@ namespace CryingSnow.CheckoutFrenzy
             }
         }
 
+        private void DetectRack()
+        {
+            // Create a ray from the center of the viewport.
+            Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, GameConfig.Instance.RackLayer))
+            {
+                Rack detectedRack = hit.transform.GetComponent<Rack>();
+
+                // Check if the detected rack is different from the last detected rack.
+                if (detectedRack != lastRack)
+                {
+                    // Get the currently held box.
+                    Box box = lastInteractable as Box;
+
+                    // Check if player held a box and it is not empty.
+                    if (box != null && box.Quantity > 0)
+                    {
+                        // Enable the place button and set its click action.
+                        UIManager.Instance.ToggleActionUI(ActionType.Place, true, () =>
+                        {
+                            // Attempt to store the box on the rack.
+                            box.Store(detectedRack, true);
+                        });
+                    }
+                    // Check if the player is NOT holding a box OR is holding an empty box.
+                    else if (box == null && detectedRack.BoxQuantity > 0)
+                    {
+                        // Enable the take button and set its click action.
+                        UIManager.Instance.ToggleActionUI(ActionType.Take, true, () =>
+                        {
+                            // Attempt to retrieve boxes from the rack.
+                            detectedRack.RetrieveBox(this);
+                            UIManager.Instance.ToggleActionUI(ActionType.Take, false, null);
+                        });
+                    }
+                    else
+                    {
+                        // Disable the take button if the shelf is empty or the player is holding an empty box.
+                        UIManager.Instance.ToggleActionUI(ActionType.Take, false, null);
+                    }
+
+                    // Update the last detected shelf.
+                    lastRack = detectedRack;
+                }
+            }
+            else if (lastRack != null)
+            {
+                // Disable the place and take buttons if no rack is detected.
+                if (StateManager.CurrentState != PlayerState.Moving)
+                    UIManager.Instance.ToggleActionUI(ActionType.Place, false, null);
+
+                UIManager.Instance.ToggleActionUI(ActionType.Take, false, null);
+
+                // Reset the last detected rack.
+                lastRack = null;
+            }
+        }
+
         private void Work()
         {
             // Check for mouse click and if the last interactable is a CheckoutCounter.
@@ -481,6 +589,21 @@ namespace CryingSnow.CheckoutFrenzy
 
             // Return the front position, zeroing out the Y-component and flooring the X and Z components to the nearest tenth.
             return new Vector3(front.x, 0f, front.z).FloorToTenth();
+        }
+
+        /// <summary>
+        /// Smoothly sets the FOV of player's Cinemachine virtual camera.
+        /// </summary>
+        /// <param name="targetFOV">Target field of view value.</param>
+        /// <param name="duration">How long the tween should take.</param>
+        public void SetFOVSmooth(float targetFOV, float duration = 0.5f)
+        {
+            DOTween.To(
+                () => playerVirtualCam.m_Lens.FieldOfView,
+                fov => playerVirtualCam.m_Lens.FieldOfView = fov,
+                targetFOV,
+                duration
+            ).SetEase(Ease.InOutSine);
         }
     }
 }

@@ -79,7 +79,7 @@ public class LoginWithGoogle : MonoBehaviour
             isGoogleSignInInitialized = true;
         }
 
-        //GoogleSignIn.DefaultInstance.SignOut();
+        GoogleSignIn.DefaultInstance.SignOut();
 
 
         GoogleSignIn.DefaultInstance.SignIn().ContinueWithOnMainThread(task =>

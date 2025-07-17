@@ -21,3 +21,7 @@ MonoBehaviour:
   section: 1
   model: {fileID: 4848489318087012773, guid: 9ae2f2d0e70ab74499ac121e5d76705d, type: 3}
   box: {fileID: 3464276203139735961, guid: 6ad69ebc1db2efc48b9a69f9c4f3f0d6, type: 3}
+  overrideBoxQuantity: 1
+  boxQuantity: {x: 2, y: 1, z: 4}
+  overrideShelfQuantity: 1
+  shelfQuantity: {x: 4, y: 1, z: 2}

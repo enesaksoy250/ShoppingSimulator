@@ -37,7 +37,7 @@ namespace CryingSnow.CheckoutFrenzy
         // IPurchasable Properties
         public string Name => name;
         public Sprite Icon => icon;
-        public decimal Price => priceInCents / 100;
+        public decimal Price => priceInCents / 100m;
         public int OrderTime => orderTime;
         public Section Section => section;
 
@@ -63,73 +63,23 @@ namespace CryingSnow.CheckoutFrenzy
         protected virtual void Start()
         {
             // Subscribe to the OnSave event to save this furniture's data.
-         /*   DataManager.Instance.OnSave += () =>
-            {
-                // Create a new FurnitureData object from this furniture's properties.
-                var furnitureData = new FurnitureData(this);
-
-                // Add the furniture data to the list of saved furniture.
-                DataManager.Instance.Data.SavedFurnitures.Add(furnitureData);
-            };
-         */
-            DataManager.Instance.OnSave += CollectDataForSave;
-
-            HandlePlacementIssues();
+            DataManager.Instance.OnSave += HandleOnSave;
         }
 
-        public virtual void OnDestroy()
+        private void HandleOnSave()
+        {
+            // Create a new FurnitureData object from this furniture's properties.
+            var furnitureData = new FurnitureData(this, player != null ? player.transform.position : Vector3.zero);
+
+            // Add the furniture data to the list of saved furniture.
+            DataManager.Instance.Data.SavedFurnitures.Add(furnitureData);
+        }
+
+        private void OnDestroy()
         {
             if (DataManager.Instance != null)
-                DataManager.Instance.OnSave -= CollectDataForSave;
-        }
-
-        private void CollectDataForSave()
-        {
-           
-            if (this == null || this.gameObject == null)
             {
-                Debug.LogWarning("CollectDataForSave called on a destroyed Furniture object. (Should not happen with proper unsubscribe)");
-                return; // Obje geçerli değilse çık
-            }
-       
-            var furnitureData = new FurnitureData(this);
-
-           
-            if (DataManager.Instance != null && DataManager.Instance.Data != null)
-            {
-                DataManager.Instance.Data.SavedFurnitures.Add(furnitureData);
-            }
-            else
-            {
-                Debug.LogError("DataManager.Instance or DataManager.Instance.Data is null during Furniture data collection!");
-            }
-        }
-
-
-        ///<summary>
-        /// Handles furniture placement issues on game load:
-        ///
-        /// 1. If the game was quit before a delivered furniture piece fully landed, it might remain floating.
-        ///    To prevent this, activate physics if the furniture is above the floating threshold without a Rigidbody.
-        ///
-        /// 2. If the furniture was previously being moved but not placed, DataManager sets its position
-        ///    below ground level to indicate an invalid location. In this case, move it to the delivery point.
-        ///</summary>
-        private void HandlePlacementIssues()
-        {
-            const float GROUND_LEVEL = 0f;
-            const float FLOATING_THRESHOLD = 0.1f;
-
-            if (transform.position.y > FLOATING_THRESHOLD && !TryGetComponent<Rigidbody>(out _))
-            {
-                ActivatePhysics();
-                return;
-            }
-
-            if (transform.position.y < GROUND_LEVEL)
-            {
-                transform.position = StoreManager.Instance.DeliveryPoint.position;
-                ActivatePhysics();
+                DataManager.Instance.OnSave -= HandleOnSave;
             }
         }
 
@@ -166,7 +116,7 @@ namespace CryingSnow.CheckoutFrenzy
         private IEnumerator Move()
         {
             SetMovingState(true);
-            player.CurrentState = PlayerController.State.Moving;
+            player.StateManager.PushState(PlayerState.Moving);
 
             // Ensure furniture is oriented correctly on first move to prevent possible disorientation.
             if (currentDirection == Direction.North) transform.DORotate(Vector3.zero, 0.5f);
@@ -199,9 +149,14 @@ namespace CryingSnow.CheckoutFrenzy
                 // Switch to the moving material.
                 mainRenderer.material = movingMaterial;
 
-                // Enable the Place and Rotate buttons in the UI.
+                // Enable the Place, Rotate, and Pack buttons in the UI.
                 UIManager.Instance.ToggleActionUI(ActionType.Place, true, Place);
                 UIManager.Instance.ToggleActionUI(ActionType.Rotate, true, Rotate);
+                UIManager.Instance.ToggleActionUI(ActionType.Pack, true, Pack);
+
+                // If this furniture has doors, disable Open and Close buttons in the UI (e.g., Fridge, Freezer)
+                UIManager.Instance.ToggleActionUI(ActionType.Open, false, null);
+                UIManager.Instance.ToggleActionUI(ActionType.Close, false, null);
             }
             else
             {
@@ -215,9 +170,10 @@ namespace CryingSnow.CheckoutFrenzy
                 // Switch back to the default material.
                 mainRenderer.material = defaultMaterial;
 
-                // Disable the Place and Rotate buttons in the UI.
+                // Disable the Place, Rotate, and Pack buttons in the UI.
                 UIManager.Instance.ToggleActionUI(ActionType.Place, false, null);
                 UIManager.Instance.ToggleActionUI(ActionType.Rotate, false, null);
+                UIManager.Instance.ToggleActionUI(ActionType.Pack, false, null);
             }
         }
 
@@ -256,13 +212,13 @@ namespace CryingSnow.CheckoutFrenzy
             // If there are any overlapping objects, the furniture cannot be placed.
             if (others.Count > 0)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("CannotPlaceFurnitureHereText");
+                string text = LanguageManager.instance.GetLocalizedValue("CannotPlaceFurnitureText");
                 UIManager.Instance.Message.Log(text, Color.red);
                 return;
             }
 
             SetMovingState(false);
-            player.CurrentState = PlayerController.State.Free;
+            player.StateManager.PopState();
             player = null;
 
             // Update the NavMesh surface so Customer AI can pathfind around the placed furniture correctly.
@@ -279,6 +235,30 @@ namespace CryingSnow.CheckoutFrenzy
 
             // Rotate the furniture using a smooth animation.
             transform.DORotate(targetRotation, 0.5f);
+        }
+
+        private void Pack()
+        {
+            player.StateManager.PopState();
+
+            Transform holdPoint = player.HoldPoint;
+
+            var furnitureBox = Instantiate(
+                StoreManager.Instance.FurnitureBoxPrefab,
+                holdPoint.position,
+                holdPoint.rotation
+            );
+
+            furnitureBox.furnitureId = furnitureId;
+            furnitureBox.Interact(player);
+
+            UIManager.Instance.ToggleActionUI(ActionType.Place, false, null);
+            UIManager.Instance.ToggleActionUI(ActionType.Rotate, false, null);
+            UIManager.Instance.ToggleActionUI(ActionType.Pack, false, null);
+
+            DOTween.Kill(transform);
+
+            Destroy(gameObject);
         }
 
         private Direction GetFacingDirection()
@@ -312,6 +292,6 @@ namespace CryingSnow.CheckoutFrenzy
         Shelf,      // For generic shelving units.
         Fridge,     // For refrigerated units with doors.
         Freezer,    // For frozen food units with sliding doors.
-        Rack        // For fruit and vegetable displays.
+        FruitRack   // For fruit and vegetable displays.
     }
 }

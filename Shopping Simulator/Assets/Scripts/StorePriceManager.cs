@@ -72,7 +72,7 @@ public class StorePriceManager : MonoBehaviour
         {
             UIManager.Instance.RemoveAdPanel.GetComponent<Button>().interactable = false;
             string language = LanguageManager.GetLanguage();
-            UIManager.Instance.StorePriceText.text = language == "English" ? "PURCHASED" : "SATIN ALINDI";
+            UIManager.Instance.StorePriceText.text = LanguageManager.instance.GetLocalizedValue("PurchasedText");
         }
     }
 

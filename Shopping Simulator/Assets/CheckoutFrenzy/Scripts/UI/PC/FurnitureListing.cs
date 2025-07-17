@@ -33,6 +33,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Button to add the selected furniture to the cart.")]
         private Button addToCartButton;
 
+        public Section Section { get; private set; }
+
         private int amount;
         private decimal price;
 
@@ -42,6 +44,8 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="furniture">The Furniture object to display.</param>
         public void Initialize(Furniture furniture)
         {
+            this.Section = furniture.Section;
+
             iconImage.sprite = furniture.Icon;
             nameText.text = furniture.Name;
             string sectionTxT = LanguageManager.instance.GetLocalizedValue("SectionText");

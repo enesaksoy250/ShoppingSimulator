@@ -54,13 +54,11 @@ namespace CryingSnow.CheckoutFrenzy
         {
             roofCamera.gameObject.SetActive(true);
 
-            player.CurrentState = PlayerController.State.Busy;
-            UIManager.Instance.ToggleCrosshair(false);
+            player.StateManager.PushState(PlayerState.Busy);
 
             while (keyboard.activeSelf) yield return null;
 
-            player.CurrentState = PlayerController.State.Free;
-            UIManager.Instance.ToggleCrosshair(true);
+            player.StateManager.PopState();
 
             roofCamera.gameObject.SetActive(false);
         }

@@ -8,15 +8,22 @@ namespace CryingSnow.CheckoutFrenzy
     /// A shelf for storing and displaying products in the store.
     /// Inherits from the ProductContainer class.
     /// </summary>
-    public class Shelf : ProductContainer
+    public class Shelf : ProductContainer, IEmployeeTarget
     {
         [SerializeField, Tooltip("Text displaying product information")]
         private TMP_Text infoText;
+
+        [SerializeField] private GameObject restockLabel;
+        [SerializeField] private SpriteRenderer iconRenderer;
 
         /// <summary>
         /// The shelving unit this shelf belongs to.
         /// </summary>
         public ShelvingUnit ShelvingUnit { get; set; }
+
+        public Product AssignedProduct { get; private set; }
+
+        public bool IsTargeted { get; set; }
 
         /// <summary>
         /// Enables or disables interaction with the shelf collider.
@@ -28,6 +35,13 @@ namespace CryingSnow.CheckoutFrenzy
         {
             // Set the layer of the shelf GameObject
             gameObject.layer = GameConfig.Instance.ShelfLayer.ToSingleLayer();
+
+            // Ensures the label is correctly initialized, whether or not a product is assigned.  
+            // This prevents conflicts between the shelf's initialization and the Data Manager's restore process.  
+            // - If the Data Manager restores the saved product first on Awake(), calling SetLabel here ensures consistency.  
+            // - If this Awake() runs first, SetLabel initializes the label, and the Data Manager will update it later if needed.  
+            // - Regardless of the order, the final label state remains correct, preventing incorrect label states.
+            SetLabel(AssignedProduct);
         }
 
         private void Start()
@@ -74,8 +88,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else
             {
-                string text = LanguageManager.instance.GetLocalizedValue("ShelfIsFullText");
-                UIManager.Instance.Message.Log(text);
+                UIManager.Instance.Message.Log("Shelf is full!");
                 return false;
             }
         }
@@ -116,6 +129,14 @@ namespace CryingSnow.CheckoutFrenzy
             {
                 infoText.text = $"[-/-] $--.--";
             }
+        }
+
+        public void SetLabel(Product product)
+        {
+            AssignedProduct = product;
+
+            restockLabel.SetActive(product != null);
+            iconRenderer.sprite = product?.Icon;
         }
     }
 }

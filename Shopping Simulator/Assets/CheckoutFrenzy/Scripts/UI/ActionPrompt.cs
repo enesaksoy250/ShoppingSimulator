@@ -28,6 +28,7 @@ namespace CryingSnow.CheckoutFrenzy
         private UnityEvent onClick = new UnityEvent();
         public UnityEvent OnClick => onClick;
 
+        private bool isGamePaused => Time.timeScale < 1f;
         private bool isHolding = false;
         private float holdTimer = 0f;
         private float currentHoldInterval;
@@ -47,7 +48,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (Input.GetKeyDown(key))
             {
-                if (!CanExecuteAction()) return;
+                if (isGamePaused) return;
 
                 onClick?.Invoke();
 
@@ -70,7 +71,7 @@ namespace CryingSnow.CheckoutFrenzy
 
                 if (holdTimer >= currentHoldInterval)
                 {
-                    if (!CanExecuteAction()) return;
+                    if (isGamePaused) return;
 
                     onClick?.Invoke();
                     holdTimer = 0f;
@@ -84,17 +85,6 @@ namespace CryingSnow.CheckoutFrenzy
             isHolding = false;
             holdTimer = 0f;
             currentHoldInterval = initialHoldInterval;
-        }
-
-        // Block execution if the action type is Return and the day summary screen is active
-        private bool CanExecuteAction()
-        {
-            if (actionType == ActionType.Return && StoreManager.Instance.IsUIBlockingActions)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

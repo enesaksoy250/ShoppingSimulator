@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -9,16 +10,18 @@ namespace CryingSnow.CheckoutFrenzy
         public string Name { get; set; }
         public Location Location { get; set; }
         public Orientation Orientation { get; set; }
-        public bool WasMoving { get; set; }
+        public Location LastMoved { get; set; }
         public List<ShelfData> SavedShelves { get; set; }
-  
-        public FurnitureData(Furniture furniture)
+        public List<RackData> SavedRacks { get; set; }
+
+
+        public FurnitureData(Furniture furniture, Vector3 playerPosition)
         {
             FurnitureID = furniture.FurnitureID;
             Name = furniture.Name;
             Location = new Location(furniture.transform.position);
             Orientation = new Orientation(furniture.transform.rotation);
-            WasMoving = furniture.IsMoving;
+            LastMoved = new Location(playerPosition);
 
             if (furniture is ShelvingUnit shelvingUnit)
             {
@@ -27,6 +30,15 @@ namespace CryingSnow.CheckoutFrenzy
                 foreach (var shelf in shelvingUnit.Shelves)
                 {
                     SavedShelves.Add(new ShelfData(shelf));
+                }
+            }
+            else if (furniture is StorageRack storageRack)
+            {
+                SavedRacks = new List<RackData>();
+
+                foreach (var rack in storageRack.Racks)
+                {
+                    SavedRacks.Add(new RackData(rack));
                 }
             }
         }

@@ -27,6 +27,7 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="time">The duration (in seconds) to display the message (defaults to 2 seconds).</param>
         public void Log(string message, Color? color = null, float time = 2f)
         {
+      
             Color displayColor = color ?? Color.white; // Use the provided color or white if none given.
 
             // Format the message with the specified color.
@@ -41,7 +42,8 @@ namespace CryingSnow.CheckoutFrenzy
                 {
                     // Fade out the message after a delay.
                     canvasGroup.DOFade(0f, 0.5f)
-                        .SetDelay(time); // Set the delay before fading out.
+                        .SetDelay(time);
+                 // Set the delay before fading out.
                 });
         }
     }

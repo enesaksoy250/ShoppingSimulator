@@ -52,6 +52,8 @@ namespace CryingSnow.CheckoutFrenzy
         /// </summary>
         public int Quantity => productModels.Count;
 
+        public bool IsFull => Quantity >= Capacity;
+
         /// <summary>
         /// Initializes the container with the specified product.
         /// This method calculates and stores the possible product positions within the container.
@@ -60,7 +62,17 @@ namespace CryingSnow.CheckoutFrenzy
         public virtual void Initialize(Product product)
         {
             Product = product;
+
             Vector3Int fit = Product.FitOnContainer(Size);
+
+            if (this is Box && product.OverrideBoxQuantity)
+            {
+                fit = product.BoxQuantity;
+            }
+            else if (this is Shelf && product.OverrideShelfQuantity)
+            {
+                fit = product.ShelfQuantity;
+            }
 
             float cellWidth = Size.x / fit.x;
             float cellDepth = Size.z / fit.z;
@@ -93,10 +105,15 @@ namespace CryingSnow.CheckoutFrenzy
         public virtual void RestoreProducts(Product product, int quantity)
         {
             Initialize(product);
-
+          
             for (int i = 0; i < quantity; i++)
             {
                 var productModel = Instantiate(product.Model, transform);
+
+                if (productPositions[i] == null)
+                    Debug.Log("Prdouct position " + i + ".değer null");
+
+
                 productModel.transform.localPosition = productPositions[i];
                 productModel.transform.localRotation = Quaternion.identity;
                 productModels.Add(productModel);

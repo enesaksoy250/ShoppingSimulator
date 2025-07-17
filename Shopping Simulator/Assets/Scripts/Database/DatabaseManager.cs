@@ -86,8 +86,13 @@ public class DatabaseManager : MonoBehaviour
                 print("Firebase'e bağlandı!");
                 databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
                 firebaseInitialized = true;
-                StartCoroutine(SaveUser());
-            
+
+              
+                if (!PlayerPrefs.HasKey("Login"))
+                {
+                    StartCoroutine(SaveUser());
+                }
+                  
                 // DatabaseStatistic databaseStatistic = new DatabaseStatistic(databaseReference, userId);
             }
             else
@@ -100,15 +105,13 @@ public class DatabaseManager : MonoBehaviour
     }
 
 
+
     IEnumerator SaveUser()
     {
         while (true)
         {
             if(LoginWithGoogle.instance != null && LoginWithGoogle.instance.authInitialized)
             {
-
-                if (!PlayerPrefs.HasKey("SecondLogin"))
-                {
                     if (!PlayerPrefs.HasKey("Login"))
                     {
                         userId = SystemInfo.deviceUniqueIdentifier;
@@ -118,7 +121,7 @@ public class DatabaseManager : MonoBehaviour
                     Save();
 
                     yield break;
-                }
+                
             }
 
             yield return new WaitForSeconds(1);
@@ -226,7 +229,7 @@ public class DatabaseManager : MonoBehaviour
 
                     });
                 }
-          
+                else { PlayerPrefs.SetInt("Login", 1); PlayerPrefs.SetString("UserId", userId); }
             }          
 
         });
@@ -495,7 +498,7 @@ public class DatabaseManager : MonoBehaviour
         int currentRank = 0;
         bool userInTopList = false;
 
-        databaseReference.Child("leaderboard").OrderByChild("level").LimitToLast(50).GetValueAsync().ContinueWithOnMainThread(task =>
+        databaseReference.Child("leaderboard").OrderByChild("level").LimitToLast(20).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
             {

@@ -77,16 +77,19 @@ namespace CryingSnow.CheckoutFrenzy
         {
             for (int i = 0; i < savedShelves.Count; i++)
             {
+                Shelf shelf = Shelves[i];
                 ShelfData shelfData = savedShelves[i];
+
+                Product assignedProduct = DataManager.Instance.GetProductById(shelfData.AssignedProductID);
+                shelf.SetLabel(assignedProduct);
 
                 // Skip this shelf if it is empty.
                 if (shelfData.IsEmpty) continue;
 
-                // Retrieve the Product from the StoreManager using the saved ID.
+                // Retrieve the Product from the DataManager using the saved ID.
                 Product product = DataManager.Instance.GetProductById(shelfData.ProductID);
 
-                // Get the corresponding Shelf and restore it's products.
-                Shelf shelf = Shelves[i];
+                // Restore shelf's products.
                 shelf.RestoreProducts(product, shelfData.Quantity);
             }
         }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977fe4f7b3506cf4faa369161394f02d, type: 3}
   m_Name: License01
   m_EditorClassIdentifier: 
+  licenseId: 1
   name: License A
   price: 0
   level: 0
@@ -21,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 951c716a95b1b304585234f5b2be8d36, type: 2}
   - {fileID: 11400000, guid: b92f1eec704c6e34aa0391099242a3a9, type: 2}
   - {fileID: 11400000, guid: aee2806b0482aa044909d8dcdc4b4fd7, type: 2}
+  requiredLicense: {fileID: 0}

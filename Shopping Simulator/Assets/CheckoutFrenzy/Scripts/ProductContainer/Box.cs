@@ -33,8 +33,12 @@ namespace CryingSnow.CheckoutFrenzy
         /// </summary>
         public override Vector3 Size => base.Size.FloorToTenth();
 
+        public float Height => boxCollider.size.y;
+
+        public bool IsStored { get; set; }
         public bool IsOpen { get; private set; }
         public bool IsDisposable { get; private set; }
+        public bool IsCheckingCollision { get; private set; }
 
         private Message message => UIManager.Instance.Message;
 
@@ -43,31 +47,41 @@ namespace CryingSnow.CheckoutFrenzy
 
         private Sequence lidSequence;
 
-        private bool isCheckingCollision;
+        private Coroutine disablePhysicsRoutine;
 
         private void Awake()
         {
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
 
             body = GetComponent<Rigidbody>();
+            SetActivePhysics(false);
 
             // Prevents the box from affecting the navigation mesh
             var navMeshMod = gameObject.AddComponent<NavMeshModifier>();
             navMeshMod.ignoreFromBuild = true;
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
             DataManager.Instance.OnSave += HandleOnSave;
+
+            yield return new WaitUntil(() => DataManager.Instance.IsLoaded);
+
+            if (!IsStored) SetActivePhysics(true);
         }
 
         private void OnDestroy()
         {
-            DataManager.Instance.OnSave -= HandleOnSave;
+            if (DataManager.Instance != null)
+            {
+                DataManager.Instance.OnSave -= HandleOnSave;
+            }
         }
 
         private void HandleOnSave()
         {
+            if (IsStored) return;
+
             var boxData = new BoxData(this);
             DataManager.Instance.Data.SavedBoxes.Add(boxData);
         }
@@ -75,7 +89,7 @@ namespace CryingSnow.CheckoutFrenzy
         private void OnCollisionEnter(Collision collision)
         {
             // Ignore collision events if the box is not currently moving.
-            if (!isCheckingCollision) return;
+            if (!IsCheckingCollision) return;
 
             // Check if the collision impact is significant.
             if (collision.relativeVelocity.magnitude > 2)
@@ -99,8 +113,12 @@ namespace CryingSnow.CheckoutFrenzy
             // Prevent the box from being disposed of (e.g., thrown to trash can) while it's being held by the player.
             IsDisposable = false;
 
-            // Temporarily disable physics for the box.
-            StartCoroutine(DisablePhysicsDelayed());
+            if (disablePhysicsRoutine != null)
+            {
+                StopCoroutine(disablePhysicsRoutine);
+            }
+
+            disablePhysicsRoutine = StartCoroutine(DisablePhysicsDelayed());
 
             // Change the layer of all child objects to the "HeldObject" layer.
             // Making them rendered on top of everything else (except UI).
@@ -124,7 +142,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             AudioManager.Instance.PlaySFX(AudioID.Pick);
 
-            player.CurrentState = PlayerController.State.Holding;
+            player.StateManager.PushState(PlayerState.Holding);
 
             UIManager.Instance.InteractMessage.Hide();
         }
@@ -133,7 +151,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             UIManager.Instance.DisplayBoxInfo(this);
 
-            string message = LanguageManager.instance.GetLocalizedValue("TapToTakeBoxText");
+            string message = LanguageManager.instance.GetLocalizedValue("TapToPickUpBoxText");
             UIManager.Instance.InteractMessage.Display(message);
         }
 
@@ -154,17 +172,23 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (Physics.OverlapBox(center, extents, orientation, layerMask).Length > 0)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("CannotThrowObjectHereText");
-                message.Log(text, Color.red);
+                message.Log("Can't throw object here!", Color.red);
                 return;
             }
+
+            if (disablePhysicsRoutine != null)
+            {
+                StopCoroutine(disablePhysicsRoutine);
+                disablePhysicsRoutine = null;
+            }
+
+            DOTween.Kill(transform);
 
             // Detach the box from the player's hand.
             transform.SetParent(null);
 
             // Enable physics for the box and apply an impulse force.
-            body.isKinematic = false;
-            boxCollider.enabled = true;
+            SetActivePhysics(true);
             body.AddForce(transform.forward * 3.5f, ForceMode.Impulse);
 
             StartCoroutine(StartCollisionCheck());
@@ -184,7 +208,7 @@ namespace CryingSnow.CheckoutFrenzy
             UIManager.Instance.ToggleActionUI(ActionType.Place, false, null);
             UIManager.Instance.ToggleActionUI(ActionType.Take, false, null);
 
-            player.CurrentState = PlayerController.State.Free;
+            player.StateManager.PopState();
 
             player = null;
 
@@ -201,8 +225,13 @@ namespace CryingSnow.CheckoutFrenzy
         {
             yield return new WaitForSeconds(0.2f);
 
-            body.isKinematic = true;
-            boxCollider.enabled = false;
+            SetActivePhysics(false);
+        }
+
+        public void SetActivePhysics(bool value)
+        {
+            body.isKinematic = !value;
+            boxCollider.enabled = value;
         }
 
         /// <summary>
@@ -212,7 +241,7 @@ namespace CryingSnow.CheckoutFrenzy
         private IEnumerator StartCollisionCheck()
         {
             float timer = collisionCheckDuration;
-            isCheckingCollision = true;
+            IsCheckingCollision = true;
 
             while (timer > 0f)
             {
@@ -220,7 +249,7 @@ namespace CryingSnow.CheckoutFrenzy
                 yield return null;
             }
 
-            isCheckingCollision = false;
+            IsCheckingCollision = false;
         }
 
         /// <summary>
@@ -281,6 +310,37 @@ namespace CryingSnow.CheckoutFrenzy
             IsOpen = true;
         }
 
+        public IEnumerator OpenLidsSmooth()
+        {
+            float duration = 0.3f;
+
+            lidFront.DOLocalRotate(Vector3.right * 250f, duration, RotateMode.LocalAxisAdd);
+            lidBack.DOLocalRotate(Vector3.left * 250f, duration, RotateMode.LocalAxisAdd);
+
+            yield return new WaitForSeconds(duration);
+
+            lidLeft.DOLocalRotate(Vector3.back * 250f, duration, RotateMode.LocalAxisAdd);
+            lidRight.DOLocalRotate(Vector3.forward * 250f, duration, RotateMode.LocalAxisAdd);
+
+            yield return new WaitForSeconds(duration);
+
+            IsOpen = true;
+        }
+
+        public void CloseIfOpened()
+        {
+            if (!IsOpen) return;
+
+            var lidSequence = DOTween.Sequence();
+
+            lidSequence.Append(lidLeft.DOLocalRotate(Vector3.forward * 250f, 0.3f, RotateMode.LocalAxisAdd))
+                .Join(lidRight.DOLocalRotate(Vector3.back * 250f, 0.3f, RotateMode.LocalAxisAdd))
+                .Append(lidFront.DOLocalRotate(Vector3.left * 250f, 0.3f, RotateMode.LocalAxisAdd))
+                .Join(lidBack.DOLocalRotate(Vector3.right * 250f, 0.3f, RotateMode.LocalAxisAdd));
+
+            IsOpen = false;
+        }
+
         /// <summary>
         /// Places the last product from the box onto the specified shelf.
         /// Performs necessary checks for compatibility (product type, shelf space) 
@@ -290,10 +350,14 @@ namespace CryingSnow.CheckoutFrenzy
         /// <returns>True if the product was placed successfully, false otherwise.</returns>        
         public bool Place(Shelf shelf)
         {
-            if (shelf.ShelvingUnit.Section != Product.Section)
+            if (shelf.AssignedProduct != null && Product != shelf.AssignedProduct)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("ProductWrongSectionText");
-                message.Log(text);
+                message.Log("This shelf is assigned to a different product.");
+                return false;
+            }
+            else if (shelf.ShelvingUnit.Section != Product.Section)
+            {
+                message.Log("Product doesn't belong in this section.");
                 return false;
             }
             else if (shelf.Product == null)
@@ -302,8 +366,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else if (shelf.Product != Product)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("DifferentProductOnShelfText");
-                message.Log(text);
+                message.Log("Shelf contains a different product.");
                 return false;
             }
 
@@ -350,24 +413,21 @@ namespace CryingSnow.CheckoutFrenzy
             // Check if the box is full
             if (Product != null && Quantity >= Capacity)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("BoxIsFullText");
-                message.Log(text);
+                message.Log("Box is full.");
                 return false;
             }
 
             // If the box is not empty, check if the product types match
             if (Quantity > 0 && shelf.Product != Product)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("BoxContainsDifferentProductText");
-                message.Log(text);
+                message.Log("Box contains a different product.");
                 return false;
             }
 
             // If the box is empty, check if the product's box size is compatible
             if (Quantity == 0 && Size != shelf.Product.Box.Size)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("IncompatibleBoxSizeText");
-                message.Log(text);
+                message.Log("Incompatible box size.");
                 return false;
             }
 
@@ -405,6 +465,84 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             return true;
+        }
+
+        public bool Store(Rack rack, bool isPlayer)
+        {
+            if (rack.Product == null)
+            {
+                rack.Initialize(Product);
+            }
+            else if (rack.Product != Product)
+            {
+                if (isPlayer) message.Log("Rack contains a different product.");
+                return false;
+            }
+
+            if (rack.CanStoreBox(this, out Vector3 position, isPlayer))
+            {
+                IsStored = true;
+                IsDisposable = false;
+
+                transform.SetParent(rack.transform);
+                DOTween.Kill(transform);
+                transform.DOLocalJump(position, 0.5f, 1, 0.5f);
+                transform.DOLocalRotate(Vector3.zero, 0.5f);
+
+                // Change the layer of all products in the box back to the default layer.
+                foreach (Transform child in transform)
+                {
+                    child.gameObject.layer = LayerMask.NameToLayer("Default");
+                }
+
+                if (isPlayer)
+                {
+                    if (IsOpen) Close();
+
+                    // Disable UI elements related to holding and interacting with the box.
+                    UIManager.Instance.ToggleActionUI(ActionType.Throw, false, null);
+                    UIManager.Instance.ToggleActionUI(ActionType.Open, false, null);
+                    UIManager.Instance.ToggleActionUI(ActionType.Close, false, null);
+                    UIManager.Instance.ToggleActionUI(ActionType.Place, false, null);
+
+                    AudioManager.Instance.PlaySFX(AudioID.Throw);
+
+                    player.StateManager.PopState();
+
+                    player = null;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Stock(Shelf shelfToStock)
+        {
+            if (shelfToStock.Product == null)
+            {
+                shelfToStock.Initialize(shelfToStock.AssignedProduct);
+            }
+
+            var productModel = productModels.LastOrDefault();
+
+            if (shelfToStock.PlaceProductModel(productModel, out Vector3 position))
+            {
+                productModel.layer = LayerMask.NameToLayer("Default");
+
+                productModel.transform.SetParent(shelfToStock.transform);
+                DOTween.Kill(productModel.transform);
+                productModel.transform.DOLocalJump(position, 0.5f, 1, 0.5f);
+                productModel.transform.DOLocalRotate(Vector3.zero, 0.5f);
+
+                productModels.Remove(productModel);
+
+                if (Quantity == 0)
+                {
+                    Product = null;
+                }
+            }
         }
     }
 }

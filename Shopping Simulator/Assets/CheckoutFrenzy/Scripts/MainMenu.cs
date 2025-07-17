@@ -17,7 +17,7 @@ namespace CryingSnow.CheckoutFrenzy
 
         private void Start()
         {
-            AudioManager.Instance.PlayBGM(backgroundMusic);
+            AudioManager.Instance.PlayBGMQueue();
         }
 
         /// <summary>

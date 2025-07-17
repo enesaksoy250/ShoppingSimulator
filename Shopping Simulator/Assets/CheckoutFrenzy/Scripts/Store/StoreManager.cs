@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.AI.Navigation;
-using System;
 
 namespace CryingSnow.CheckoutFrenzy
 {
@@ -14,9 +13,6 @@ namespace CryingSnow.CheckoutFrenzy
 
         [SerializeField, Tooltip("The 3D bounding box of the store.")]
         private Bounds storeBounds;
-
-        [SerializeField, Tooltip("The checkout counter where customers can pay for their items.")]
-        private CheckoutCounter checkoutCounter;
 
         [SerializeField, Tooltip("The point where deliveries are made (e.g., Products, Furnitures).")]
         private Transform deliveryPoint;
@@ -33,20 +29,38 @@ namespace CryingSnow.CheckoutFrenzy
         public Transform DeliveryPoint => deliveryPoint;
         public List<Expansion> Expansions => expansions;
 
+        private FurnitureBox furnitureBoxPrefab;
+        public FurnitureBox FurnitureBoxPrefab
+        {
+            get
+            {
+                if (furnitureBoxPrefab == null)
+                    furnitureBoxPrefab = Resources.Load<FurnitureBox>("Boxes/FurnitureBox");
+
+                return furnitureBoxPrefab;
+            }
+        }
+
+        public event System.Action<int> OnDayStarted;
         public event System.Action<License> OnLicensePurchased;
         public event System.Action<int> OnExpansionPurchased;
-
-        public bool IsUIBlockingActions { get; set; }
+        public event System.Action<float> OnCleanablesChanged;
 
         private NavMeshSurface navMeshSurface;
         public void UpdateNavMeshSurface() => navMeshSurface.BuildNavMesh();
+
+        private List<CheckoutCounter> checkoutCounters = new List<CheckoutCounter>();
+        public void RegisterCounter(CheckoutCounter counter) => checkoutCounters.Add(counter);
 
         // List of valid shelving units within the store's boundaries where customers can interact with products.
         private HashSet<ShelvingUnit> shelvingUnits = new HashSet<ShelvingUnit>();
         public void RegisterShelvingUnit(ShelvingUnit shelvingUnit) => shelvingUnits.Add(shelvingUnit);
         public void UnregisterShelvingUnit(ShelvingUnit shelvingUnit) => shelvingUnits.Remove(shelvingUnit);
 
-        private AudioClip backgroundMusic;
+        private List<Cleanable> cleanables = new List<Cleanable>();
+
+        public bool CanSpawnCleanable => cleanables.Count < GameConfig.Instance.MaxCleanables;
+        public float Dirtiness => (float)cleanables.Count / GameConfig.Instance.MaxCleanables;
 
         /// <summary>
         /// Calculates the maximum number of customers that can be in the store at the same time. 
@@ -59,7 +73,6 @@ namespace CryingSnow.CheckoutFrenzy
 
         private Coroutine spawnCustomerCoroutine;
         private List<Customer> customers = new List<Customer>();
-        private List<Customer> liningCustomers = new List<Customer>();
 
         private TimeRange openTime; // The time range during which the store is open for business.
         private bool isOpen;        // Indicates whether the store is currently open for business (using store sign).          
@@ -72,11 +85,14 @@ namespace CryingSnow.CheckoutFrenzy
 
             navMeshSurface = GetComponent<NavMeshSurface>();
 
-            // Set the target frame rate to 60 frames per second.
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 60;
+            // Set the target frame rate to 60 frames per second for mobile.
+            if (Application.isMobilePlatform)
+            {
+                QualitySettings.vSyncCount = 0;
+                Application.targetFrameRate = 60;
+            }
 
-            backgroundMusic = GameConfig.Instance.BackgroundMusic;
+            //backgroundMusic = GameConfig.Instance.BackgroundMusic;
             openTime = GameConfig.Instance.OpenTime;
         }
 
@@ -90,7 +106,7 @@ namespace CryingSnow.CheckoutFrenzy
             DataManager.Instance.OnSave += () =>
             {
                 // Calculate and store the total value of products currently held by customers but not yet paid for.
-                decimal productsValue = 0;
+                decimal productsValue = 0m;
                 foreach (var customer in customers)
                 {
                     foreach (var product in customer.Inventory)
@@ -119,7 +135,7 @@ namespace CryingSnow.CheckoutFrenzy
             {
                 spawnCustomerCoroutine = StartCoroutine(SpawnCustomer());
 
-                AudioManager.Instance.PlayBGM(backgroundMusic);
+                AudioManager.Instance.PlayBGMQueue();
             }
         }
 
@@ -138,90 +154,27 @@ namespace CryingSnow.CheckoutFrenzy
         }
 
         private IEnumerator SpawnCustomer()
-        {       
+        {
             while (true)
             {
-                float waitTime = GameConfig.Instance.GetRandomSpawnTime2;        
+                float waitTime = GameConfig.Instance.GetRandomSpawnTime;
                 yield return new WaitForSeconds(waitTime);
-              
-                if (isOpen && customers.Count < maxCustomers && shelvingUnits.Count > 0)
+
+                if (isOpen && customers.Count < maxCustomers && shelvingUnits.Count > 0 && Random.value > Dirtiness)
                 {
-                    int randomCustomerIndex =UnityEngine.Random.Range(0, customerPrefabs.Count);
+                    int randomCustomerIndex = Random.Range(0, customerPrefabs.Count);
                     var customerPrefab = customerPrefabs[randomCustomerIndex];
 
-                    int randomSpawnIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
+                    int randomSpawnIndex = Random.Range(0, spawnPoints.Count);
                     var spawnPoint = spawnPoints[randomSpawnIndex];
 
                     var customer = Instantiate(customerPrefab, spawnPoint.position, spawnPoint.rotation);
                     customers.Add(customer);
-             
+                    customer.OnLeave += () => customers.Remove(customer);
+
                     DataManager.Instance.Data.CurrentSummary.TotalCustomers++;
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the queue number, position, and look direction for the given customer at the checkout counter.
-        /// </summary>
-        /// <param name="customer">The customer for whom to get the queue information.</param>
-        /// <returns>A tuple containing the queue number, queue position, and look direction for the customer.</returns>
-        public (int queueNumber, Vector3 queuePosition, Vector3 lookDirection) GetQueueNumber(Customer customer)
-        {
-            if (!liningCustomers.Contains(customer))
-            {
-                liningCustomers.Add(customer);
-            }
-
-            int number = liningCustomers.IndexOf(customer);
-            Vector3 position = checkoutCounter.GetQueuePosition(number, out Vector3 direction);
-
-            return (number, position, direction);
-        }
-
-        /// <summary>
-        /// Handles the checkout process for the given customer.
-        /// This coroutine simulates the customer placing their products on the counter and waiting for them to be processed.
-        /// </summary>
-        /// <param name="customer">The customer to be checked out.</param>
-        /// <returns>An IEnumerator to control the checkout process.</returns>
-        public IEnumerator Checkout(Customer customer)
-        {
-            yield return checkoutCounter.PlaceProducts(customer);
-
-            yield return new WaitUntil(() => checkoutCounter.CurrentState == CheckoutCounter.State.Standby);
-
-            yield return CustomerLeave(customer);
-        }
-
-        /// <summary>
-        /// Handles the customer leaving the store after completing their shopping.
-        /// This method guides the customer to an exit point and then destroys their game object.
-        /// </summary>
-        /// <param name="customer">The customer to be removed from the store.</param>
-        /// <returns>An IEnumerator to control the customer's leaving process.</returns>
-        public IEnumerator CustomerLeave(Customer customer)
-        {
-            print("Müşteri dükkandan ayrılıyor...");
-
-            if (customer.waitingTimeExceeding)
-            {
-                ReputationManager.instance.RegisterCustomerFeedback(false);
-                //string language = PlayerPrefs.GetString("Language");
-                //string chat = language == "English" ? GameConfig.Instance.WaitingLongDialogueEnglish.GetRandomLine() 
-                //    : GameConfig.Instance.WaitingLongDialogueTurkish.GetRandomLine();
-
-                int index = LanguageManager.GetCurrentLanguageIndex();
-                string chat = GameConfig.Instance.WaitingLongDialogues[index].GetRandomLine();
-
-                customer.UpdateChatBubble(chat);
-            }
-
-            liningCustomers.Remove(customer);
-            customers.Remove(customer);
-
-            var exitPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position;
-            yield return customer.MoveTo(exitPoint);
-            Destroy(customer.gameObject);
         }
 
         /// <summary>
@@ -247,7 +200,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (shelvingUnits.Count == 0) return null;
 
-            int randomIndex = UnityEngine.Random.Range(0, shelvingUnits.Count);
+            int randomIndex = Random.Range(0, shelvingUnits.Count);
             var shelvingUnit = shelvingUnits.ElementAt(randomIndex);
 
             return shelvingUnit;
@@ -275,8 +228,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             if (DataManager.Instance.PlayerMoney < license.Price)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
-                UIManager.Instance.Message.Log(text, Color.red);
+                UIManager.Instance.Message.Log("You don't have enough money!", Color.red);
                 return false;
             }
 
@@ -286,7 +238,11 @@ namespace CryingSnow.CheckoutFrenzy
                 DataManager.Instance.Data.LicensedProducts.Add(product.ProductID);
             }
 
-            DataManager.Instance.PlayerMoney -= license.Price;
+            DataManager.Instance.Data.OwnedLicenses.Add(license.LicenseID);
+
+            DataManager.Instance.PlayerMoney -= (decimal)license.Price;
+
+            MissionManager.Instance.UpdateMission(Mission.Goal.License, 1, license.LicenseID);
 
             OnLicensePurchased?.Invoke(license);
 
@@ -330,14 +286,17 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (DataManager.Instance.PlayerMoney < expansion.UnlockPrice)
             {
-                string text = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
-                UIManager.Instance.Message.Log(text, Color.red);
+                UIManager.Instance.Message.Log("You don't have enough money!", Color.red);
                 return false;
             }
 
             expansion.SetPurchasedState(true);
             DataManager.Instance.Data.ExpansionLevel++;
-            DataManager.Instance.PlayerMoney -= expansion.UnlockPrice;
+
+            if (!DataManager.Instance.Data.IsWarehouseUnlocked)
+                DataManager.Instance.Data.IsWarehouseUnlocked = expansion.UnlockWarehouse;
+
+            DataManager.Instance.PlayerMoney -= (decimal)expansion.UnlockPrice;
 
             UpdateNavMeshSurface();
 
@@ -366,20 +325,15 @@ namespace CryingSnow.CheckoutFrenzy
 
             yield return new WaitWhile(() => customers.Count > 0);
 
-            if (checkoutCounter.HasCashier) checkoutCounter.HasCashier = false;
-
-            IsUIBlockingActions = true;
-
             UIManager.Instance.SummaryScreen.Show(DataManager.Instance.Data.CurrentSummary, (skip) =>
             {
                 if (skip) SkipToNextDay();
                 else StartCoroutine(ShowSkipDialog());
 
                 TimeManager.Instance.AllowTimeUpdate = true;
-                IsUIBlockingActions = false;
             });
 
-            AudioManager.Instance.StopBGM();
+            AudioManager.Instance.StopBGMQueue();
         }
 
         private void SkipToNextDay()
@@ -419,10 +373,14 @@ namespace CryingSnow.CheckoutFrenzy
         private void RestartDay()
         {
             isTodayEnded = false;
+
             DataManager.Instance.Data.CurrentSummary = new SummaryData(DataManager.Instance.PlayerMoney);
+
+            OnDayStarted?.Invoke(DataManager.Instance.Data.TotalDays);
+
             spawnCustomerCoroutine = StartCoroutine(SpawnCustomer());
 
-            AudioManager.Instance.PlayBGM(backgroundMusic);
+            AudioManager.Instance.PlayBGMQueue();
         }
 
         /// <summary>
@@ -444,70 +402,60 @@ namespace CryingSnow.CheckoutFrenzy
             leavingCustomers.ForEach(customer => customer.AskToLeave());
         }
 
-        /// <summary>
-        /// Hires a cashier for the checkout counter.
-        /// 
-        /// Checks if a cashier is already hired and if the player has enough money. 
-        /// Deducts the cashier cost from the player's money and updates the checkout counter's state.
-        /// </summary>
-        public void HireCashier()
+        public CheckoutCounter GetCounterAtIndex(int index)
         {
-            if (checkoutCounter.HasCashier)
-            {
-                string text2 = LanguageManager.instance.GetLocalizedValue("CashierAlreadyHiredText");
-                UIManager.Instance.Message.Log(text2);
-                return;
-            }
+            if (checkoutCounters == null || index < 0 || index >= checkoutCounters.Count)
+                return null;
 
-            int cashierCost = GameConfig.Instance.CashierCost;
-
-            if (DataManager.Instance.PlayerMoney < cashierCost)
-            {
-                string text1 = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
-                UIManager.Instance.Message.Log(text1, Color.red);
-                return;
-            }
-
-            DataManager.Instance.PlayerMoney -= cashierCost;
-            checkoutCounter.HasCashier = true;
-            string text = LanguageManager.instance.GetLocalizedValue("CashierHiredSuccessText");
-            UIManager.Instance.Message.Log(text);
-            AudioManager.Instance.PlaySFX(AudioID.Kaching);
+            return checkoutCounters[index];
         }
 
-        /// <summary>
-        /// Hires a cleaner to remove all empty boxes from the store.
-        /// 
-        /// Checks if there are any empty boxes in the store and if the player has enough money. 
-        /// Deducts the cleaner cost from the player's money and destroys all empty boxes.
-        /// </summary>
-        public void HireCleaner()
+        public CheckoutCounter GetShortestQueueCounter()
         {
-            var emptyBoxes = FindObjectsOfType<Box>()
-                .Where(box => box.Quantity == 0)
-                .ToList();
+            return checkoutCounters
+                .OrderBy(counter => counter.LiningCustomers.Count)
+                .FirstOrDefault();
+        }
 
-            if (emptyBoxes.Count == 0)
-            {
-                string text = LanguageManager.instance.GetLocalizedValue("StoreAlreadyCleanText");
-                UIManager.Instance.Message.Log(text);
-                return;
-            }
+        public Vector3 GetExitPoint()
+        {
+            if (spawnPoints == null || spawnPoints.Count == 0) return Vector3.zero;
 
-            int cleanerCost = GameConfig.Instance.CleanerCost;
+            return spawnPoints[Random.Range(0, spawnPoints.Count)].position;
+        }
 
-            if (DataManager.Instance.PlayerMoney < cleanerCost)
-            {
-                string text2 = LanguageManager.instance.GetLocalizedValue("NotEnoughMoneyText");
-                UIManager.Instance.Message.Log(text2, Color.red);
-                return;
-            }
+        public Shelf GetShelfToStock()
+        {
+            return shelvingUnits
+                .SelectMany(shelvingUnit => shelvingUnit.Shelves)
+                .Where(shelf =>
+                    !shelf.IsTargeted &&
+                    shelf.AssignedProduct != null &&
+                    (shelf.Product == null || !shelf.IsFull) &&
+                    WarehouseManager.Instance.GetRackWithProduct(shelf.AssignedProduct) != null
+                )
+                .OrderBy(shelf => shelf.Quantity)
+                .FirstOrDefault();
+        }
 
-            DataManager.Instance.PlayerMoney -= cleanerCost;
-            emptyBoxes.ForEach(box => Destroy(box.gameObject));
-            string text3 =LanguageManager.instance.GetLocalizedValue("CleanerHiredSuccessText");
-            UIManager.Instance.Message.Log(text3);
-            AudioManager.Instance.PlaySFX(AudioID.Kaching);
+        public void RegisterCleanable(Cleanable cleanable)
+        {
+            cleanables.Add(cleanable);
+            OnCleanablesChanged?.Invoke(Dirtiness);
+        }
+
+        public void UnregisterCleanable(Cleanable cleanable)
+        {
+            cleanables.Remove(cleanable);
+            OnCleanablesChanged?.Invoke(Dirtiness);
+        }
+
+        public Cleanable GetNearestCleanable(Vector3 position)
+        {
+            return cleanables
+                .Where(c => !c.HasCleaner)
+                .OrderBy(c => Vector3.Distance(c.transform.position, position))
+                .FirstOrDefault();
         }
 
 #if UNITY_EDITOR

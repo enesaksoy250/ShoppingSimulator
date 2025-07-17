@@ -22,11 +22,14 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("List of sound effects data")]
         private List<AudioData> SFXList;
 
-        // A dictionary that maps AudioID values to their corresponding AudioData,
-        // allowing efficient lookup of sound effects by their ID
+        [SerializeField, Tooltip("List of background music tracks to play in sequence")]
+        private List<AudioClip> BGMPlaylist = new List<AudioClip>();
+
+        // A dictionary that maps AudioID values to their corresponding AudioData.
         private Dictionary<AudioID, AudioData> SFXLookup;
 
-        private AudioClip currentBGM;
+        private int currentBGMIndex = 0;
+        private bool isPlayingQueue = false;
         private float originalBGMVolume;
 
         void Awake()
@@ -49,40 +52,13 @@ namespace CryingSnow.CheckoutFrenzy
         }
 
         /// <summary>
-        /// Plays the background music (BGM) by fading in the new clip.
-        /// If the clip is the same as the current BGM or is null, no action is taken.
-        /// </summary>
-        /// <param name="clip">The AudioClip to play as the new BGM.</param>
-        /// <param name="loop">Determines whether the BGM should loop (default is true).</param>
-        /// <param name="fade">Determines whether to fade the BGM in (default is true).</param>
-        public void PlayBGM(AudioClip clip, bool loop = true, bool fade = true)
-        {
-            if (clip == null || clip == currentBGM) return;
-
-            currentBGM = clip;
-            StartCoroutine(PlayBGMAsync(clip, loop, fade));
-        }
-
-        public void StopBGM()
-        {
-            StartCoroutine(StopBGMAsync());
-        }
-
-        /// <summary>
         /// Plays a sound effect (SFX) by playing the given AudioClip.
         /// Optionally pauses the BGM while the SFX is playing and restores the BGM after the clip finishes.
         /// </summary>
         /// <param name="clip">The AudioClip representing the sound effect to play.</param>
-        /// <param name="pauseBGM">Determines whether to pause the background music while the SFX is playing (default is false).</param>
-        public void PlaySFX(AudioClip clip, bool pauseBGM = false)
+        public void PlaySFX(AudioClip clip)
         {
             if (clip == null) return;
-
-            if (pauseBGM)
-            {
-                BGMPlayer.Pause();
-                StartCoroutine(UnPauseBGM(clip.length));
-            }
 
             SFXPlayer.PlayOneShot(clip);
         }
@@ -93,39 +69,75 @@ namespace CryingSnow.CheckoutFrenzy
         /// </summary>
         /// <param name="audioID">The AudioID representing the sound effect to play.</param>
         /// <param name="pauseBGM">Determines whether to pause the background music while the SFX is playing (default is false).</param>
-        public void PlaySFX(AudioID audioID, bool pauseBGM = false)
+        public void PlaySFX(AudioID audioID)
         {
             if (!SFXLookup.ContainsKey(audioID)) return;
 
             var audioData = SFXLookup[audioID];
-            PlaySFX(audioData.clip, pauseBGM);
+            PlaySFX(audioData.clip);
         }
 
-        IEnumerator PlayBGMAsync(AudioClip clip, bool loop, bool fade)
+        /// <summary>
+        /// Starts playing the background music (BGM) playlist in sequence.
+        /// If fading is enabled, the transition between tracks will be smooth.
+        /// </summary>
+        /// <param name="fade">Determines whether to apply a fade-in effect when starting the BGM queue (default is true).</param>
+        public void PlayBGMQueue(bool fade = true)
+        {
+            if (BGMPlaylist.Count == 0 || isPlayingQueue) return;
+
+            isPlayingQueue = true;
+            currentBGMIndex = 0;
+            StartCoroutine(PlayBGMQueueCoroutine(fade));
+        }
+
+        /// <summary>
+        /// Stops playing the background music (BGM) queue.
+        /// If fading is enabled, the music will fade out before stopping.
+        /// </summary>
+        /// <param name="fade">Determines whether to apply a fade-out effect when stopping the BGM queue (default is true).</param>
+        public void StopBGMQueue(bool fade = true)
+        {
+            if (!isPlayingQueue) return;
+
+            isPlayingQueue = false;
+            StartCoroutine(StopBGMAsync(fade));
+        }
+
+        private IEnumerator PlayBGMQueueCoroutine(bool fade)
+        {
+            while (isPlayingQueue && BGMPlaylist.Count > 0)
+            {
+                AudioClip nextBGM = BGMPlaylist[currentBGMIndex];
+                yield return PlayBGMAsync(nextBGM, fade);
+
+                // Wait for the track to finish before playing the next one
+                yield return new WaitUntil(() => !BGMPlayer.isPlaying || !isPlayingQueue);
+
+                // Stop if the playlist was interrupted
+                if (!isPlayingQueue) yield break;
+
+                // Move to the next track, loop back if at the end
+                currentBGMIndex = (currentBGMIndex + 1) % BGMPlaylist.Count;
+            }
+        }
+
+        private IEnumerator PlayBGMAsync(AudioClip clip, bool fade)
         {
             if (fade) yield return BGMPlayer.DOFade(0, fadeDuration).WaitForCompletion();
 
             BGMPlayer.clip = clip;
-            BGMPlayer.loop = loop;
             BGMPlayer.Play();
 
             if (fade) yield return BGMPlayer.DOFade(originalBGMVolume, fadeDuration).WaitForCompletion();
         }
 
-        IEnumerator StopBGMAsync()
+        private IEnumerator StopBGMAsync(bool fade)
         {
-            yield return BGMPlayer.DOFade(0, fadeDuration).WaitForCompletion();
+            if (fade) yield return BGMPlayer.DOFade(0, fadeDuration).WaitForCompletion();
+
             BGMPlayer.Stop();
             BGMPlayer.clip = null;
-            currentBGM = null;
-        }
-
-        IEnumerator UnPauseBGM(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            BGMPlayer.volume = 0;
-            BGMPlayer.UnPause();
-            BGMPlayer.DOFade(originalBGMVolume, fadeDuration);
         }
     }
 

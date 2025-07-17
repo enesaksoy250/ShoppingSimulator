@@ -29,6 +29,7 @@ namespace CryingSnow.CheckoutFrenzy
         {
             image.raycastTarget = true; // Enable raycast target during fade-in.
             image.DOFade(1f, duration) // Fade the image to opaque.
+                .SetUpdate(UpdateType.Normal, true)
                 .OnComplete(() => onComplete?.Invoke()); // Invoke the onComplete action when the fade-in is finished.
         }
 
@@ -40,6 +41,7 @@ namespace CryingSnow.CheckoutFrenzy
         public void FadeOut(float duration = 1f, System.Action onComplete = null)
         {
             image.DOFade(0f, duration) // Fade the image to transparent.
+                .SetUpdate(UpdateType.Normal, true)
                 .OnComplete(() =>
                 {
                     onComplete?.Invoke(); // Invoke the onComplete action.

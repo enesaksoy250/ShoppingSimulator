@@ -1,23 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
+using System.Globalization;
+using UnityEngine.Tilemaps;
 
 namespace CryingSnow.CheckoutFrenzy
 {
     public class PCMonitor : MonoBehaviour
     {
-        [SerializeField, Tooltip("RectTransform of the PC monitor header (similar to menu bar).")]
-        private RectTransform header;
-
-        [SerializeField, Tooltip("List of GameObjects representing the different screens of the PC monitor.")]
-        private List<GameObject> screens;
-
-        [SerializeField, Tooltip("List of Buttons representing the tabs to switch between screens.")]
-        private List<Button> tabs;
-
+        [Header("Market Screen")]
         [SerializeField, Tooltip("TextMeshPro text displaying the cart label and item count.")]
-        private TMP_Text cartLabel;
+        private TMP_Text cartTabLabel;
 
         [Header("Product Screen")]
         [SerializeField, Tooltip("Transform of the parent object where product listings are instantiated.")]
@@ -26,6 +22,9 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Prefab of the ProductListing component to instantiate for each product.")]
         private ProductListing productListingPrefab;
 
+        [SerializeField, Tooltip("Dropdown used to filter the displayed products by category.")]
+        private TMP_Dropdown categoryDropdown;
+
         [Header("Furniture Screen")]
         [SerializeField, Tooltip("Transform of the parent object where furniture listings are instantiated.")]
         private Transform furnitureListingParent;
@@ -33,32 +32,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Prefab of the FurnitureListing component to instantiate for each furniture item.")]
         private FurnitureListing furnitureListingPrefab;
 
-        [Header("License Screen")]
-        [SerializeField, Tooltip("Transform of the parent object where license listings are instantiated.")]
-        private Transform licenseListingParent;
-
-        [SerializeField, Tooltip("Prefab of the LicenseListing component to instantiate for each license.")]
-        private LicenseListing licenseListingPrefab;
-
-        [Header("Expansion Screen")]
-        [SerializeField, Tooltip("Transform of the parent object where expansion listings are instantiated.")]
-        private Transform expansionListingParent;
-
-        [SerializeField, Tooltip("Prefab of the ExpansionListing component to instantiate for each expansion.")]
-        private ExpansionListing expansionListingPrefab;
-
-        [Header("Service Screen")]
-        [SerializeField, Tooltip("TextMeshPro text displaying the price to hire a cashier.")]
-        private TMP_Text cashierPriceText;
-
-        [SerializeField, Tooltip("Button to hire a cashier.")]
-        private Button hireCashierButton;
-
-        [SerializeField, Tooltip("TextMeshPro text displaying the price to hire a cleaner.")]
-        private TMP_Text cleanerPriceText;
-
-        [SerializeField, Tooltip("Button to hire a cleaner.")]
-        private Button hireCleanerButton;
+        [SerializeField, Tooltip("Dropdown used to filter the displayed furniture by store section.")]
+        private TMP_Dropdown sectionDropdown;
 
         [Header("Cart Screen")]
         [SerializeField, Tooltip("Transform of the parent object where cart items are instantiated.")]
@@ -76,10 +51,62 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Button to proceed to checkout.")]
         private Button checkoutButton;
 
-        private string totalText;
+        [Header("License Screen")]
+        [SerializeField, Tooltip("Transform of the parent object where license listings are instantiated.")]
+        private Transform licenseListingParent;
+
+        [SerializeField, Tooltip("Prefab of the LicenseListing component to instantiate for each license.")]
+        private LicenseListing licenseListingPrefab;
+
+        [Header("Expansion Screen")]
+        [SerializeField, Tooltip("Transform of the parent object where expansion listings are instantiated.")]
+        private Transform expansionListingParent;
+
+        [SerializeField, Tooltip("Prefab of the ExpansionListing component to instantiate for each expansion.")]
+        private ExpansionListing expansionListingPrefab;
+
+        [Header("Employee Screen")]
+        [SerializeField, Tooltip("Transform of the parent object where employee listings are instantiated.")]
+        private Transform employeeListingParent;
+
+        [SerializeField, Tooltip("Prefab of the EmployeeListing component to instantiate for each employee.")]
+        private EmployeeListing employeeListingPrefab;
+
+        [Header("Bill Screen")]
+        [SerializeField, Tooltip("Transform of the parent object where Bill UIs are instantiated.")]
+        private Transform billUIParent;
+
+        [SerializeField, Tooltip("Prefab of the BillUI component to instantiate for each bill.")]
+        private BillUI billUIPrefab;
+
+        [SerializeField, Tooltip("TextMeshPro text displaying the outstanding bills.")]
+        private TMP_Text outstandingBillsText;
+
+        [SerializeField, Tooltip("Button to pay all outstanding bills.")]
+        private Button payAllBillsButton;
+
+        [Header("Loan Screen")]
+        [SerializeField, Tooltip("Transform of the parent object where LoanListings are instantiated.")]
+        private Transform loanListingParent;
+
+        [SerializeField, Tooltip("Prefab of the LoanListing component to instantiate for each LoanTemplate.")]
+        private LoanListing loanListingPrefab;
+
+        [SerializeField, Tooltip("TextMeshPro component to display currently active loans (if any).")]
+        private TextMeshProUGUI loanInfoText;
+
+        private List<ProductListing> productListings = new List<ProductListing>();
+        private List<FurnitureListing> furnitureListings = new List<FurnitureListing>();
+        private List<BillUI> billUIs = new List<BillUI>();
+
         private void Start()
         {
             StoreManager.Instance.OnLicensePurchased += UpdateProductListing;
+
+            FinanceManager.Instance.OnBillCreated += CreateBillUI;
+            FinanceManager.Instance.OnBillsUpdated += UpdateBillUIs;
+            FinanceManager.Instance.OnBillPaid += UpdateBillSummaryUI;
+            FinanceManager.Instance.OnLoanTaken += RefreshLoanInfoUI;
 
             // Initialize Product Screen
             foreach (var product in DataManager.Instance.ProductDB)
@@ -90,12 +117,23 @@ namespace CryingSnow.CheckoutFrenzy
                 }
             }
 
+            InitializeDropdown<Product.Category>(categoryDropdown, "All Categories", OnCategoryChanged);
+
             // Initialize Furniture Screen
             foreach (var furniture in DataManager.Instance.FurnitureDB)
             {
                 var furnitureListing = Instantiate(furnitureListingPrefab, furnitureListingParent);
                 furnitureListing.Initialize(furniture);
+                furnitureListings.Add(furnitureListing);
             }
+
+            InitializeDropdown<Section>(sectionDropdown, "All Sections", OnSectionChanged);
+
+            // Initialize Cart Screen
+            clearCartButton.onClick.AddListener(() => PC.Instance.ClearCart());
+            checkoutButton.onClick.AddListener(() => PC.Instance.Checkout());
+            PC.Instance.OnCartChanged += HandleCartChanged;
+            totalPriceText.text = "Total: $0.00";
 
             // Initialize License Screen
             foreach (var license in DataManager.Instance.LicenseDB)
@@ -111,41 +149,61 @@ namespace CryingSnow.CheckoutFrenzy
                 expansionListing.Initialize(expansion);
             }
 
-            // Initialize Service Screen
-            string priceText = LanguageManager.instance.GetLocalizedValue("PriceText");
-            cashierPriceText.text = $"{priceText} ${GameConfig.Instance.CashierCost:N2}";
-            hireCashierButton.onClick.AddListener(StoreManager.Instance.HireCashier);
-            cleanerPriceText.text = $"{priceText} ${GameConfig.Instance.CleanerCost:N2}";
-            hireCleanerButton.onClick.AddListener(StoreManager.Instance.HireCleaner);
+            // Initialize Employee Screen
+            foreach (var kvp in EmployeeManager.Instance.EmployeeLookup)
+            {
+                var type = kvp.Key;
+                var employees = kvp.Value;
 
-            // Initialize Cart Screen
-            clearCartButton.onClick.AddListener(() => PC.Instance.ClearCart());
-            checkoutButton.onClick.AddListener(() => PC.Instance.Checkout());
-            PC.Instance.OnCartChanged += HandleCartChanged;
-            totalText = LanguageManager.instance.GetLocalizedValue("TotalText");
-            totalPriceText.text = $"{totalText} $0.00";
+                for (int i = 0; i < employees.Count; i++)
+                {
+                    var employeeListing = Instantiate(employeeListingPrefab, employeeListingParent);
+
+                    var employeeData = new EmployeeData
+                    {
+                        Type = type,
+                        PointIndex = i
+                    };
+
+                    employeeListing.Initialize(employeeData);
+                }
+            }
+
+ 
+
+            // Initialize Bill Screen
+            foreach (var bill in DataManager.Instance.Data.Bills)
+            {
+                CreateBillUI(bill);
+            }
+
+            payAllBillsButton.onClick.AddListener(() =>
+            {
+                if (FinanceManager.Instance.PayAllBills())
+                {
+                    AudioManager.Instance.PlaySFX(AudioID.Kaching);
+                    UpdateBillSummaryUI();
+                }
+            });
+
+            UpdateBillSummaryUI();
+
+            // Initialize Loan Screen
+            foreach (var loanTemplate in DataManager.Instance.LoanTemplateDB)
+            {
+                var loanListing = Instantiate(loanListingPrefab, loanListingParent);
+                loanListing.Initialize(loanTemplate);
+            }
+
+            RefreshLoanInfoUI();
 
             // Initialize All Screens
-            foreach (var screen in screens)
+            foreach (Transform screen in transform)
             {
                 var screenRect = screen.GetComponent<RectTransform>();
-                float headerHeight = header.sizeDelta.y / 2;
-                screenRect.anchoredPosition = new Vector2(0f, -headerHeight);
-                screen.SetActive(false);
+                screenRect.anchoredPosition = Vector2.zero;
+                screen.gameObject.SetActive(screen.GetSiblingIndex() <= 0);
             }
-
-            // Initialize Tabs
-            for (int i = 0; i < tabs.Count; i++)
-            {
-                int index = i;
-                tabs[i].onClick.AddListener(() =>
-                {
-                    ToggleActiveScreen(index);
-                    AudioManager.Instance.PlaySFX(AudioID.Click);
-                });
-            }
-
-            ToggleActiveScreen(0);
 
             gameObject.SetActive(false);
         }
@@ -166,16 +224,11 @@ namespace CryingSnow.CheckoutFrenzy
             });
         }
 
-        private void ToggleActiveScreen(int activeScreenIndex)
+        public void PlayClickSound(bool isOn)
         {
-            for (int i = 0; i < screens.Count; i++)
-            {
-                // Activate the screen at the given index and deactivate all others.
-                screens[i].SetActive(i == activeScreenIndex);
+            if (!isOn) return;
 
-                // Enable the tab for the inactive screens and disable the tab for the active screen.
-                tabs[i].interactable = i != activeScreenIndex;
-            }
+            AudioManager.Instance.PlaySFX(AudioID.Click);
         }
 
         /// <summary>
@@ -193,7 +246,7 @@ namespace CryingSnow.CheckoutFrenzy
                 Destroy(child.gameObject);
             }
 
-            decimal totalPrice = 0;
+            decimal totalPrice = 0m;
             int totalItems = 0;
 
             // Iterate through the cart items and update the UI.
@@ -212,16 +265,19 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Update the total price and cart label text in the UI.
-            totalText = LanguageManager.instance.GetLocalizedValue("TotalText");
-            totalPriceText.text = $"{totalText} ${totalPrice:N2}";
-            cartLabel.text = "Cart";
-            if (totalItems > 0) cartLabel.text += $"<color=#FFB414> ({totalItems})"; // Add item count to the cart label.
+            //totalPriceText.text = $"Total: ${totalPrice:N2}";
+            totalPriceText.text = LanguageManager.instance.GetLocalizedValue("CartTotalText")
+                .Replace("{totalPrice}",totalPrice.ToString("N2",CultureInfo.InvariantCulture));
+          
+            cartTabLabel.text = LanguageManager.instance.GetLocalizedValue("CartText");
+            if (totalItems > 0) cartTabLabel.text += $"<color=#FFB414> ({totalItems})"; // Add item count to the cart label.
         }
 
         private void CreateProductListing(Product product)
         {
             var productListing = Instantiate(productListingPrefab, productListingParent);
             productListing.Initialize(product);
+            productListings.Add(productListing);
         }
 
         private void UpdateProductListing(License license)
@@ -229,6 +285,121 @@ namespace CryingSnow.CheckoutFrenzy
             foreach (var product in license.Products)
             {
                 CreateProductListing(product);
+            }
+
+            OnCategoryChanged(categoryDropdown.value);
+        }
+
+        private void CreateBillUI(Bill bill)
+        {
+            var billUI = Instantiate(billUIPrefab, billUIParent);
+            billUI.Initialize(bill);
+            billUIs.Add(billUI);
+
+            UpdateBillSummaryUI();
+
+            if (bill.Type == BillType.Repayment) RefreshLoanInfoUI();
+        }
+
+        private void UpdateBillUIs()
+        {
+            for (int i = billUIs.Count - 1; i >= 0; i--)
+            {
+                var billUI = billUIs[i];
+
+                if (!DataManager.Instance.Data.Bills.Contains(billUI.Bill))
+                {
+                    billUIs.RemoveAt(i);
+                    Destroy(billUI.gameObject);
+                    continue;
+                }
+
+                billUI.UpdateUI();
+            }
+
+            UpdateBillSummaryUI();
+        }
+
+        private void UpdateBillSummaryUI()
+        {
+            int count = FinanceManager.Instance.GetActiveBills().Count;
+            decimal sum = FinanceManager.Instance.GetTotalOutstandingAmount();
+            //outstandingBillsText.text = $"Outstanding Bills: {count} | Total Amount: ${sum:N2}";
+            outstandingBillsText.text = LanguageManager.instance.GetLocalizedValue("OutstandingBillsSummaryText")
+                .Replace("{count}",count.ToString())
+                .Replace("{sum}",sum.ToString("N2",System.Globalization.CultureInfo.InvariantCulture));
+           
+            outstandingBillsText.color = count > 0 ? Color.white : Color.gray;
+
+            payAllBillsButton.interactable = count > 0;
+        }
+
+        private void RefreshLoanInfoUI()
+        {
+            var loans = DataManager.Instance.Data.Loans;
+            if (loans.Count == 0)
+            {
+                //loanInfoText.text = "Congratulations!\nYou have no active loans.";
+                loanInfoText.text = LanguageManager.instance.GetLocalizedValue("NoActiveLoansCongratsText").Replace("\\n","\n");
+                return;
+            }
+
+            System.Text.StringBuilder sb = new();
+
+            foreach (var loan in loans)
+            {
+                sb.AppendLine($"<b>{loan.DisplayName}</b>");
+                //sb.AppendLine($"Progress: {loan.PaymentsMade} of {loan.TotalPayments} Bills");
+                sb.AppendLine(LanguageManager.instance.GetLocalizedValue("LoanPaymentProgressText")
+                    .Replace("{paymentsMade}",loan.PaymentsMade.ToString())).Replace("{totalPayments}",loan.TotalPayments.ToString());
+                sb.AppendLine(); // Extra line for spacing
+            }
+
+            loanInfoText.text = sb.ToString();
+        }
+
+        private void InitializeDropdown<TEnum>(TMP_Dropdown dropdown, string allLabel, UnityAction<int> onValueChanged) where TEnum : System.Enum
+        {
+            dropdown.ClearOptions();
+
+            var options = new List<string> { allLabel };
+            options.AddRange(System.Enum.GetNames(typeof(TEnum)).Select(name => name.ToTitleCase()));
+
+            dropdown.AddOptions(options);
+            dropdown.onValueChanged.AddListener(onValueChanged);
+        }
+
+        private void OnCategoryChanged(int index)
+        {
+            if (index == 0)
+            {
+                productListings.ForEach(listing => listing.gameObject.SetActive(true));
+                return;
+            }
+
+            var selectedCategory = (Product.Category)(index - 1);
+
+            foreach (var listing in productListings)
+            {
+                bool shouldShow = listing.Category == selectedCategory;
+                listing.gameObject.SetActive(shouldShow);
+            }
+        }
+
+        private void OnSectionChanged(int index)
+        {
+            if (index == 0)
+            {
+                furnitureListings.ForEach(listing => listing.gameObject.SetActive(true));
+                return;
+            }
+
+            var selectedSection = (Section)(index - 1);
+
+            foreach (var listing in furnitureListings)
+            {
+                bool shouldShow = listing.Section == selectedSection;
+                listing.gameObject.SetActive(shouldShow);
             }
         }
     }

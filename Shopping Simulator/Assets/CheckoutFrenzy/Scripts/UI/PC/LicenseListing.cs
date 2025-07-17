@@ -88,7 +88,7 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else
             {
-                string buttonText = LanguageManager.instance.GetLocalizedValue("AvailableText");
+                string buttonText = LanguageManager.instance.GetLocalizedValue("BuyButtonText");
                 purchaseButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
                 string unavailableText =LanguageManager.instance.GetLocalizedValue("UnavailableText");
                 requirementText.text = $"<color=red>{unavailableText}\n{requiresText} {license.Level}";

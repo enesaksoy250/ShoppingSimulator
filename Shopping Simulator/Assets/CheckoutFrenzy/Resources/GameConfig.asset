@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa82b0bff3833e14ea8b513179f21d14, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  defaultStoreName: SHOP MASTER
+  defaultStoreName: AWESOME MART
   storeNameMaxCharacters: 15
   startingMoney: 2000
   minSpawnTime: 5
@@ -23,11 +23,11 @@ MonoBehaviour:
     StartMinute: 0
     EndHour: 22
     EndMinute: 0
-  cashierCost: 200
-  cleanerCost: 200
+  cashierCost: 1000
+  cleanerCost: 500
   baseExperience: 5
   growthFactor: 1.1
-  backgroundMusic: {fileID: 8300000, guid: c9e8f6a7ab8949e459e5c800977e9301, type: 3}
+  backgroundMusic: {fileID: 0}
   interactableLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -43,6 +43,9 @@ MonoBehaviour:
   shelfLayer:
     serializedVersion: 2
     m_Bits: 2048
+  rackLayer:
+    serializedVersion: 2
+    m_Bits: 32768
   heldObjectLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -81,6 +84,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9abff421043bf2e448a7fb0127431ad6, type: 2}
   - {fileID: 11400000, guid: 900815a82094f284bb8f7593423b5b3d, type: 2}
   - {fileID: 11400000, guid: 710f988f70eb50d479049080ec2d1f80, type: 2}
+  maxCleanables: 10
   controlMode: 0
   minSpawnTimeAtMinReputation: 15
   maxSpawnTimeAtMinReputation: 45

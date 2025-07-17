@@ -6,13 +6,17 @@ namespace CryingSnow.CheckoutFrenzy
 {
     public class CashRegister : MonoBehaviour
     {
-        [SerializeField, Tooltip("The button used to clear the cash register input.")]
+        [SerializeField, Tooltip("The button used to undo the given change.")]
+        private Button undoButton;
+
+        [SerializeField, Tooltip("The button used to clear the given change.")]
         private Button clearButton;
 
         [SerializeField, Tooltip("The button used to confirm the transaction.")]
         private Button confirmButton;
 
         public event System.Action<int> OnDraw;
+        public event System.Action OnUndo;
         public event System.Action OnClear;
         public event System.Action OnConfirm;
 
@@ -26,6 +30,7 @@ namespace CryingSnow.CheckoutFrenzy
             originalPosY = rect.anchoredPosition.y;
 
             // Add listeners to the clear and confirm buttons to invoke the corresponding events.
+            undoButton.onClick.AddListener(() => OnUndo?.Invoke());
             clearButton.onClick.AddListener(() => OnClear?.Invoke());
             confirmButton.onClick.AddListener(() => OnConfirm?.Invoke());
         }

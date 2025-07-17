@@ -109,7 +109,14 @@ namespace CryingSnow.CheckoutFrenzy
             }
 
             // Clicked outside the main panel, deactivate the game object.
-            Close();
+            Toggle();
+
+            AudioManager.Instance.PlaySFX(AudioID.Click);
+        }
+
+        public void Toggle()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
 
             AudioManager.Instance.PlaySFX(AudioID.Click);
         }
@@ -117,7 +124,7 @@ namespace CryingSnow.CheckoutFrenzy
         /// <summary>
         /// Opens the settings window.
         /// </summary>
-        public void Open()
+    /*    public void Open()
         {
             gameObject.SetActive(true);
       
@@ -162,6 +169,6 @@ namespace CryingSnow.CheckoutFrenzy
                     UIManager.Instance.ToggleCrosshair(true);
             }
          
-        }
-    }
+        } */
+    } 
 }

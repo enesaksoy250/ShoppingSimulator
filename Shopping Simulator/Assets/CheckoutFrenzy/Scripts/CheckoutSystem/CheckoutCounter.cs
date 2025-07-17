@@ -37,8 +37,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("A list of sprites representing different money visuals.")]
         private List<Sprite> moneySprites;
 
-        [SerializeField, Tooltip("The Cashier entity associated with this checkout counter.")]
-        private Cashier cashier;
+        [SerializeField, Tooltip("The position where the cashier stands while working at this counter.")]
+        private Transform cashierPoint;
 
         [SerializeField, Tooltip("The Cinemachine Virtual Camera used to focus on the counter during transactions.")]
         private CinemachineVirtualCamera cashierCamera;
@@ -46,36 +46,27 @@ namespace CryingSnow.CheckoutFrenzy
         public enum State { Standby, Placing, Scanning, CashPay, CardPay }
         public State CurrentState { get; private set; }
 
+        public bool HasCashier { get; private set; }
+
+        public List<Customer> LiningCustomers { get; private set; } = new List<Customer>();
+        public int GetQueueNumber(Customer customer) => LiningCustomers.IndexOf(customer);
+
         // UI References
         private CashRegister cashRegister => UIManager.Instance.CashRegister;
         private PaymentTerminal paymentTerminal => UIManager.Instance.PaymentTerminal;
         private Message message => UIManager.Instance.Message;
-
-        private bool hasCashier;
-        public bool HasCashier
-        {
-            get => hasCashier;
-            set
-            {
-                hasCashier = value;
-                cashier.gameObject.SetActive(value);
-
-                if (value && CurrentState == State.Scanning)
-                    StartCoroutine(AutoScan());
-            }
-        }
 
         private PlayerController player;
         private Customer currentCustomer;
 
         private List<CheckoutItem> checkoutItems = new List<CheckoutItem>();
 
-        // Payment Amounts
-        private decimal totalPrice;     // Total cost of the customer's items.
-        private decimal customerMoney;  // Amount of money the customer paid.
-        private int givenChange;        // Amount of change given to the customer.
-
-        private List<SpriteRenderer> moneyRenderers = new List<SpriteRenderer>();
+        // Total cost of the customer's items.
+        private decimal totalPrice;
+        // Amount of money the customer paid.
+        private decimal customerMoney;
+        // Change given to the customer.
+        private Stack<ChangeMoney> givenChange = new Stack<ChangeMoney>();
 
         // List of available denominations in cents (e.g., $50, $20, $10, $5, $1, and coins)
         private readonly List<int> denominations = new List<int> { 5000, 2000, 1000, 500, 100, 50, 25, 10, 5, 1 };
@@ -84,12 +75,17 @@ namespace CryingSnow.CheckoutFrenzy
         {
             gameObject.layer = GameConfig.Instance.InteractableLayer.ToSingleLayer();
             UpdateMonitorText();
-            HasCashier = false;
+            //HasCashier = false;
+        }
+
+        private void Start()
+        {
+            StoreManager.Instance.RegisterCounter(this);
         }
 
         public void Interact(PlayerController player)
         {
-            if (hasCashier)
+            if (HasCashier)
             {
                 //string text = LanguageControl.CheckLanguage("Burada zaten bir kasiyer çalýþýyor.", "A cashier is already working here."); 
                 string cashierText = LanguageManager.instance.GetLocalizedValue("CashierText");
@@ -103,9 +99,9 @@ namespace CryingSnow.CheckoutFrenzy
 
             ActivateReturnButton();
 
-            player.CurrentState = PlayerController.State.Working;
+            player.StateManager.PushState(PlayerState.Working);
 
-            UIManager.Instance.ToggleCrosshair(false);
+            //UIManager.Instance.ToggleCrosshair(false);
 
             UIManager.Instance.InteractMessage.Hide();
         }
@@ -122,18 +118,43 @@ namespace CryingSnow.CheckoutFrenzy
             UIManager.Instance.InteractMessage.Hide();
         }
 
+
+        public void AssignCashier(Cashier cashier)
+        {
+            HasCashier = cashier != null;
+
+            if (HasCashier)
+            {
+                cashier.transform.SetParent(cashierPoint);
+                cashier.transform.localPosition = Vector3.zero;
+                cashier.transform.localRotation = Quaternion.identity;
+
+                if (CurrentState == State.Scanning)
+                    StartCoroutine(AutoScan());
+            }
+            else
+            {
+                Destroy(cashierPoint.GetChild(0).gameObject);
+            }
+        }
+
         /// <summary>
         /// Calculates the position for a customer in the queue.
         /// </summary>
         /// <param name="queueNumber">The customer's position in the queue (0 for the front of the line).</param>
         /// <param name="lookDirection">An output parameter providing the direction the customer should be facing.</param>
         /// <returns>The world position for the specified customer in the queue.</returns>
-        public Vector3 GetQueuePosition(int queueNumber, out Vector3 lookDirection)
+
+
+
+        public Vector3 GetQueuePosition(Customer customer, out Vector3 lookDirection)
         {
             Vector3 worldCheckoutPoint = transform.TransformPoint(checkoutPoint);
 
+            int queueNumber = GetQueueNumber(customer);
+
             if (queueNumber > 0) lookDirection = -liningDirection;
-            else lookDirection = (cashier.transform.position - worldCheckoutPoint).normalized;
+            else lookDirection = (cashierPoint.position - worldCheckoutPoint).normalized;
 
             return worldCheckoutPoint + liningDirection * queueNumber * 0.5f;
         }
@@ -218,7 +239,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             SetCurrentState(State.Scanning);
 
-            if (hasCashier) StartCoroutine(AutoScan());
+            if (HasCashier) StartCoroutine(AutoScan());
         }
 
         private void HandleScanning(CheckoutItem item)
@@ -252,7 +273,6 @@ namespace CryingSnow.CheckoutFrenzy
             MissionManager.Instance.UpdateMission(Mission.Goal.Revenue, (int)(price * 100));
             MissionManager.Instance.UpdateMission(Mission.Goal.Sell, 1, item.Product.ProductID);
         }
-
         private IEnumerator AutoScan()
         {
             yield return new WaitForSeconds(autoScanTime);
@@ -260,7 +280,10 @@ namespace CryingSnow.CheckoutFrenzy
             while (checkoutItems.Count > 0)
             {
                 var item = checkoutItems.FirstOrDefault();
-                if (item != null) ScanItem(item);
+                if (item != null) { 
+                    ScanItem(item);
+                    DataManager.Instance.AddExperience();
+                } 
 
                 yield return new WaitForSeconds(autoScanTime);
             }
@@ -275,9 +298,9 @@ namespace CryingSnow.CheckoutFrenzy
             bool isUsingCash = CurrentState == State.CashPay;
 
             // Wait for the customer to hand over payment
-            yield return currentCustomer.HandsPayment(isUsingCash, hasCashier ? cashier : null);
+            yield return currentCustomer.HandsPayment(isUsingCash, HasCashier ? cashierPoint.GetComponentInChildren<Cashier>() : null);
 
-            if (!hasCashier)
+            if (!HasCashier)
             {
                 // Setup manual payment system (player as cashier)
                 if (isUsingCash)
@@ -286,6 +309,7 @@ namespace CryingSnow.CheckoutFrenzy
 
                     cashRegister.Open();
                     cashRegister.OnDraw += UpdateGivenChange;
+                    cashRegister.OnUndo += UndoGivenChange;
                     cashRegister.OnClear += ClearGivenChange;
                     cashRegister.OnConfirm += CheckGivenChange;
                 }
@@ -307,30 +331,18 @@ namespace CryingSnow.CheckoutFrenzy
             // Payment validation logic for cash register
             void CheckGivenChange()
             {
-                isComplete = givenChange / 100m >= customerMoney - totalPrice;
+                decimal totalChange = givenChange.Sum(change => change.amount) / 100m;
+                isComplete = totalChange >= customerMoney - totalPrice;
 
                 if (isComplete)
                 {
-                    decimal paymentAmount = customerMoney - (givenChange / 100m);
+                    decimal paymentAmount = customerMoney - totalChange;
                     DataManager.Instance.PlayerMoney += paymentAmount;
                     MissionManager.Instance.UpdateMission(Mission.Goal.Checkout, 1);
-
-                    print("Ödeme alýndý checkout counter");
-   
-                    /*int receivePayment = PlayerPrefs.GetInt("ReceivePayment", 0);
-                    receivePayment++;
-                    if (receivePayment % 4 == 0 && PlayerPrefs.GetInt("RemoveAd") != 1)
-                    {
-                        StartCoroutine(ShowAd());
-                    }
-                    PlayerPrefs.SetInt("ReceivePayment", receivePayment); */
-
                 }
                 else
                 {
-                    //string text = LanguageControl.CheckLanguage("Yetersiz bozukluk. Lütfen doðru miktarý giriniz.", "Insufficient change. Please provide the correct amount.");
-                    string InsufficientChangeText = LanguageManager.instance.GetLocalizedValue("InsufficientChangeText");
-                    message.Log(InsufficientChangeText, Color.red);
+                    message.Log("Insufficient change. Please provide the correct amount.", Color.red);
                 }
             }
 
@@ -346,13 +358,11 @@ namespace CryingSnow.CheckoutFrenzy
                 }
                 else
                 {
-                    //string text = LanguageControl.CheckLanguage("Geçersiz tutar. Lütfen geçerli bir tutar girin.", "Invalid amount. Please enter a valid amount.");
-                    string InvalidAmountText = LanguageManager.instance.GetLocalizedValue("InvalidAmountText");
-                    message.Log(InvalidAmountText, Color.red);
+                    message.Log("Invalid amount. Please enter a valid amount.", Color.red);
                 }
             }
 
-            if (hasCashier)
+            if (HasCashier)
             {
                 // Auto-complete transaction if there is a cashier
                 yield return new WaitForSeconds(1f);
@@ -370,15 +380,15 @@ namespace CryingSnow.CheckoutFrenzy
             currentCustomer = null;
             totalPrice = 0m;
             customerMoney = 0m;
-            givenChange = 0;
 
             // Clean up UI and close manual payment interfaces
-            if (!hasCashier)
+            if (!HasCashier)
             {
                 if (isUsingCash)
                 {
                     cashRegister.Close();
                     cashRegister.OnDraw -= UpdateGivenChange;
+                    cashRegister.OnUndo -= UndoGivenChange;
                     cashRegister.OnClear -= ClearGivenChange;
                     cashRegister.OnConfirm -= CheckGivenChange;
                 }
@@ -391,7 +401,7 @@ namespace CryingSnow.CheckoutFrenzy
                 ActivateReturnButton();
 
                 var endPosition = transform.TransformPoint(checkoutPoint + Vector3.up * 1.2f);
-                yield return ClearMoneyRenderers(endPosition);
+                yield return ClearGivenChangeCoroutine(endPosition);
             }
 
             SetCurrentState(State.Standby);
@@ -406,28 +416,36 @@ namespace CryingSnow.CheckoutFrenzy
         private void UpdateGivenChange(int amount)
         {
             decimal playerBalance = DataManager.Instance.PlayerMoney + customerMoney;
-            decimal totalChange = (givenChange + amount) / 100m;
+            decimal totalChange = givenChange.Sum(change => change.amount) / 100m;
 
-            if (playerBalance < totalChange) return;
+            if (playerBalance < totalChange + (amount / 100m)) return;
 
-            givenChange += amount;
-
-            SpawnMoneyRenderer(amount);
+            givenChange.Push(new ChangeMoney(amount, SpawnMoney(amount)));
 
             UpdateMonitorText();
         }
+
+        private void UndoGivenChange()
+        {
+            if (givenChange.Count == 0) return;
+
+            var change = givenChange.Pop();
+
+            var endPosition = cashierPoint.position + Vector3.up;
+            change.money.transform.DOMove(endPosition, 0.3f)
+                .OnComplete(() => Destroy(change.money));
+
+            UpdateMonitorText();
+        }
+
 
         private void ClearGivenChange()
         {
-            givenChange = 0;
-
-            var endPosition = cashier.transform.position + Vector3.up;
-            StartCoroutine(ClearMoneyRenderers(endPosition));
-
-            UpdateMonitorText();
+            var endPosition = cashierPoint.position + Vector3.up;
+            StartCoroutine(ClearGivenChangeCoroutine(endPosition));
         }
 
-        private void SpawnMoneyRenderer(int amount)
+        private GameObject SpawnMoney(int amount)
         {
             // Find the corresponding sprite for the given denomination
             int index = denominations.IndexOf(amount);
@@ -437,7 +455,7 @@ namespace CryingSnow.CheckoutFrenzy
             var money = new GameObject("Money_" + amount.ToString());
 
             // Set initial position at the cashier's position with an upward offset
-            money.transform.position = cashier.transform.position + Vector3.up;
+            money.transform.position = cashierPoint.position + Vector3.up;
 
             // Apply a random rotation around the Y-axis for a natural scattered look
             money.transform.rotation = Quaternion.Euler(90f, Random.Range(0f, 360f), 0f);
@@ -450,8 +468,7 @@ namespace CryingSnow.CheckoutFrenzy
             moneyRend.sprite = sprite;
 
             // Set the rendering order to ensure correct layering
-            moneyRend.sortingOrder = moneyRenderers.Count;
-            moneyRenderers.Add(moneyRend);
+            moneyRend.sortingOrder = givenChange.Count;
 
             // Determine the final target position, slightly randomized around the central money point
             var center = transform.TransformPoint(moneyPoint);
@@ -459,8 +476,26 @@ namespace CryingSnow.CheckoutFrenzy
 
             // Move the money to its final position with a smooth animation
             money.transform.DOMove(position, 0.3f);
+
+            return money;
         }
 
+        private IEnumerator ClearGivenChangeCoroutine(Vector3 endPosition, float duration = 0.3f)
+        {
+            var changeToClear = new List<ChangeMoney>(givenChange);
+            givenChange.Clear();
+            UpdateMonitorText();
+
+            changeToClear.ForEach(change =>
+            {
+                change.money.transform.DOMove(endPosition, duration)
+                    .OnComplete(() => Destroy(change.money));
+            });
+
+            yield return new WaitForSeconds(duration);
+        }
+
+/*
         private IEnumerator ClearMoneyRenderers(Vector3 endPosition, float duration = 0.3f)
         {
             moneyRenderers.ForEach(money =>
@@ -473,7 +508,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             yield return new WaitForSeconds(duration);
         }
-
+*/
         private void SetCurrentState(State state)
         {
             CurrentState = state;
@@ -505,19 +540,16 @@ namespace CryingSnow.CheckoutFrenzy
                     break;
 
                 case State.CashPay:
-                    displayText = LanguageManager.instance.GetLocalizedValue("CashPaymentText");
-                    text = LanguageManager.instance.GetLocalizedValue("TotalText");
-                    displayText += $"\n<color=#00a4ff>{text} ${totalPrice:N2}</color>";
-                    text = LanguageManager.instance.GetLocalizedValue("AmountReceivedText");
-                    displayText += $"\n{text} ${customerMoney:N2}";
+                    displayText = "Cash Payment";
+                    displayText += $"\n<color=#00a4ff>Total: ${totalPrice:N2}</color>";
+                    displayText += $"\nReceived: ${customerMoney:N2}";
 
-                    decimal change = customerMoney - totalPrice;
-                    text = LanguageManager.instance.GetLocalizedValue("ChangeText");
-                    displayText += $"\n<color=yellow>{text} ${change:N2}";
+                    decimal changeNeeded = customerMoney - totalPrice;
+                    displayText += $"\n<color=yellow>Change: ${changeNeeded:N2}";
 
-                    text = LanguageManager.instance.GetLocalizedValue("GivenAmountText");
-                    string color = givenChange / 100m >= change ? "green" : "red";
-                    displayText += $"\n<color={color}>{text} ${givenChange / 100m:N2}";
+                    decimal totalChange = givenChange.Sum(change => change.amount) / 100m;
+                    string color = totalChange >= changeNeeded ? "green" : "red";
+                    displayText += $"\n<color={color}>Give: ${totalChange:N2}";
                     break;
 
                 case State.CardPay:
@@ -541,9 +573,8 @@ namespace CryingSnow.CheckoutFrenzy
                 cashierCamera.gameObject.SetActive(false);
 
                 UIManager.Instance.ToggleActionUI(ActionType.Return, false, null);
-                UIManager.Instance.ToggleCrosshair(true);
 
-                player.CurrentState = PlayerController.State.Free;
+                player.StateManager.PopState();
                 player = null;
             });
         }
@@ -563,15 +594,15 @@ namespace CryingSnow.CheckoutFrenzy
 
             // 2. Round up to nearest convenient denomination
             int roundedUpAmount = GetRoundedUpAmount(totalCents);
-            paymentOptions.Add(roundedUpAmount / 100);
+            paymentOptions.Add(roundedUpAmount / 100m);
 
             // 3. Smallest excess payment
             int smallestExcessAmount = GetSmallestExcessAmount(totalCents);
-            paymentOptions.Add(smallestExcessAmount / 100);
+            paymentOptions.Add(smallestExcessAmount / 100m);
 
             // 4. Higher denomination payment (e.g., round up to nearest 5 or 10 dollar increment)
             int roundedUpHigherDenomination = GetHigherDenomination(totalCents);
-            paymentOptions.Add(roundedUpHigherDenomination / 100);
+            paymentOptions.Add(roundedUpHigherDenomination / 100m);
 
             int randomIndex = Random.Range(0, paymentOptions.Count);
             return paymentOptions[randomIndex];

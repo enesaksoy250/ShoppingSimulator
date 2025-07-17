@@ -18,17 +18,9 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Button to continue after viewing the summary.")]
         private Button continueButton;
 
-        private PlayerController _player;
-        private PlayerController player
-        {
-            get
-            {
-                if (_player == null) _player = FindFirstObjectByType<PlayerController>();
-                return _player;
-            }
-        }
+        private PlayerStateManager stateManager;
 
-        private void Awake()
+        private void Start()
         {
             mainPanel.anchoredPosition = Vector2.zero; // Center the panel.
 
@@ -42,6 +34,10 @@ namespace CryingSnow.CheckoutFrenzy
             skipToggle.onValueChanged.AddListener(isOn =>
                 AudioManager.Instance.PlaySFX(AudioID.Click)
             );
+
+            var player = FindFirstObjectByType<PlayerController>();
+            if (player != null)
+                stateManager = player.StateManager;
 
             gameObject.SetActive(false);
         }
@@ -67,8 +63,7 @@ namespace CryingSnow.CheckoutFrenzy
 
             valuesText.text = values; // Set the summary text.
 
-            if (player.CanMove)
-                UIManager.Instance.ToggleCrosshair(false);
+            stateManager?.PushState(PlayerState.Paused);
 
             // Add a listener to the continue button.
             continueButton.onClick.RemoveAllListeners(); // Remove any previous listeners.
@@ -77,8 +72,7 @@ namespace CryingSnow.CheckoutFrenzy
                 onContinue?.Invoke(skipToggle.isOn); // Invoke the continue action and pass the skip toggle state.
                 AudioManager.Instance.PlaySFX(AudioID.Click);
 
-                if (player.CanMove)
-                    UIManager.Instance.ToggleCrosshair(true);
+                stateManager?.PopState();
 
                 gameObject.SetActive(false);
             });

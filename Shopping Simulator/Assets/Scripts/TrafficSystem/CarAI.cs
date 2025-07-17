@@ -203,7 +203,7 @@ public class CarAI : MonoBehaviour
 
             if (next == null)
             {
-                Debug.LogError("Next waypoint bulunamadı, MoveRoutine sonlanıyor.");
+                Debug.Log("Next waypoint bulunamadı, MoveRoutine sonlanıyor.");
                 CarCountControl.Instance.DecreaseCarNumber();
                 Destroy(gameObject);
                 yield break;

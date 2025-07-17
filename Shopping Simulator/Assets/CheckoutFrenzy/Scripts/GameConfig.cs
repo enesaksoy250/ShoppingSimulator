@@ -71,7 +71,6 @@ namespace CryingSnow.CheckoutFrenzy
         private AudioClip backgroundMusic;
 
 
-
         [Header("Game Layers")]
         [SerializeField, Tooltip("Layer used for interactable objects (Furnitures, Counter, PC, etc.)")]
         private LayerMask interactableLayer;
@@ -88,6 +87,9 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Layer used by Shelves in Shelving Units.")]
         private LayerMask shelfLayer;
 
+        [SerializeField, Tooltip("Layer used by Racks in Storage Racks.")]
+        private LayerMask rackLayer;
+
         [SerializeField, Tooltip("Layer used by objects that can be held by the player. Objects on this layer are rendered on top of everything else using a special camera to prevent clipping when held.")]
         private LayerMask heldObjectLayer;
 
@@ -99,6 +101,11 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] List<Dialogue> overpricedDialogues;
         [SerializeField] List<Dialogue> satisfiedDialogues;
         [SerializeField] List<Dialogue> waitingLongDialogues;
+
+        [Header("Cleaning Settings")]
+        [SerializeField, Tooltip("How many Cleanables can be spawned in the game.")]
+        private int maxCleanables = 10;
+
 
         [Header("Control Settings")]
         [SerializeField, Tooltip("Selected control mode for the game.")]
@@ -131,6 +138,9 @@ namespace CryingSnow.CheckoutFrenzy
                 return Random.Range(minSpawn, maxSpawn);
             }
         }
+
+        public int MaxCleanables => maxCleanables;
+
         public int BaseMaxCustomers => baseMaxCustomers;
         public TimeRange OpenTime => openTime;
 
@@ -151,6 +161,7 @@ namespace CryingSnow.CheckoutFrenzy
         public LayerMask PaymentLayer => paymentLayer;
         public LayerMask GroundLayer => groundLayer;
         public LayerMask ShelfLayer => shelfLayer;
+        public LayerMask RackLayer => rackLayer;
         public LayerMask HeldObjectLayer => heldObjectLayer;
         public LayerMask PlayerLayer => playerLayer;
 
@@ -165,5 +176,5 @@ namespace CryingSnow.CheckoutFrenzy
     }
 
     public enum ControlMode { Mobile, PC }
-    public enum ActionType { Throw, Open, Close, Place, Take, Price, Rotate, Return }
+    public enum ActionType { Throw, Open, Close, Place, Take, Price, Rotate, Return, Label, Pack }
 }

@@ -18,7 +18,7 @@ namespace CryingSnow.CheckoutFrenzy
         private TMP_Text monitorText;
 
         [SerializeField, Tooltip("The duration (in seconds) to simulate the loading of the order program.")]
-        private float loadingDuration = 2f;
+        private float bootingDuration = 1.5f;
 
         [SerializeField, Tooltip("The total number of segments used to represent the loading bar on the PC monitor.")]
         private int totalBarSegments = 50;
@@ -58,17 +58,18 @@ namespace CryingSnow.CheckoutFrenzy
             this.player = player;
 
             monitorCamera.gameObject.SetActive(true);
-            StartCoroutine(LoadOrderProgram());
+            StartCoroutine(BootPC());
 
-            player.CurrentState = PlayerController.State.Busy;
+            player.StateManager.PushState(PlayerState.Busy);
 
-            UIManager.Instance.ToggleCrosshair(false);
+       //     UIManager.Instance.ToggleCrosshair(false);
             UIManager.Instance.InteractMessage.Hide();
         }
 
         public void OnFocused()
         {
             string message = LanguageManager.instance.GetLocalizedValue("TapToStartOrderProgramText");
+            UIManager.Instance.InteractMessage.Display(message);
         }
 
         public void OnDefocused()
@@ -76,7 +77,44 @@ namespace CryingSnow.CheckoutFrenzy
             UIManager.Instance.InteractMessage.Hide();
         }
 
-        private IEnumerator LoadOrderProgram()
+        private IEnumerator BootPC()
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < bootingDuration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                // Calculate the progress (0 to 1).
+                float progress = Mathf.Clamp01(elapsedTime / bootingDuration);
+
+                // Update the loading bar.
+                int filledSegments = Mathf.RoundToInt(progress * totalBarSegments);
+                string loadingBar = new string('|', filledSegments) + new string('.', totalBarSegments - filledSegments);
+
+                // Update the monitor text.
+                monitorText.text = $"Booting the PC\nPlease wait...\n<mspace=0.1>[{loadingBar}]</mspace>\n{Mathf.RoundToInt(progress * 100)}%";
+
+                yield return null;
+            }
+
+            // Ensure the text shows 100% and a full bar at the end.
+            monitorText.text = $"Booting the PC\nPlease wait...\n<mspace=0.1>[{new string('|', totalBarSegments)}]</mspace>\n100%";
+
+            yield return new WaitForSeconds(0.5f);
+
+            UIManager.Instance.PCMonitor.Display(onClose: () =>
+            {
+                monitorCamera.gameObject.SetActive(false);
+                monitorText.text = "<size=0.5>Standby...";
+
+                player.StateManager.PopState();
+                player = null;
+            });
+        }
+
+
+   /*     private IEnumerator LoadOrderProgram()
         {
             float elapsedTime = 0f;
             string monitorTxt = LanguageManager.instance.GetLocalizedValue("LoadingOrderProgramText").Replace("\\n","\n");
@@ -115,7 +153,7 @@ namespace CryingSnow.CheckoutFrenzy
                 UIManager.Instance.ToggleCrosshair(true);
             });
         }
-
+   */
         /// <summary>
         /// Adds the specified purchasable item to the shopping cart.
         /// </summary>
@@ -153,7 +191,6 @@ namespace CryingSnow.CheckoutFrenzy
 
             AudioManager.Instance.PlaySFX(AudioID.Click);
         }
-
         /// <summary>
         /// Processes the current order in the shopping cart.
         ///
@@ -248,7 +285,7 @@ namespace CryingSnow.CheckoutFrenzy
         /// <returns>The total price of all items in the list.</returns>
         private decimal CalculateOrderPrice(List<IPurchasable> orders)
         {
-            decimal totalPrice = 0;
+            decimal totalPrice = 0m;
 
             foreach (var order in orders)
             {
@@ -304,6 +341,7 @@ namespace CryingSnow.CheckoutFrenzy
             isProcessing = false;
         }
 
+
         /// <summary>
         /// Delivers the specified order to the delivery point.
         /// 
@@ -323,9 +361,14 @@ namespace CryingSnow.CheckoutFrenzy
             }
             else if (order is Furniture furniture)
             {
-                // Instantiate the furniture at the delivery point.
-                var furnitureClone = Instantiate(furniture, deliveryPoint.position, deliveryPoint.rotation);
-                furnitureClone.ActivatePhysics();
+                // Instantiate the furniture (in a box) at the delivery point.
+                var furnitureBox = Instantiate(
+                    StoreManager.Instance.FurnitureBoxPrefab,
+                    deliveryPoint.position,
+                    deliveryPoint.rotation
+                );
+
+                furnitureBox.furnitureId = furniture.FurnitureID;
             }
         }
     }

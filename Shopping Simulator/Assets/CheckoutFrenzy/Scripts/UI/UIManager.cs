@@ -49,6 +49,9 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Component to manage the virtual keyboard UI.")]
         private VirtualKeyboard virtualKeyboard;
 
+        [SerializeField, Tooltip("Allows customization of shelf product labels.")]
+        private LabelCustomizer labelCustomizer;
+
         [SerializeField, Tooltip("Prefab for the chat bubble UI element.")]
         private ChatBubble chatBubblePrefab;
 
@@ -70,6 +73,10 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Component to manage game settings.")]
         private SettingsWindow settingsWindow;
 
+        [Header("Game Pause")]
+        [SerializeField, Tooltip("Reference to the pause menu.")]
+        private PauseMenu pauseMenu;
+
         [SerializeField, Tooltip("Key to display settings window.")]
         private KeyCode settingsKey = KeyCode.Escape;
 
@@ -79,6 +86,7 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] private GameObject removeAdPanel;
         [SerializeField] private Button menuGoogleLoginButton;
         [SerializeField] private Button googleLoginButton;
+        [SerializeField] private GameObject storeButton;
         public Message Message => message;
         public PriceCustomizer PriceCustomizer => priceCustomizer;
         public PCMonitor PCMonitor => pcMonitor;
@@ -91,10 +99,14 @@ namespace CryingSnow.CheckoutFrenzy
         public TextMeshProUGUI MixAdLoadingText => mixAdLoadingText;
         public TextMeshProUGUI StorePriceText => storePriceText;
         public GameObject RemoveAdPanel => removeAdPanel;
-  
+        public GameObject StoreButton => storeButton;
+        public LabelCustomizer LabelCustomizer => labelCustomizer;
+
         private Canvas canvas;
         private bool isMobileControl;
         private List<IActionUI> actionUIs;
+
+        private bool isGamePaused => Time.timeScale < 1f;
 
         private void Awake()
         {
@@ -106,7 +118,6 @@ namespace CryingSnow.CheckoutFrenzy
         private void Start()
         {
             isMobileControl = GameConfig.Instance.ControlMode == ControlMode.Mobile;
-        
 
             if (isMobileControl)
             {
@@ -137,19 +148,15 @@ namespace CryingSnow.CheckoutFrenzy
 
             ToggleDeliveryTimer(false);
             UpdateHoldProgress(0f);
-
-            googleLoginButton.onClick.AddListener(LoginWithGoogle.instance.LoginWithGoogleAndCheckDatabase);
-            menuGoogleLoginButton.onClick.AddListener(LoginWithGoogle.instance.LoginWithGoogleAndCheckDatabase);
-
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(settingsKey))
+         /*   if (Input.GetKeyDown(pauseKey))
             {
-                if (settingsWindow.gameObject.activeSelf) settingsWindow.Close();
-                else settingsWindow.Open();
-            }
+                if (pauseMenu.gameObject.activeSelf) pauseMenu.Close();
+                else if (!isGamePaused) pauseMenu.Open();
+            } */
         }
 
         public void ToggleInteractButton(bool active)
@@ -185,6 +192,12 @@ namespace CryingSnow.CheckoutFrenzy
         {
             boxInfo.gameObject.SetActive(true);
             boxInfo.UpdateInfo(box);
+        }
+
+        public void DisplayBoxInfo(FurnitureBox furnitureBox)
+        {
+            boxInfo.gameObject.SetActive(true);
+            boxInfo.UpdateInfo(furnitureBox);
         }
 
         public void HideBoxInfo()

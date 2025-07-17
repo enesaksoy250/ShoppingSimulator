@@ -41,6 +41,8 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("Button to add the selected product amount to the cart.")]
         private Button addToCartButton;
 
+        public Product.Category Category { get; private set; }
+
         private int amount;
         private int boxQuantity;
         private decimal singlePrice;
@@ -51,6 +53,9 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="product">The Product object to display.</param>
         public void Initialize(Product product)
         {
+
+            Category = product.ProductCategory;
+
             iconImage.sprite = product.Icon;
             nameText.text = product.Name;
 

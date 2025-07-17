@@ -66,14 +66,23 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="playSFX">If true, plays the `door open` sound effect.</param>
         public override void Open(bool forced, bool playSFX)
         {
-            doorLeft.DOLocalRotate(Vector3.up * openAngle, 0.3f).OnComplete(() =>
+            if (doorLeft != null)
             {
-                IsOpen = true;
-                if (!forced) ShowCloseButton();
-            });
+                doorLeft.DOLocalRotate(Vector3.up * openAngle, 0.3f).OnComplete(() =>
+                {
+                    IsOpen = true;
+                    if (!forced) ShowCloseButton();
+                });
+            }
 
             if (doorRight != null)
-                doorRight.DOLocalRotate(Vector3.down * openAngle, 0.3f);
+            {
+                doorRight.DOLocalRotate(Vector3.down * openAngle, 0.3f).OnComplete(() =>
+                {
+                    IsOpen = true;
+                    if (!forced) ShowCloseButton();
+                });
+            }
 
             if (playSFX) AudioManager.Instance.PlaySFX(AudioID.DoorOpen);
         }
@@ -87,14 +96,23 @@ namespace CryingSnow.CheckoutFrenzy
         /// <param name="playSFX">If true, plays the `door close` sound effect.</param>
         public override void Close(bool forced, bool playSFX)
         {
-            doorLeft.DOLocalRotate(Vector3.zero, 0.3f).OnComplete(() =>
+            if (doorLeft != null)
             {
-                IsOpen = false;
-                if (!forced) ShowOpenButton();
-            });
+                doorLeft.DOLocalRotate(Vector3.zero, 0.3f).OnComplete(() =>
+                {
+                    IsOpen = false;
+                    if (!forced) ShowOpenButton();
+                });
+            }
 
             if (doorRight != null)
-                doorRight.DOLocalRotate(Vector3.zero, 0.3f);
+            {
+                doorRight.DOLocalRotate(Vector3.zero, 0.3f).OnComplete(() =>
+                {
+                    IsOpen = false;
+                    if (!forced) ShowOpenButton();
+                });
+            }
 
             if (playSFX) AudioManager.Instance.PlaySFX(AudioID.DoorClose);
         }

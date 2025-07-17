@@ -13,13 +13,13 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] private HandAttachments handAttachments;
 
         public List<Product> Inventory => inventory;
+        public event System.Action OnLeave;
 
         private Animator animator;
         private NavMeshAgent agent;
 
         private ShelvingUnit shelvingUnit;
         private List<Product> inventory = new List<Product>();
-        private int queueNumber = int.MaxValue;
 
         private bool isPicking;
 
@@ -32,9 +32,9 @@ namespace CryingSnow.CheckoutFrenzy
         //private Dialogue satisfiedDialogueEnglish => GameConfig.Instance.SatisfiedDialogueEnglish;
         //private Dialogue waitingLongDialoguEnglish => GameConfig.Instance.WaitingLongDialogueEnglish;
         //private Dialogue waitingLongDialoguTurkish => GameConfig.Instance.WaitingLongDialogueTurkish;
-        
+
         //private string gameLanguage;
-      
+
         private int waitingTimeAtCheckout;
        
         private int maxWaitingTimeAtCheckout = 63;
@@ -43,6 +43,8 @@ namespace CryingSnow.CheckoutFrenzy
         bool positiveFeedbackGiven = false;
         bool negativeFeedbackGiven = false;
 
+        private CheckoutCounter checkoutCounter;
+        private int queueNumber = int.MaxValue;
 
         private void Awake()
         {
@@ -130,10 +132,11 @@ namespace CryingSnow.CheckoutFrenzy
                 }
 
                 print("Müşteri kasaya vardı");
-                StartCoroutine(WaitingTimeAtCheckout());
-                yield return UpdateQueue();
-                yield return StoreManager.Instance.Checkout(this);
-                
+                //StartCoroutine(WaitingTimeAtCheckout());
+                //yield return UpdateQueue();
+                //yield return StoreManager.Instance.Checkout(this);
+                yield return Checkout();
+                yield return Leave();
             }
             else
             {
@@ -145,7 +148,7 @@ namespace CryingSnow.CheckoutFrenzy
                 UpdateChatBubble(GameConfig.Instance.NotFoundDialogues[index].GetRandomLine());
 
                 ReputationManager.instance.RegisterCustomerFeedback(false);
-                yield return StoreManager.Instance.CustomerLeave(this);
+                yield return Leave();
             }
         }
 
@@ -224,31 +227,41 @@ namespace CryingSnow.CheckoutFrenzy
 
             if (IsWillingToBuy(product))
             {
-            
+                // Add the product to the customer's inventory.
                 inventory.Add(product);
-         
+
+                // Take the product model from the shelf.
                 var productObj = shelf.TakeProductModel();
-       
+
+                // Open the shelving unit if it's not already open.
                 if (!shelf.ShelvingUnit.IsOpen) shelf.ShelvingUnit.Open(true, false);
-        
+
+                // Determine the picking animation trigger based on the shelf height.
                 float height = shelf.transform.position.y;
                 string pickTrigger = "PickMedium";
                 if (height < 0.5f) pickTrigger = "PickLow";
                 else if (height > 1.5f) pickTrigger = "PickHigh";
-           
+
+                // Trigger the picking animation.
                 animator.SetTrigger(pickTrigger);
-          
+
+                // Wait until the picking animation is complete.
                 yield return new WaitUntil(() => isPicking);
 
+                // Get the grip transform for the hand attachment.
                 Transform grip = handAttachments.Grip;
 
+                // Set the picked product's parent to the grip.
                 productObj.transform.SetParent(grip);
 
+                // Reset the isPicking flag.
                 isPicking = false;
 
+                // Animate the product moving to the hand.
                 productObj.transform.DOLocalRotate(Vector3.zero, 0.25f);
                 productObj.transform.DOLocalMove(Vector3.zero, 0.25f);
 
+                // Wait until the animation is complete (Idle state).
                 bool isIdle = false;
                 while (!isIdle)
                 {
@@ -256,6 +269,7 @@ namespace CryingSnow.CheckoutFrenzy
                     yield return null;
                 }
 
+                // Destroy the temporary product object.
                 Destroy(productObj);
 
                 if (!positiveFeedbackGiven)
@@ -263,8 +277,8 @@ namespace CryingSnow.CheckoutFrenzy
                     ReputationManager.instance.RegisterCustomerFeedback(true);
                     positiveFeedbackGiven = true;
                 }
-                   
-     
+
+                // Wait for a short delay.
                 yield return new WaitForSeconds(0.5f);
             }
             else
@@ -288,13 +302,18 @@ namespace CryingSnow.CheckoutFrenzy
         }
 
         private bool IsWillingToBuy(Product product)
-        {        
+        {
+            // Calculate a price tolerance factor based on random value.
+            // Higher values mean more tolerance.
             float priceToleranceFactor = 1f + Mathf.Pow(Random.value, 2f);
 
+            // Calculate the maximum acceptable price based on the product's market price and tolerance.
             decimal maxAcceptablePrice = product.MarketPrice * (decimal)priceToleranceFactor;
 
+            // Get the custom price for the product.
             decimal customPrice = DataManager.Instance.GetCustomProductPrice(product);
 
+            // Return true if the custom price is within the acceptable price range, otherwise false.
             return customPrice <= maxAcceptablePrice;
         }
 
@@ -303,20 +322,21 @@ namespace CryingSnow.CheckoutFrenzy
             // While the customer's queue number is greater than 0 (meaning they are still in the queue).
             while (queueNumber > 0)
             {
-                // Get the current queue information from the store manager.
-                var newQueue = StoreManager.Instance.GetQueueNumber(this);
+                int newQueueNumber = checkoutCounter.GetQueueNumber(this);
 
                 // Check if the customer's queue number has improved (become lower).
-                if (newQueue.queueNumber < queueNumber)
+                if (newQueueNumber < queueNumber)
                 {
                     // Update the customer's queue number.
-                    queueNumber = newQueue.queueNumber;
+                    queueNumber = newQueueNumber;
+
+                    Vector3 queuePosition = checkoutCounter.GetQueuePosition(this, out Vector3 lookDirection);
 
                     // Move the customer to their new queue position.
-                    yield return MoveTo(newQueue.queuePosition);
+                    yield return MoveTo(queuePosition);
 
                     // Make the customer look in the correct direction at their new position.
-                    yield return LookAt(newQueue.lookDirection);
+                    yield return LookAt(lookDirection);
                 }
                 else
                 {
@@ -325,6 +345,31 @@ namespace CryingSnow.CheckoutFrenzy
                 }
             }
             // When the queueNumber is 0, this coroutine will stop.
+        }
+
+        private IEnumerator Checkout()
+        {
+            checkoutCounter = StoreManager.Instance.GetShortestQueueCounter();
+            checkoutCounter.LiningCustomers.Add(this);
+            yield return UpdateQueue();
+            yield return checkoutCounter.PlaceProducts(this);
+            yield return new WaitUntil(() => checkoutCounter.CurrentState == CheckoutCounter.State.Standby);
+        }
+
+        private IEnumerator Leave()
+        {
+            if (checkoutCounter != null)
+            {
+                checkoutCounter.LiningCustomers.Remove(this);
+            }
+
+            OnLeave?.Invoke();
+
+            var exitPoint = StoreManager.Instance.GetExitPoint();
+            yield return MoveTo(exitPoint);
+
+            yield return new WaitForEndOfFrame();
+            Destroy(gameObject);
         }
 
         public IEnumerator HandsPayment(bool isUsingCash, Cashier cashier)
@@ -347,17 +392,16 @@ namespace CryingSnow.CheckoutFrenzy
                     cashier.TakePayment();
                     yield return new WaitForSeconds(0.7f);
                     isPaying = false;
-                    print("Ödeme alındı customer");
-                                                    
                 }
-          
+                // Otherwise, allow the player to manually process the payment (e.g., started by clicking on a payment object).
                 else if (Input.GetMouseButtonDown(0))
                 {
                     Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-           
+
+                    // Check if the raycast hits a payment object within the specified layer and range.
                     if (Physics.Raycast(ray, 10f, GameConfig.Instance.PaymentLayer))
                     {
-                        isPaying = false;                   
+                        isPaying = false;
                     }
                 }
 
@@ -369,7 +413,8 @@ namespace CryingSnow.CheckoutFrenzy
             handAttachments.DeactivatePaymentObjects();
         }
 
-        public IEnumerator MoveTo(Vector3 position)
+
+        private IEnumerator MoveTo(Vector3 position)
         {
             agent.SetDestination(position);
 
@@ -391,8 +436,8 @@ namespace CryingSnow.CheckoutFrenzy
             // If the customer was interacting with a shelving unit, re-register it with the store manager.
             if (shelvingUnit != null) StoreManager.Instance.RegisterShelvingUnit(shelvingUnit);
 
-            // Start the "CustomerLeave" coroutine to handle the customer leaving the store.
-            StartCoroutine(StoreManager.Instance.CustomerLeave(this));
+            // Start the "Leave" coroutine to handle the customer leaving the store.
+            StartCoroutine(Leave());
         }
 
         private IEnumerator LookAt(Transform target)
@@ -426,7 +471,7 @@ namespace CryingSnow.CheckoutFrenzy
             return false;
         }
 
-        public void UpdateChatBubble(string chat)
+        private void UpdateChatBubble(string chat)
         {
             if (chatBubble != null) return;
             chatBubble = UIManager.Instance.ShowChatBubble(chat, transform);

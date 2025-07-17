@@ -147,6 +147,7 @@ CurrentPriceText;Current Price:;Güncel Fiyat;Aktueller Preis;Precio actual;Prez
 MarketPriceText;Market Price;Market Fiyatı;Marktpreis;Precio de mercado;Prezzo di mercato;Prix du marché;Preço de mercado
 NextDeliveryText;Next Delivery:;Sonraki Teslimat:;Nächste Lieferung:;Próxima entrega:;Prossima consegna:;Prochaine livraison :;Próxima entrega:
 DayText;Day;Gün;Tag;Día;Giorno;Jour;Dia
+DayTextSmall;day;gün;tag;día;giorno;jour;dia
 LevelText2;Level;Seviye;Level;Nivel;Livello;Niveau;Nível
 ConnectGoogleAccountText;Connect your google account!;Google hesabını bağla!;Verbinden Sie Ihr Google-Konto!;¡Conecta tu cuenta de Google!;Collega il tuo account Google!;Connectez votre compte Google !;Conecte sua conta Google!
 LanguageText;LANGUAGE;DİL;SPRACHE;IDIOMA;LINGUA;LANGUE;IDIOMA
@@ -154,3 +155,56 @@ LoginSuccessText;Successfully logged in!;Başarıyla giriş yapıldı!;Erfolgrei
 LeaderboardUsernameText;USERNAME;KULLANICI ADI;BENUTZERNAME;NOMBRE DE USUARIO;NOME UTENTE;NOM D'UTILISATEUR;NOME DE USUÁRIO
 LeaderboardLevelText;LEVEL;SEVİYE;LEVEL;NIVEL;LIVELLO;NIVEAU;NÍVEL
 VideoStartTimerText;The video starts in {time} seconds...;Video {time} saniye içinde başlıyor...;Das Video beginnt in {time} Sekunden...;El video comienza en {time} segundos...;Il video inizia tra {time} secondi...;La vidéo commence dans {time} secondes...;O vídeo começa em {time} segundos...
+SetLabelText;SET LABEL;ETİKET AYARLA;BEZEICHNUNG FESTLEGEN;ESTABLECER ETIQUETA;IMPOSTA ETICHETTA;DÉFINIR L'ÉTIQUETTE;DEFINIR ETIQUETA
+ResumeGameText;Resume Game;Oyuna Devam Et;Spiel fortsetzen;Reanudar partida;Riprendi partita;Reprendre la partie;Retomar jogo
+SaveGameText;Save Game;Oyunu Kaydet;Spiel speichern;Guardar partida;Salva partita;Sauvegarder la partie;Salvar jogo
+OpenSettingsText;Open Settings;Ayarları Aç;Einstellungen öffnen;Abrir configuración;Apri impostazioni;Ouvrir les paramètres;Abrir configurações
+MainMenuText;Main Menu;Ana Menü;Hauptmenü;Menú principal;Menu principale;Menu principal;Menu principal
+QuitGameText;Quit Game;Oyundan Çık;Spiel beenden;Salir del juego;Esci dal gioco;Quitter le jeu;Sair do jogo
+GameSavedSuccessText;The game has been successfully saved!;Oyun başarıyla kaydedildi!;Das Spiel wurde erfolgreich gespeichert!;¡El juego se ha guardado con éxito!;Il gioco è stato salvato con successo!;La partie a été sauvegardée avec succès !;O jogo foi salvo com sucesso!
+PauseText;PAUSE;DURAKLAT;PAUSE;PAUSA;PAUSA;PAUSE;PAUSAR
+PayAllBillsText;Pay All Bills;Tüm Faturaları Öde;Alle Rechnungen bezahlen;Pagar todas las facturas;Paga tutte le bollette;Payer toutes les factures;Pagar todas as contas
+BillText;Bill;Fatura;Rechnung;Factura;Bolletta;Facture;Conta
+LoanText;Loan;Kredi;Darlehen;Préstamo;Prestito;Prêt;Empréstimo
+EmployeeText;Employee;Çalışan;Mitarbeiter;Empleado;Dipendente;Employé;Funcionário
+ExpansionText;Expansion;Genişleme;Erweiterung;Expansión;Espansione;Expansion;Expansão
+AssignProductLabelText;Assign Product Label;Ürün Etiketi Ata;Produktetikett zuweisen;Asignar etiqueta de producto;Assegna etichetta prodotto;Attribuer une étiquette de produit;Atribuir etiqueta do produto
+RemoveLabelText;Remove Label;Etiketi Kaldır;Etikett entfernen;Quitar etiqueta;Rimuovi etichetta;Retirer l'étiquette;Remover etiqueta
+MarketText;Market;Market;Markt;Mercado;Mercato;Marché;Mercado
+ManageText;Manage;Yönet;Verwalten;Gestionar;Gestire;Gérer;Gerenciar
+FinanceText;Finance;Finans;Finanzen;Finanzas;Finanza;Finances;Finançass
+ActiveLoansText;Active Loans;Aktif Krediler;Aktive Darlehen;Préstamos activos;Prestiti attivi;Prêts actifs;Empréstimos ativos
+ClearText;Clear;Temizle;Löschen;Limpiar;Cancella;Effacer;Limpar
+CheckoutText;Checkout;Ödeme;Kasse;Pagar;Cassa;Paiement;Finalizar compra
+ProductNameText;Product Name;Ürün Adı;Produktname;Nombre del producto;Nome prodotto;Nom du produit;Nome do produto
+QuantityText;Quantity;Miktar;Menge;Cantidad;Quantità;Quantité;Quantidade
+TotalText;Total;Toplam;Gesamt;Total;Totale;Total;Total
+LoanDetailsText;Interest Rate\nTotal Payments\nPayment\nTotal to Repay\nPenalty if Late;Faiz Oranı\nToplam Ödemeler\nÖdeme\nGeri Ödenecek Toplam\nGecikme Cezası;Zinssatz\nGesamtzahlungen\nZahlung\nGesamt zurückzuzahlender Betrag\nVerzugsstrafe;Tasa de interés\nPagos totales\nPago\nTotal a devolver\nPenalización por retraso;Tasso di interesse\nPagamenti totali\nPagamento\nTotale da rimborsare\nPenalità in caso di ritardo;Taux d'intérêt\nPaiements totaux\nPaiement\nMontant total à rembourser\nPénalité en cas de retard;Taxa de juros\nPagamentos totais\nPagamento\nTotal a pagar\nMulta por atraso
+TakeLoanText;Take the Loan;Kredi Çek;Darlehen aufnehmen;Tomar el préstamo;Prendi il prestito;Contracter le prêt;Pegar o empréstimo
+IssuedDueDatesText;Issued On\nDue By;Düzenlenme Tarihi\nSon Ödeme Tarihi;Ausstellungsdatum\nFälligkeitsdatum;Emitido el\nVence el;Data di emissione\nScadenza entro;Date d'émission\nDate d'échéance;Emitido em\nVencimento em
+PayTheBillText;Pay the Bill;Faturayı Öde;Rechnung bezahlen;Pagar la factura;Paga la bolletta;Payer la facture;Pagar a conta
+FireEmployeeText;Fire;Kov;Entlassen;Despedir;Licenziare;Licencier;Demitir
+HireText;Hire;İşe Al;Einstellen;Contratar;Assumere;Embaucher;Contratar
+SalaryText;Salary;Maaş;Gehalt;Salario;Stipendio;Salaire;Salário
+CostText;Cost:;Maliyet:;Kosten:;Costo:;Costo:;Coût:;Custo:
+CannotPlaceFurnitureText;Can't place furnitures here!;Buraya mobilya yerleştiremezsin!;Möbel können hier nicht platziert werden!;¡No se pueden colocar muebles aquí!;Non puoi posizionare mobili qui!;Impossible de placer des meubles ici !;Não é possível colocar móveis aqui!
+TapToOpenDoorText;Tap to open the door;Kapıyı açmak için dokun;Zum Öffnen der Tür tippen;Toca para abrir la puerta;Tocca per aprire la porta;Touchez pour ouvrir la porte;Toque para abrir a porta
+TapToCloseDoorText;Tap to close the door;Kapıyı kapatmak için dokun;Zum Schließen der Tür tippen;Toca para cerrar la puerta;Tocca per chiudere la porta;Touchez pour fermer la porte;Toque para fechar a porta
+TapToPickUpBoxText;Tap to pick up this box;Bu kutuyu almak için dokun;Tippe, um diese Kiste aufzuheben;Toca para recoger esta caja;Tocca per raccogliere questa scatola;Touchez pour ramasser cette boîte;Toque para pegar esta caixa
+TapToCleanMessText;Tap to clean the mess;Dağınıklığı temizlemek için dokun;Tippe, um das Chaos zu beseitigen;Toca para limpiar el desorden;Tocca per pulire il disordine;Touchez pour nettoyer le désordre;Toque para limpar a bagunça
+PayNowOrText;Pay now or;Şimdi öde veya;Jetzt bezahlen oder;Pagar ahora o;Paga ora o;Payer maintenant ou;Pague agora ou
+PaidText;Paid;Ödendi;Bezahlt;Pagado;Pagato;Payé;Pago
+DueTomorrowText;Due tomorrow;Yarın son gün;Fällig morgen;Vence mañana;Scade domani;Dû demain;Vence amanhã
+DueTodayText;Due today;Bugün son gün;Fällig heute;Vence hoy;Scade oggi;Dû aujourd'hui;Vence hoje
+DaysLeftText;{days} days left;{days} gün kaldı;Noch {days} Tage;Quedan {days} días;Mancano {days} giorni;Il reste {days} jours;Faltam {days} dias
+GraceEndsTomorrowText;Grace ends tomorrow;Ek süre yarın bitiyor;Die Nachfrist endet morgen;El período de gracia termina mañana;Il periodo di grazia termina domani;Le délai de grâce se termine demain;O período de carência termina amanhã
+GraceEndsTodayText;Grace ends today;Ek süre bugün bitiyor;Die Nachfrist endet heute;El período de gracia termina hoy;Il periodo di grazia termina oggi;Le délai de grâce se termine aujourd'hui;O período de carência termina hoje
+GracePeriodDaysLeftText;Grace period ({graceLeft} days left);Ek süre ({graceLeft} gün kaldı);Nachfrist (noch {graceLeft} Tage);Período de gracia (quedan {graceLeft} días);Periodo di grazia (rimangono {graceLeft} giorni);Délai de grâce (il reste {graceLeft} jours);Período de carência (faltam {graceLeft} dias)
+OverdueText;Overdue;Gecikmiş;Überfällig;Vencido;Scaduto;En retard;Vencido
+LateText;Late;Geç;Spät;Tarde;In ritardo;En retard;Atrasado
+UnlockAtLevelText;Unlock at Level {level};Seviye {level}'de Kilidi Aç;Freischalten auf Level {level};Desbloquear en Nivel {level};Sblocca al Livello {level};Débloquer au Niveau {level};Desbloquear no Nível {level}
+OutstandingBillsSummaryText;Outstanding Bills: {count} | Total Amount: ${sum};Ödenmemiş Faturalar: {count} | Toplam Tutar: {sum} $;Offene Rechnungen: {count} | Gesamtbetrag: {sum} €;Facturas Pendientes: {count} | Cantidad Total: ${sum};Fatture Pendenti: {count} | Importo Totale: {sum} €;Factures en Attente: {count} | Montant Total: {sum} €;Contas Pendentes: {count} | Valor Total: ${sum}
+NoActiveLoansCongratsText;Congratulations!\nYou have no active loans.;Tebrikler!\nAktif krediniz bulunmamaktadır.;Herzlichen Glückwunsch!\nSie haben keine aktiven Darlehen.;¡Felicidades!\nNo tiene préstamos activos.;Congratulazioni!\nNon hai prestiti attivi.;Félicitations !\nVous n'avez aucun prêt actif.;Parabéns!\nVocê não tem empréstimos ativos.
+LoanPaymentProgressText;Progress: {paymentsMade} of {totalPayments} Bills;İlerleme: {paymentsMade} / {totalPayments} Fatura;Fortschritt: {paymentsMade} von {totalPayments} Rechnungen;Progreso: {paymentsMade} de {totalPayments} facturas;Progresso: {paymentsMade} di {totalPayments} fatture;Progrès : {paymentsMade} sur {totalPayments} factures;Progresso: {paymentsMade} de {totalPayments} contas
+CartTotalText;Total: ${totalPrice};Toplam: {totalPrice} $;Gesamt: {totalPrice} €;Total: ${totalPrice};Totale: {totalPrice} €;Total : {totalPrice} €;Total: ${totalPrice}
+PurchasedText;PURCHASED;SATIN ALINDI;GEKAUFT;ADQUIRIDO;ACQUISTATO;ACHETÉ;COMPRADO

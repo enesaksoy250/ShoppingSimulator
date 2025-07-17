@@ -18,6 +18,12 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField] private GameObject model;
         [SerializeField] private Box box;
 
+        [SerializeField] private bool overrideBoxQuantity;
+        [SerializeField] private Vector3Int boxQuantity;
+
+        [SerializeField] private bool overrideShelfQuantity;
+        [SerializeField] private Vector3Int shelfQuantity;
+
         public enum Category
         {
             FoodAndBeverages,
@@ -53,6 +59,11 @@ namespace CryingSnow.CheckoutFrenzy
         public GameObject Model => model;
         public Box Box => box;
 
+        public bool OverrideBoxQuantity => overrideBoxQuantity;
+        public Vector3Int BoxQuantity => boxQuantity;
+        public bool OverrideShelfQuantity => overrideShelfQuantity;
+        public Vector3Int ShelfQuantity => shelfQuantity;
+
         public Vector3 Size
         {
             get
@@ -86,6 +97,9 @@ namespace CryingSnow.CheckoutFrenzy
         public int GetBoxQuantity()
         {
             if (box == null) return -1;
+
+            if (overrideBoxQuantity) return boxQuantity.x * boxQuantity.y * boxQuantity.z;
+
             Vector3Int fit = FitOnContainer(box.Size);
             return fit.x * fit.y * fit.z;
         }

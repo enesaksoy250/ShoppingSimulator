@@ -11,5 +11,7 @@
         {
             MissionID = missionId;
         }
+
+        public MissionData() { }
     }
 }

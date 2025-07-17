@@ -16,10 +16,14 @@ namespace CryingSnow.CheckoutFrenzy
         [SerializeField, Tooltip("The number of additional customers that this expansion adds to the store.")]
         private int additionalCustomers;
 
+        [SerializeField, Tooltip("Whether this expansion unlocks the warehouse (storage area).")]
+        private bool unlockWarehouse;
+
         public string Name => name;
         public int UnlockPrice => unlockPrice;
         public int RequiredLevel => requiredLevel;
         public int AdditionalCustomers => additionalCustomers;
+        public bool UnlockWarehouse => unlockWarehouse;
 
         /// <summary>
         /// Sets the active state of all child GameObjects based on the `isPurchased` flag.

@@ -35,6 +35,11 @@ public class InfoText : MonoBehaviour
 
     private void Start()
     {
+       
+    }
+
+    private void OnEnable()
+    {
         string language = PlayerPrefs.GetString("Language", "English");
 
         switch (language)
@@ -65,4 +70,5 @@ public class InfoText : MonoBehaviour
                 break;
         }
     }
+
 }
