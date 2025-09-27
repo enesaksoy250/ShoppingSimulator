@@ -15,7 +15,7 @@ public class LoginWithGoogle : MonoBehaviour
 {
     public static LoginWithGoogle instance;
 
-    public string GoogleWebApi = "476256887766-o2qdgmp2210vd8dlu67q5bbhg4srrp9k.apps.googleusercontent.com";
+    public string GoogleWebApi = "";
 
     FirebaseAuth auth;
 
