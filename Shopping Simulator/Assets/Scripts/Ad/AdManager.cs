@@ -12,16 +12,16 @@ public class AdManager : MonoBehaviour
     public static AdManager instance;
 
     private InterstitialAd _interstitialAd;
-    //private const string adInterstitialUnitId= "ca-app-pub-3940256099942544/1033173712";
-    private const string adInterstitialUnitId= "ca-app-pub-2684276866838299/5604426296";
+   
+    private const string adInterstitialUnitId= "";
 
     private RewardedAd _rewardedAd;
-    //private const string adRewardUnitId = "ca-app-pub-3940256099942544/5224354917";
-    private const string adRewardUnitId = "ca-app-pub-2684276866838299/9928908011";
+ 
+    private const string adRewardUnitId = "";
 
     private RewardedInterstitialAd _rewardedInterstitialAd;
-    //private const string adRewardedInterstitialUnitId= "ca-app-pub-3940256099942544/5354046379";
-    private const string adRewardedInterstitialUnitId= "ca-app-pub-2684276866838299/2849557408";
+  
+    private const string adRewardedInterstitialUnitId= "";
 
     public event Action OnAdCoroutineFinished;
 
@@ -368,7 +368,7 @@ public class AdManager : MonoBehaviour
         while(time > 0)
         {
             time--;
-            //adStartingtext.text = language == "English" ? $"The video starts in {time} seconds..." : $"Video {time} saniye içinde baþlýyor...";        
+            //adStartingtext.text = language == "English" ? $"The video starts in {time} seconds..." : $"Video {time} saniye iÃ§inde baÃ¾lÃ½yor...";        
             adStartingtext.text = LanguageManager.instance.GetLocalizedValue("VideoStartTimerText").Replace("{time}",time.ToString());        
             yield return new WaitForSeconds(1);
         }
