@@ -2,14 +2,14 @@
 
 Mobil bir alışveriş simülasyonu oyunudur. Oyuncular kendi marketlerini yönetebilir, alışveriş yapabilir ve farklı görevleri yerine getirebilir.
 
-##📱 Özellikler
+## 📱 Özellikler
 
 Gerçekçi market simülasyonu deneyimi
 Google hesabı ile kayıt / giriş sistemi (Firebase Authentication)<br>
 Kullanıcı verilerinin saklanması (Firebase Realtime Database)<br>
 Mobil cihazlara optimize edilmiş arayüz<br>
 
-##🛠️ Kullanılan Teknolojiler
+## 🛠️ Kullanılan Teknolojiler
 
 Unity (C#)<br>
 Firebase Authentication (Google ile giriş)<br>
